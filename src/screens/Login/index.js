@@ -7,25 +7,24 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header} from '../../components/index';
+import {Box, Header, CustomHeader} from '../../components/index';
 import {Colors} from '../../theme';
-import VideoDeatilsPage from './widget/VideoDetailsPage';
+import LoginPage from './widget/LoginPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
 
-const VideoDetails = ({navigation,route}) => {
+const Home = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Box style={styles.mainContainer}>
-          <KeyboardAvoidingView
-            style={{flex: 1}}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-            <VideoDeatilsPage navigation={navigation} route={route} />
-          </KeyboardAvoidingView>
-        </Box>
-      </ScrollView>
+      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      <Box style={styles.mainContainer}>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
+          <LoginPage navigation={navigation} />
+        </KeyboardAvoidingView>
+      </Box>
     </Box>
   );
 };
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: hp('100%'),
     backgroundColor: Colors.white,
-    padding:ms(10),
+    padding: ms(10),
   },
 });
-export default VideoDetails;
+export default Home;

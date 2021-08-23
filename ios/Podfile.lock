@@ -271,6 +271,11 @@ PODS:
   - React-jsinspector (0.65.0)
   - react-native-safe-area-context (3.3.0):
     - React-Core
+  - react-native-video (5.1.1):
+    - React-Core
+    - react-native-video/Video (= 5.1.1)
+  - react-native-video/Video (5.1.1):
+    - React-Core
   - react-native-webview (11.13.0):
     - React-Core
   - React-perflogger (0.65.0)
@@ -417,6 +422,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -487,6 +493,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -555,6 +563,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 11ec08ad247abb44113ccb3d2b66f7e856d1cdf4
   React-jsinspector: 2aa5dc1b9a02a81c0dcc70c00f2cbe1cd4b875c4
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
+  react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
   react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
   React-perflogger: 494c61caaf9b7da0a0a612fa4ed570ab7ab5819b
   React-RCTActionSheet: 0ea18583618e2451889be1ce1f658ae8cb436b2e

@@ -20,6 +20,7 @@ import {
   borderRight,
   borderWidth,
   borderTop,
+  style,
 } from 'styled-system';
 
 const Box = styled.View`
@@ -43,6 +44,7 @@ const Box = styled.View`
   ${borderRight}
   ${borderWidth}
   ${borderTop}
+  ${style}
 `;
 
 export default Box;

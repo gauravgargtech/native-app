@@ -2,6 +2,7 @@ import * as types from '../types';
 const initialState = {
   getTagsData: [],
   getCategoryData: [],
+  getVideoList: [],
   getVideoDetailsData: [],
 };
 
@@ -12,6 +13,8 @@ const reducers = (state = initialState, action) => {
       return {...state, getTagsData: action.payload};
     case types.GET_CATEGORY_SUCCESS:
       return {...state, getCategoryData: action.payload};
+    case types.GET_VIDEO_LIST_SUCCESS:
+      return {...state, getVideoList: action.payload};
     case types.GET_VIDEO_DETAILS_SUCCESS:
       return {...state, getVideoDetailsData: action.payload};
 

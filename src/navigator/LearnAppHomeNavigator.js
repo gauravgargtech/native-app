@@ -1,13 +1,7 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {Home, VideoDetails} from '../screens/index';
-import {HOME, VIDEO_DETAILS, DRAWER} from './routes';
-import Drawer from './drawer';
-import {fontSizes} from '../theme';
-import {Box} from '../components';
-import {Image, TouchableOpacity} from 'react-native';
-import {SignUP} from '../assets/images';
-import {ms} from 'react-native-size-matters';
+import {HOME, VIDEO_DETAILS} from './routes';
 
 const Stack = createStackNavigator();
 const LearnAppHomeNavigator = ({navigation}) => {
@@ -24,7 +18,9 @@ const LearnAppHomeNavigator = ({navigation}) => {
         name={VIDEO_DETAILS}
         component={VideoDetails}
         options={{
-          headerShown: false,
+          headerTitle: 'Details',
+          headerBackTitleVisible: false,
+          ...TransitionPresets.SlideFromRightIOS,
         }}
       />
     </Stack.Navigator>

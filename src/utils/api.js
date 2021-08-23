@@ -3,8 +3,9 @@ import axios from 'axios';
 const Baseurl = 'https://kid.greatequip.com';
 
 const getCategory_API = `${Baseurl}/api/categories`;
-const getVideoDetails_API = `${Baseurl}/api/video/1`;
 const getTags_API = `${Baseurl}/api/tags`;
+const getVideoList_API = `${Baseurl}/api/videos`;
+const getVideoDetails_API = `${Baseurl}/api/video/1`;
 
 const postApi = (url, values, options) => {
   console.log('url and value', url, values);
@@ -35,6 +36,7 @@ const deleteApi = async url => {
 };
 
 const getCategory = () => getApi(getCategory_API);
-const getVideoDetails = () => getApi(getVideoDetails_API);
 const getTags = () => getApi(getTags_API);
-export default {getCategory, getVideoDetails, getTags};
+const getVideoList = () => getApi(getVideoList_API);
+const getVideoDetails = () => getApi(getVideoDetails_API);
+export default {getCategory, getTags, getVideoList, getVideoDetails};

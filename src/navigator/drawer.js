@@ -5,15 +5,19 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const DrawerNavigation = createDrawerNavigator();
-import {LEARN_APP_NAVIGATOR, CATEGORY, READ_ALOUD} from './routes';
+import {
+  LEARN_APP_NAVIGATOR,
+  CATEGORY,
+  READ_ALOUD,
+  NURSERY_RHYMES,
+  MANY_MORE,
+  AND_MORE,
+} from './routes';
 import LearnAppHomeNavigator from './LearnAppHomeNavigator';
 import {getCategoryAction} from '../store/actions';
 import {connect} from 'react-redux';
-import {fontSizes} from '../theme';
-import {ms} from 'react-native-size-matters';
-import {SignUP, Signup_medium, Signup_large} from '../assets/images';
 
-const Drawer = ({navigation, getCategoryAction, getCategoryData}) => {
+const Drawer = ({getCategoryAction, getCategoryData}) => {
   useEffect(() => {
     getCategoryAction();
   }, []);
@@ -25,30 +29,11 @@ const Drawer = ({navigation, getCategoryAction, getCategoryData}) => {
   return (
     <DrawerNavigation.Navigator>
       <DrawerNavigation.Screen
-        name={LEARN_APP_NAVIGATOR}
-        component={LearnAppHomeNavigator}
-        options={{
-          headerTitleStyle: {fontWeight: 'bold', fontSize: fontSizes[5]},
-          headerTitle: 'LearnReadApp',
-          headerRight: () => (
-            <Box right={3}>
-              <TouchableOpacity onPress={() => alert('This is a button!')}>
-                <Image source={SignUP} style={{width:ms(80),height:ms(35)}} resizeMode={'stretch'}/>
-              </TouchableOpacity>
-            </Box>
-          ),
-          drawerLabel: () => <Text>{categoryName[0]}</Text>,
-          drawerIcon: ({color}) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
-        }}
-      />
-      <DrawerNavigation.Screen
         name={CATEGORY}
         component={LearnAppHomeNavigator}
         options={{
-          headerTitle: 'LearnReadApp',
-          drawerLabel: () => <Text>{categoryName[1]}</Text>,
+          headerShown: false,
+          drawerLabel: () => <Text>{categoryName[0]}</Text>,
           drawerIcon: ({color}) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
@@ -58,8 +43,41 @@ const Drawer = ({navigation, getCategoryAction, getCategoryData}) => {
         name={READ_ALOUD}
         component={LearnAppHomeNavigator}
         options={{
-          headerTitle: 'LearnReadApp',
+          headerShown: false,
+          drawerLabel: () => <Text>{categoryName[1]}</Text>,
+          drawerIcon: ({color}) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <DrawerNavigation.Screen
+        name={NURSERY_RHYMES}
+        component={LearnAppHomeNavigator}
+        options={{
+          headerShown: false,
           drawerLabel: () => <Text>{categoryName[2]}</Text>,
+          drawerIcon: ({color}) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <DrawerNavigation.Screen
+        name={MANY_MORE}
+        component={LearnAppHomeNavigator}
+        options={{
+          headerShown: false,
+          drawerLabel: () => <Text>{categoryName[3]}</Text>,
+          drawerIcon: ({color}) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <DrawerNavigation.Screen
+        name={AND_MORE}
+        component={LearnAppHomeNavigator}
+        options={{
+          headerShown: false,
+          drawerLabel: () => <Text>{categoryName[4]}</Text>,
           drawerIcon: ({color}) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),

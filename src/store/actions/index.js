@@ -12,6 +12,31 @@ export const getCategoryAction =
       payload: getPromise(),
     });
   };
+export const getTagsAction =
+  () =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getTags();
+      return data;
+    };
+    return dispatch({
+      type: types.GET_TAGS,
+      payload: getPromise(),
+    });
+  };
+
+export const getVideoListAction =
+  () =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getVideoList();
+      return data;
+    };
+    return dispatch({
+      type: types.GET_VIDEO_LIST,
+      payload: getPromise(),
+    });
+  };
 
 export const getVideoDetailsAction =
   () =>
@@ -22,19 +47,6 @@ export const getVideoDetailsAction =
     };
     return dispatch({
       type: types.GET_VIDEO_DETAILS,
-      payload: getPromise(),
-    });
-  };
-
-export const getTagsAction =
-  () =>
-  (dispatch, getState, {api}) => {
-    const getPromise = async () => {
-      const {data} = await api.getTags();
-      return data;
-    };
-    return dispatch({
-      type: types.GET_TAGS,
       payload: getPromise(),
     });
   };

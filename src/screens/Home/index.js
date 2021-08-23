@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Box, Header, CustomHeader} from '../../components/index';
 import {Colors} from '../../theme';
-import HomePage from './widget/HomePage';
+import TagList from './widget/TagList';
 import VideoList from './widget/VideoList';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
@@ -18,17 +18,17 @@ const Home = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
-      <CustomHeader  headerName={'LearnReadApp'} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Box style={styles.mainContainer}>
-          <KeyboardAvoidingView
-            style={{flex: 1}}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-            <HomePage navigation={navigation} />
+      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      <Box style={styles.mainContainer}>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TagList navigation={navigation} />
             <VideoList navigation={navigation} />
-          </KeyboardAvoidingView>
-        </Box>
-      </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </Box>
     </Box>
   );
 };
