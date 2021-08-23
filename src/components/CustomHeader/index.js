@@ -13,7 +13,7 @@ import {
   SearchIcon,
   MenuIcon,
 } from '../../assets/images';
-import {LOGIN} from '../../navigator/routes';
+import {LOGIN, REGISTER} from '../../navigator/routes';
 
 const CustomHeader = ({navigation, headerName}) => {
   return (
@@ -51,7 +51,7 @@ const CustomHeader = ({navigation, headerName}) => {
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        <TouchableOpacity onPress={() => navigation.navigate(LOGIN)}>
+        <TouchableOpacity onPress={() => navigation.navigate(REGISTER)}>
           <Image
             source={SignUP}
             style={{width: wp('20%')}}

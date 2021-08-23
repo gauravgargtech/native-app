@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Pressable} from 'react-native';
-import {Box, SubHeadingText, PlainText} from '../../../components';
+import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {Box, PlainText} from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,14 +15,14 @@ const TagList = ({navigation, getTagsAction, getTagsData}) => {
   useEffect(() => {
     getTagsAction();
   }, []);
-  console.log('get Tags Data', getTagsData);
+
   return (
     <Box flex={0.1} justifyContent={'flex-start'}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <Box height={hp('6%')} flexDirection={'row'}>
           {getTagsData.map(tagsItem => {
             return (
-              <Pressable onPress={() => setSelected(tagsItem.text)}>
+              <TouchableOpacity onPress={() => setSelected(tagsItem.text)}>
                 <Box
                   style={[
                     styles.tagView,
@@ -43,7 +43,7 @@ const TagList = ({navigation, getTagsAction, getTagsData}) => {
                     {tagsItem.text}
                   </PlainText>
                 </Box>
-              </Pressable>
+              </TouchableOpacity>
             );
           })}
         </Box>

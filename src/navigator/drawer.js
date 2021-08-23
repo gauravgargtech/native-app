@@ -27,60 +27,46 @@ const Drawer = ({getCategoryAction, getCategoryData}) => {
   });
   console.log('category Name', categoryName);
   return (
-    <DrawerNavigation.Navigator>
+    <DrawerNavigation.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerIcon: ({color}) => (
+          <MaterialCommunityIcons name="home" color={color} size={26} />
+        ),
+      }}>
       <DrawerNavigation.Screen
         name={CATEGORY}
         component={LearnAppHomeNavigator}
         options={{
-          headerShown: false,
           drawerLabel: () => <Text>{categoryName[0]}</Text>,
-          drawerIcon: ({color}) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
         }}
       />
       <DrawerNavigation.Screen
         name={READ_ALOUD}
         component={LearnAppHomeNavigator}
         options={{
-          headerShown: false,
           drawerLabel: () => <Text>{categoryName[1]}</Text>,
-          drawerIcon: ({color}) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
         }}
       />
       <DrawerNavigation.Screen
         name={NURSERY_RHYMES}
         component={LearnAppHomeNavigator}
         options={{
-          headerShown: false,
           drawerLabel: () => <Text>{categoryName[2]}</Text>,
-          drawerIcon: ({color}) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
         }}
       />
       <DrawerNavigation.Screen
         name={MANY_MORE}
         component={LearnAppHomeNavigator}
         options={{
-          headerShown: false,
           drawerLabel: () => <Text>{categoryName[3]}</Text>,
-          drawerIcon: ({color}) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
         }}
       />
       <DrawerNavigation.Screen
         name={AND_MORE}
         component={LearnAppHomeNavigator}
         options={{
-          headerShown: false,
           drawerLabel: () => <Text>{categoryName[4]}</Text>,
-          drawerIcon: ({color}) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
         }}
       />
     </DrawerNavigation.Navigator>

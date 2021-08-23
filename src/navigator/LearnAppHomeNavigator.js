@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import {Home, Login, VideoDetails} from '../screens/index';
-import {HOME, LOGIN, VIDEO_DETAILS} from './routes';
+import {Home, Login, Register, VideoDetails} from '../screens/index';
+import {HOME, LOGIN, REGISTER, VIDEO_DETAILS} from './routes';
 
 const Stack = createStackNavigator();
 const LearnAppHomeNavigator = ({navigation}) => {
@@ -19,6 +19,15 @@ const LearnAppHomeNavigator = ({navigation}) => {
         component={Login}
         options={{
           headerTitle: 'Login',
+          headerBackTitleVisible: false,
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name={REGISTER}
+        component={Register}
+        options={{
+          headerTitle: 'Register',
           headerBackTitleVisible: false,
           ...TransitionPresets.SlideFromRightIOS,
         }}

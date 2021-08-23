@@ -16,8 +16,6 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
   useEffect(() => {
     getVideoListAction();
   }, []);
-
-  console.log('get Video List :', getVideoList);
   return (
     <Box flex={1.8} justifyContent={'flex-start'}>
       <Box p={ms(5)}>

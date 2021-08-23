@@ -117,7 +117,7 @@ const VideoDeatilsPage = ({navigation, route}) => {
           Video Details
         </SubHeadingText>
         <SubHeadingText color={Colors.black} fontSize={fontSizes[3]}>
-          {videoItem?.url}
+          comment
         </SubHeadingText>
       </Box>
     </Box>
