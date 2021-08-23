@@ -7,17 +7,16 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header, CustomHeader} from '../../components/index';
+import {Box} from '../../components/index';
 import {Colors} from '../../theme';
 import LoginPage from './widget/LoginPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
 
-const Home = ({navigation}) => {
+const Login = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}
@@ -36,4 +35,4 @@ const styles = StyleSheet.create({
     padding: ms(10),
   },
 });
-export default Home;
+export default Login;

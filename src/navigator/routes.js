@@ -1,6 +1,8 @@
 const LEARNAPP = '@main';
 
 export const HOME = `${LEARNAPP}_HOME`;
+export const LOGIN = `${LEARNAPP}_LOGIN`;
+export const REGISTER = `${LEARNAPP}_REGISTER`;
 export const VIDEO_DETAILS = `${LEARNAPP}_VIDEO_DETAILS`;
 export const LEARN_APP_NAVIGATOR = `${LEARNAPP}_LEARN_APP_NAVIGATOR`;
 
