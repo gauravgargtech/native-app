@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Text, Image, TouchableOpacity, SafeAreaView} from 'react-native';
-import {Box, SubHeadingText} from '../components/index';
+import {Box, SubHeadingText, CustomHeader} from '../components/index';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,24 +11,32 @@ import {
   LOGIN,
   REGISTER,
   VIDEO_DETAILS,
-  LEARN_APP_NAVIGATOR,
-  CATEGORY,
-  READ_ALOUD,
-  NURSERY_RHYMES,
-  MANY_MORE,
-  AND_MORE,
 } from './routes';
 import LearnAppHomeNavigator from './LearnAppHomeNavigator';
 import CustomDrawerContent from './CustomDrawerContent';
 import {getCategoryAction} from '../store/actions';
 import {connect} from 'react-redux';
-const Category = () => {
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {Colors, fontSizes} from '../theme';
+import {ms} from 'react-native-size-matters';
+const Category = ({navigation}) => {
   return (
-    <SafeAreaView>
-      <Box>
-        <SubHeadingText>Categoty hello</SubHeadingText>
+    <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
+      <CustomHeader navigation={navigation} headerName={'Category Name'} />
+      <Box
+        flex={1}
+        style={{
+          height: hp('100%'),
+          backgroundColor: Colors.white,
+          padding: ms(10),
+        }}>
+        <Box flex={1} alignItems={'center'} justifyContent={'center'}>
+          <SubHeadingText fontSize={fontSizes[5]}>
+            Category Screen Display
+          </SubHeadingText>
+        </Box>
       </Box>
-    </SafeAreaView>
+    </Box>
   );
 };
 const DrawerNavigator = ({getCategoryAction, getCategoryData}) => {
@@ -50,7 +58,7 @@ const DrawerNavigator = ({getCategoryAction, getCategoryData}) => {
       <Drawer.Screen name={LOGIN} component={Login} />
       <Drawer.Screen name={REGISTER} component={Register} />
       <Drawer.Screen name={VIDEO_DETAILS} component={VideoDetails} />
-      <Drawer.Screen name={'Demo'} component={Category}  options={{headerShown:true}} />
+      <Drawer.Screen name={'Demo'} component={Category} />
     </Drawer.Navigator>
   );
 };

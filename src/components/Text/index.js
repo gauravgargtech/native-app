@@ -1,5 +1,5 @@
 import React from 'react';
-import {fontSizes, fonts} from '../../theme';
+import {fontSizes, fonts, Colors} from '../../theme';
 import styled from 'styled-components/native';
 import {
   textAlign,
@@ -44,14 +44,17 @@ const Text = styled.Text`
 `;
 
 const HeadingText = props => {
-  return <Text fontFamily={fonts.RobotoBold} {...props} />;
+  return <Text color={Colors.black} fontFamily={fonts.RobotoBold} {...props} />;
 };
 
 const SubHeadingText = props => {
-  return <Text fontFamily={fonts.RobotoMedium} {...props} />;
+  return (
+    <Text color={Colors.black} fontFamily={fonts.RobotoMedium} {...props} />
+  );
 };
 const PlainText = props => (
   <Text
+    color={Colors.black}
     fontFamily={fonts.RobotoRegular}
     fontSize={fontSizes[1]}
     letterSpacing={0.3}

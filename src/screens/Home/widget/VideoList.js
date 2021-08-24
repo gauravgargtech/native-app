@@ -1,6 +1,11 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
-import {Box, SubHeadingText, PlainText} from '../../../components';
+import {
+  Box,
+  VideoDescription,
+  SubHeadingText,
+  PlainText,
+} from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -42,27 +47,7 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
                     resizeMode={'contain'}
                   />
                   <Box style={styles.videoDescriptionView}>
-                    <SubHeadingText
-                      color={Colors.black}
-                      numberOfLines={2}
-                      ellipsizeMode={'tail'}
-                      fontSize={fontSizes[1.5]}>
-                      {videoItem?.title} Quan that led to diving gold media
-                    </SubHeadingText>
-                    <SubHeadingText color={Colors.grey} fontSize={fontSizes[1]}>
-                      Entertainment
-                    </SubHeadingText>
-                    <Box flexDirection={'row'}>
-                      <PlainText color={Colors.grey} fontSize={fontSizes[1]}>
-                        {videoItem?.views}
-                      </PlainText>
-                      <PlainText color={Colors.grey} fontSize={fontSizes[1]}>
-                        {' . '}
-                      </PlainText>
-                      <PlainText color={Colors.grey} fontSize={fontSizes[1]}>
-                        {videoItem?.date_posted}
-                      </PlainText>
-                    </Box>
+                    <VideoDescription videoItem={videoItem} />
                   </Box>
                 </Box>
               </TouchableOpacity>

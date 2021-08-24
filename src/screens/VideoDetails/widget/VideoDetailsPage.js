@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState, useCallback} from 'react';
+import {ScrollView, StyleSheet, Image, Platform} from 'react-native';
 import {
-  ScrollView,
-  StyleSheet,
-  Image,
-  Platform,
-} from 'react-native';
-import {Box, Button, PlainText, SubHeadingText} from '../../../components';
+  Box,
+  Button,
+  VideoDescription,
+  PlainText,
+  SubHeadingText,
+} from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -30,7 +31,7 @@ const VideoDeatilsPage = ({navigation, route}) => {
 
   const onSeeking = currentVideoTime => setCurrentTime(currentVideoTime);
 
-  const onPaused = (newState) => {
+  const onPaused = newState => {
     setPaused(!paused);
     setPlayerState(newState);
   };
@@ -89,27 +90,7 @@ const VideoDeatilsPage = ({navigation, route}) => {
       <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
         <Image source={ProfileAvtar} style={styles.channelIcon} />
         <Box style={styles.videoDescriptionView}>
-          <SubHeadingText
-            color={Colors.black}
-            numberOfLines={2}
-            ellipsizeMode={'tail'}
-            fontSize={fontSizes[2]}>
-            {videoItem?.title} Quan that led to diving gold media
-          </SubHeadingText>
-          <SubHeadingText color={Colors.grey} fontSize={fontSizes[1]}>
-            Entertainment
-          </SubHeadingText>
-          <Box flexDirection={'row'}>
-            <PlainText color={Colors.grey} fontSize={fontSizes[1]}>
-              {videoItem?.views}
-            </PlainText>
-            <PlainText color={Colors.grey} fontSize={fontSizes[1]}>
-              {' . '}
-            </PlainText>
-            <PlainText color={Colors.grey} fontSize={fontSizes[1]}>
-              {videoItem?.date_posted}
-            </PlainText>
-          </Box>
+          <VideoDescription videoItem={videoItem} />
         </Box>
       </Box>
       <Box p={ms(20)}>

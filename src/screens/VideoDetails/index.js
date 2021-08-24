@@ -7,7 +7,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header} from '../../components/index';
+import {Box, Header,CustomHeader} from '../../components/index';
 import {Colors} from '../../theme';
 import VideoDeatilsPage from './widget/VideoDetailsPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -17,6 +17,7 @@ const VideoDetails = ({navigation, route}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
+      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Box style={styles.mainContainer}>
           <KeyboardAvoidingView

@@ -4,13 +4,8 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Box, SubHeadingText} from '../components';
-import {Home} from '../screens/index';
-import {HOME} from './routes';
-import {Colors, fontSizes} from '../theme';
+import {Box} from '../components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 
 const CustomDrawerContent = props => {
   console.log('custom navigator', props.getCategoryData);
@@ -24,7 +19,6 @@ const CustomDrawerContent = props => {
       name: 'Home',
     };
   });
-  console.log('drawerMenuItems', drawerMenuItems);
   return (
     <Box flex={1}>
       <DrawerContentScrollView>
@@ -43,13 +37,4 @@ const CustomDrawerContent = props => {
     </Box>
   );
 };
-const styles = StyleSheet.create({
-  drawerItemView: {
-    padding: 10,
-  },
-  text: {
-    fontSize: fontSizes[3],
-    color: Colors.blackColor,
-  },
-});
 export default CustomDrawerContent;
