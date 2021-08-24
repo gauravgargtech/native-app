@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {ms, s, vs} from 'react-native-size-matters';
 import {HOME, LOGIN, REGISTER} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
@@ -19,7 +20,7 @@ const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
             onPress={() => navigation.toggleDrawer()}>
             <Image
               source={menu}
-              style={{width: wp('15%'), height: hp('5%')}}
+              style={{width: wp('15%'), height: hp('6%')}}
               resizeMode={'contain'}
             />
           </TouchableOpacity>
@@ -47,10 +48,10 @@ const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
               {headerName}
             </SubHeadingText>
           </Box>
-          <Box>
+          <Box style={{left: ms(20)}}>
             <Image
               source={SearchIcon}
-              style={{width: wp('20%'), height: hp('6%')}}
+              style={{width: wp('20%'), height: hp('7%')}}
               resizeMode={'contain'}
             />
           </Box>
@@ -71,7 +72,7 @@ const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
 const styles = StyleSheet.create({
   mainHeaderContainer: {
     flexDirection: 'row',
-    height: hp('5%'),
+    height: '8%',
     backgroundColor: Colors.white,
   },
   menuIconView: {

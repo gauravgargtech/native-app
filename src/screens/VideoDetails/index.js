@@ -17,7 +17,7 @@ const VideoDetails = ({navigation, route}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      <CustomHeader navigation={navigation} headerName={'LearnReadApp'}/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Box style={styles.mainContainer}>
           <KeyboardAvoidingView

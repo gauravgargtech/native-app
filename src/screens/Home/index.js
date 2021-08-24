@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: hp('100%'),
     backgroundColor: Colors.white,
-    padding: ms(10),
   },
 });
 export default Home;

@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  ImageBackground,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {
   Box,
   VideoDescription,
@@ -10,7 +17,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {ms} from 'react-native-size-matters';
+import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
 import {getVideoListAction} from '../../../store/actions';
 import {connect} from 'react-redux';
@@ -22,7 +29,10 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
     getVideoListAction();
   }, []);
   return (
-    <Box flex={1.8} justifyContent={'flex-start'}>
+    <Box
+      flex={0.9}
+      justifyContent={'flex-start'}
+      style={{paddingHorizontal: ms(10)}}>
       <Box p={ms(5)}>
         {getVideoList.map(videoItem => {
           return (
@@ -33,13 +43,18 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
                     videoItem: videoItem,
                   })
                 }>
-                <Image
+                <ImageBackground
                   source={{
                     uri: videoItem?.thumbnail,
                   }}
                   style={styles.thumbnailImageStyle}
-                  resizeMode={'contain'}
-                />
+                  resizeMode={'contain'}>
+                  <Box style={styles.total_timingView}>
+                    <PlainText color={Colors.white}>
+                      {videoItem?.total_time}
+                    </PlainText>
+                  </Box>
+                </ImageBackground>
                 <Box style={styles.videoDescriptionMainContainer}>
                   <Image
                     source={ProfileAvtar}
@@ -60,9 +75,20 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
 };
 const styles = StyleSheet.create({
   thumbnailImageStyle: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
     width: wp('90%'),
-    height: hp('18%'),
+    height: Platform.OS === 'ios' ? hp('18%') : hp('23%'),
     borderRadius: 3,
+  },
+  total_timingView: {
+    backgroundColor: Colors.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: ms(40),
+    bottom: vs(5),
+    width: s(30),
+    height: hp('2%'),
   },
   videoDescriptionMainContainer: {
     marginLeft: ms(20),
@@ -73,7 +99,7 @@ const styles = StyleSheet.create({
   videoDescriptionView: {
     marginLeft: 10,
     padding: ms(10),
-    width: wp('60%'),
+    width: vs(190),
     justifyContent: 'space-evenly',
   },
   channelIcon: {

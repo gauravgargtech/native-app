@@ -11,7 +11,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {ms} from 'react-native-size-matters';
+import {ms, vs, s} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
 import {ProfileAvtar} from '../../../assets/images';
 import Video from 'react-native-video';
@@ -59,33 +59,48 @@ const VideoDeatilsPage = ({navigation, route}) => {
   };
 
   return (
-    <Box flex={1} justifyContent={'flex-start'}>
-      <Box>
+    <Box flex={1}>
+      <Box width={wp('95%')} height={hp('33%')}>
         <Video
           source={{
             uri: videoItem?.url,
           }}
-          ref={ref => (videoPlayer.current = ref)}
+          repeat={true}
+          fullscreen={true}
+          volume={1.0}
+          onLoad={() => console.log('load Video')}
+          onError={e => console.log('error::', e)}
+          resizeMode={'cover'}
+          paused={false}
+          ignoreSilentSwitch={'ignore'}
+          posterResizeMode={'cover'}
+          style={{width: '100%', height: '100%'}}
           controls={true}
-          playInBackground={true}
-          onLoad={onLoad}
-          onProgress={onProgress}
-          onEnd={onEnd}
-          paused={paused}
-          style={styles.backgroundVideo}
         />
-        <MediaControls
-          isFullScreen={false}
-          duration={duration}
-          progress={currentTime}
-          onPaused={onPaused}
-          onReplay={onReplay}
-          onSeek={onSeek}
-          onSeeking={onSeeking}
-          mainColor={'red'}
-          playerState={playerState}
-          sliderStyle={{containerStyle: {}, thumbStyle: {}, trackStyle: {}}}
-        />
+        {/*<Video*/}
+        {/*  source={{*/}
+        {/*    uri: videoItem?.url,*/}
+        {/*  }}*/}
+        {/*  ref={ref => (videoPlayer.current = ref)}*/}
+        {/*  controls={true}*/}
+        {/*  playInBackground={true}*/}
+        {/*  onLoad={onLoad}*/}
+        {/*  onProgress={onProgress}*/}
+        {/*  onEnd={onEnd}*/}
+        {/*  paused={paused}*/}
+        {/*  style={styles.backgroundVideo}*/}
+        {/*/>*/}
+        {/*<MediaControls*/}
+        {/*  isFullScreen={false}*/}
+        {/*  duration={duration}*/}
+        {/*  progress={currentTime}*/}
+        {/*  onPaused={onPaused}*/}
+        {/*  onReplay={onReplay}*/}
+        {/*  onSeek={onSeek}*/}
+        {/*  onSeeking={onSeeking}*/}
+        {/*  mainColor={'red'}*/}
+        {/*  playerState={playerState}*/}
+        {/*/>*/}
       </Box>
       <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
         <Image source={ProfileAvtar} style={styles.channelIcon} />
@@ -106,8 +121,11 @@ const VideoDeatilsPage = ({navigation, route}) => {
 };
 const styles = StyleSheet.create({
   backgroundVideo: {
-    height: 250,
-    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
   videoDescriptionView: {
     marginLeft: 10,

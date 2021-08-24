@@ -19,7 +19,10 @@ const TagList = ({navigation, getTagsAction, getTagsData}) => {
   return (
     <Box flex={0.1} justifyContent={'flex-start'}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <Box height={hp('6%')} flexDirection={'row'}>
+        <Box
+          width={'100%'}
+          style={{marginVertical: ms(10)}}
+          flexDirection={'row'}>
           {getTagsData.map(tagsItem => {
             return (
               <TouchableOpacity onPress={() => setSelected(tagsItem.text)}>
@@ -39,7 +42,7 @@ const TagList = ({navigation, getTagsAction, getTagsData}) => {
                         ? Colors.white
                         : Colors.blackColor
                     }
-                    fontSize={fontSizes[2]}>
+                    fontSize={fontSizes[3]}>
                     {tagsItem.text}
                   </PlainText>
                 </Box>
@@ -53,11 +56,12 @@ const TagList = ({navigation, getTagsAction, getTagsData}) => {
 };
 const styles = StyleSheet.create({
   tagView: {
+    backgroundColor: 'red',
     justifyContent: 'center',
-    height: vs(30),
-    borderRadius: 30,
-    padding: ms(8),
-    margin: ms(5),
+    borderRadius: s(20),
+    paddingHorizontal: ms(17),
+    paddingVertical: ms(10),
+    marginHorizontal: ms(7),
   },
 });
 const mapStateToProps = ({app: {getTagsData}}) => ({getTagsData});

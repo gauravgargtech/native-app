@@ -8,7 +8,6 @@ import {Box} from '../components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CustomDrawerContent = props => {
-  console.log('custom navigator', props.getCategoryData);
   const drawerMenuItems = props.getCategoryData.map((categoryItem, index) => {
     return {
       id: categoryItem?.id,
