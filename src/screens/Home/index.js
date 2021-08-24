@@ -13,12 +13,25 @@ import TagList from './widget/TagList';
 import VideoList from './widget/VideoList';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
+import {
+  SignUP,
+  Signup_medium,
+  Signup_large,
+  SearchIcon,
+  MenuIcon,
+} from '../../assets/images';
 
 const Home = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      <CustomHeader
+        navigation={navigation}
+        menu={MenuIcon}
+        headerName={'LearnReadApp'}
+        SearchIcon={SearchIcon}
+        SignUP={SignUP}
+      />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}

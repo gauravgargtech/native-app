@@ -7,7 +7,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box} from '../../components/index';
+import {Box, CustomHeader} from '../../components/index';
 import {Colors} from '../../theme';
 import RegisterPage from './widget/RegisterPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -17,6 +17,7 @@ const Register = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
+      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}

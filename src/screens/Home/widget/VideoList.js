@@ -35,19 +35,12 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
                   style={styles.thumbnailImageStyle}
                   resizeMode={'contain'}
                 />
-              </TouchableOpacity>
-              <Box style={styles.videoDescriptionMainContainer}>
-                <Image
-                  source={ProfileAvtar}
-                  style={styles.channelIcon}
-                  resizeMode={'contain'}
-                />
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(VIDEO_DETAILS, {
-                      videoItem: videoItem,
-                    })
-                  }>
+                <Box style={styles.videoDescriptionMainContainer}>
+                  <Image
+                    source={ProfileAvtar}
+                    style={styles.channelIcon}
+                    resizeMode={'contain'}
+                  />
                   <Box style={styles.videoDescriptionView}>
                     <SubHeadingText
                       color={Colors.black}
@@ -71,8 +64,8 @@ const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
                       </PlainText>
                     </Box>
                   </Box>
-                </TouchableOpacity>
-              </Box>
+                </Box>
+              </TouchableOpacity>
             </Box>
           );
         })}

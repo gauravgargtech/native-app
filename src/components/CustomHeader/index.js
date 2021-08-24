@@ -6,28 +6,34 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {
-  SignUP,
-  Signup_medium,
-  Signup_large,
-  SearchIcon,
-  MenuIcon,
-} from '../../assets/images';
-import {LOGIN, REGISTER} from '../../navigator/routes';
-
-const CustomHeader = ({navigation, headerName}) => {
+import {HOME, LOGIN, REGISTER} from '../../navigator/routes';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
+  const setMenuIcon = menu;
   return (
     <Box style={styles.mainHeaderContainer}>
       <Box flex={0.8} alignItems={'center'} justifyContent={'center'}>
-        <TouchableOpacity
-          style={styles.menuIconView}
-          onPress={() => navigation.toggleDrawer()}>
-          <Image
-            source={MenuIcon}
-            style={{width: wp('15%'), height: hp('5%')}}
-            resizeMode={'contain'}
-          />
-        </TouchableOpacity>
+        {setMenuIcon ? (
+          <TouchableOpacity
+            style={styles.menuIconView}
+            onPress={() => navigation.toggleDrawer()}>
+            <Image
+              source={menu}
+              style={{width: wp('15%'), height: hp('5%')}}
+              resizeMode={'contain'}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.menuIconView}
+            onPress={() => navigation.navigate(HOME)}>
+            <Ionicons
+              name={'arrow-back-outline'}
+              color={Colors.grey}
+              size={25}
+            />
+          </TouchableOpacity>
+        )}
       </Box>
       <Box flex={3}>
         <Box flex={3} style={styles.mainContainerForHeaderName}>
