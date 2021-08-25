@@ -1,5 +1,6 @@
 import React from 'react';
 import {Box, PlainText, SubHeadingText} from '../../components';
+import {ms} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../theme';
 
 const VideoDescription = ({videoItem}) => {
@@ -11,7 +12,7 @@ const VideoDescription = ({videoItem}) => {
         fontSize={fontSizes[1.5]}>
         {videoItem?.title}
       </SubHeadingText>
-      <SubHeadingText color={Colors.grey} fontSize={fontSizes[1]}>
+      <SubHeadingText color={Colors.grey} fontSize={fontSizes[1]} style={{paddingVertical:ms(3)}}>
         Entertainment
       </SubHeadingText>
       <Box flexDirection={'row'}>

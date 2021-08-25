@@ -39,14 +39,27 @@ export const getVideoListAction =
   };
 
 export const getVideoDetailsAction =
-  () =>
+  videoID =>
   (dispatch, getState, {api}) => {
     const getPromise = async () => {
-      const {data} = await api.getVideoDetails();
-      return data.detail;
+      const {data} = await api.getVideoDetails(videoID);
+      return data;
     };
     return dispatch({
       type: types.GET_VIDEO_DETAILS,
+      payload: getPromise(),
+    });
+  };
+
+export const getVideoPlaylistAction =
+  videoID =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getVideoPlaylist(videoID);
+      return data;
+    };
+    return dispatch({
+      type: types.GET_VIDEO_PLAYLIST,
       payload: getPromise(),
     });
   };

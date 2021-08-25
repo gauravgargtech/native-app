@@ -6,6 +6,7 @@ import Card from './Card';
 import Header from './Header';
 import CustomHeader from './CustomHeader';
 import VideoDescription from './VideoDescription';
+import Loader from './Loader';
 import PlainText, {HeadingText, SubHeadingText} from './Text';
 export {
   Box,
@@ -16,6 +17,7 @@ export {
   Header,
   CustomHeader,
   VideoDescription,
+  Loader,
   PlainText,
   HeadingText,
   SubHeadingText,

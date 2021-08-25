@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -7,21 +7,43 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header, CustomHeader} from '../../components/index';
+import {Box, Header, CustomHeader, Loader} from '../../components/index';
+import {useIsFocused} from '@react-navigation/native';
 import {Colors} from '../../theme';
 import TagList from './widget/TagList';
 import VideoList from './widget/VideoList';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {getTagsAction, getVideoListAction} from '../../store/actions';
+import {connect} from 'react-redux';
 import {ms} from 'react-native-size-matters';
 import {
   SignUP,
-  Signup_medium,
-  Signup_large,
   SearchIcon,
   MenuIcon,
 } from '../../assets/images';
 
-const Home = ({navigation}) => {
+const Home = ({
+  navigation,
+  getTagsAction,
+  getTagsData,
+  getVideoListAction,
+  getVideoList,
+}) => {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      const func = async () => {
+        try {
+          getTagsAction();
+          getVideoListAction();
+        } catch (e) {
+          alert('error while get Tags Data');
+        }
+      };
+      func();
+    }
+  }, [isFocused]);
+
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar barStyle={'dark-content'} />
@@ -36,10 +58,14 @@ const Home = ({navigation}) => {
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <TagList navigation={navigation} />
-            <VideoList navigation={navigation} />
-          </ScrollView>
+          {getTagsData?.loading ? (
+            <Loader />
+          ) : (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <TagList navigation={navigation} />
+              <VideoList navigation={navigation} />
+            </ScrollView>
+          )}
         </KeyboardAvoidingView>
       </Box>
     </Box>
@@ -52,4 +78,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
 });
-export default Home;
+const mapStateToProps = ({app: {getTagsData, getVideoList}}) => ({
+  getTagsData,
+  getVideoList,
+});
+export default connect(mapStateToProps, {getTagsAction, getVideoListAction})(
+  Home,
+);

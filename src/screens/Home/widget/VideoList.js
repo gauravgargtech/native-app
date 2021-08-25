@@ -19,15 +19,11 @@ import {
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
-import {getVideoListAction} from '../../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../../assets/images';
 import {VIDEO_DETAILS} from '../../../navigator/routes';
 
-const VideoList = ({navigation, getVideoListAction, getVideoList}) => {
-  useEffect(() => {
-    getVideoListAction();
-  }, []);
+const VideoList = ({navigation, getVideoList}) => {
   return (
     <Box
       flex={0.9}
@@ -78,14 +74,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     width: wp('90%'),
-    height: Platform.OS === 'ios' ? hp('18%') : hp('23%'),
+    height: Platform.OS === 'ios' ? hp('18%') : hp('22%'),
     borderRadius: 3,
   },
   total_timingView: {
     backgroundColor: Colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    right: ms(40),
+    right: Platform.OS === 'ios' ? '13%' : '9%',
     bottom: vs(5),
     width: s(30),
     height: hp('2%'),
@@ -99,7 +95,7 @@ const styles = StyleSheet.create({
   videoDescriptionView: {
     marginLeft: 10,
     padding: ms(10),
-    width: vs(190),
+    width: Platform.OS === 'ios' ? '65%' : '70%',
     justifyContent: 'space-evenly',
   },
   channelIcon: {
@@ -111,4 +107,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({app: {getVideoList}}) => ({
   getVideoList,
 });
-export default connect(mapStateToProps, {getVideoListAction})(VideoList);
+export default connect(mapStateToProps, {})(VideoList);
