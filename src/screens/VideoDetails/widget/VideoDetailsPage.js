@@ -6,6 +6,7 @@ import {
   Platform,
   Dimensions,
   ImageBackground,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   Box,
@@ -13,6 +14,7 @@ import {
   VideoDescription,
   PlainText,
   SubHeadingText,
+  Loader,
 } from '../../../components';
 import {
   widthPercentageToDP as wp,
@@ -22,6 +24,7 @@ import {ms, vs, s} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
 import {ProfileAvtar} from '../../../assets/images';
 import Video from 'react-native-video';
+import Orientation from 'react-native-orientation-locker';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import {connect} from 'react-redux';
 
@@ -32,6 +35,17 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
   const [duration, setDuration] = useState(0);
   const [paused, setPaused] = useState(false);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
+  const [isLoading, setIsLoading] = useState(true);
+  console.log('current time', currentTime);
+
+  const onBackward = () => {
+    videoPlayer.current.seek(currentTime - 10);
+    setCurrentTime(currentTime - 10);
+  };
+  const onForward = () => {
+    videoPlayer.current.seek(currentTime + 10);
+    setCurrentTime(currentTime + 10);
+  };
 
   const onSeek = seek => {
     videoPlayer?.current.seek(seek);
@@ -46,35 +60,49 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
 
   const onReplay = () => {
     videoPlayer?.current.seek(currentTime);
-    if (Platform.OS === 'android') {
-      setPlayerState(PLAYER_STATES.PAUSED);
-      setPaused(true);
-    } else {
-      setPlayerState(PLAYER_STATES.PLAYING);
-      setPaused(false);
-    }
+    setPlayerState(PLAYER_STATES.PLAYING);
+    setPaused(false);
   };
 
   const onProgress = data => {
-    setCurrentTime(Math.round(data.currentTime));
+    if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
+      setCurrentTime(data.currentTime);
+    }
   };
 
   const onLoad = data => {
     setDuration(Math.round(data.duration));
+    setIsLoading(false);
   };
+
+  const onLoadStart = () => setIsLoading(true);
+
   const onEnd = () => {
+    setPlayerState(PLAYER_STATES.ENDED);
     setCurrentTime(duration);
   };
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const onFullScreen = () => {
+    if (!isFullScreen) {
+      Orientation.lockToLandscape();
+    } else {
+      if (Platform.OS === 'ios') {
+        Orientation.lockToPortrait();
+      }
+      Orientation.lockToPortrait();
+    }
+    setIsFullScreen(!isFullScreen);
+  };
   return (
     <Box flex={1}>
-      <Box height={hp('30%')}>
+      <Box height={hp('30%')} style={{marginHorizontal: isFullScreen ? 50 : 0}}>
         <Video
           ref={ref => (videoPlayer.current = ref)}
           source={{
             uri: videoItem?.url,
           }}
-          repeat={true}
+          onLoadStart={onLoadStart}
           fullscreen={true}
           volume={1.0}
           onLoad={onLoad}
@@ -83,38 +111,28 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
           onError={e => console.log('error::', e)}
           resizeMode={'cover'}
           paused={paused}
-          ignoreSilentSwitch={'ignore'}
-          posterResizeMode={'cover'}
           style={{
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').width * (9 / 16),
+            height: 230,
+            width: '100%',
           }}
-          controls={true}
         />
-        {/*<Video*/}
-        {/*  source={{*/}
-        {/*    uri: videoItem?.url,*/}
-        {/*  }}*/}
-        {/*  ref={ref => (videoPlayer.current = ref)}*/}
-        {/*  controls={true}*/}
-        {/*  playInBackground={true}*/}
-        {/*  onLoad={onLoad}*/}
-        {/*  onProgress={onProgress}*/}
-        {/*  onEnd={onEnd}*/}
-        {/*  paused={paused}*/}
-        {/*  style={styles.backgroundVideo}*/}
-        {/*/>*/}
-        {/*<MediaControls*/}
-        {/*  isFullScreen={false}*/}
-        {/*  duration={duration}*/}
-        {/*  progress={currentTime}*/}
-        {/*  onPaused={onPaused}*/}
-        {/*  onReplay={onReplay}*/}
-        {/*  onSeek={onSeek}*/}
-        {/*  onSeeking={onSeeking}*/}
-        {/*  mainColor={'red'}*/}
-        {/*  playerState={playerState}*/}
-        {/*/>*/}
+        <MediaControls
+          isFullScreen={isFullScreen}
+          onFullScreen={onFullScreen}
+          duration={duration}
+          progress={currentTime}
+          onPaused={onPaused}
+          onReplay={onReplay}
+          onSeek={onSeek}
+          onSeeking={onSeeking}
+          mainColor={'red'}
+          playerState={playerState}
+          style={
+            isFullScreen
+              ? styles.backgroundVideoFullScreen
+              : styles.backgroundVideo
+          }
+        />
       </Box>
       <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
         <Image source={ProfileAvtar} style={styles.channelIcon} />
@@ -164,11 +182,12 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
 };
 const styles = StyleSheet.create({
   backgroundVideo: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    height: 230,
+    width: '100%',
+  },
+  backgroundVideoFullScreen: {
+    height: Dimensions.get('screen').height,
+    width: Dimensions.get('screen').width,
   },
   videoDescriptionView: {
     marginLeft: 10,

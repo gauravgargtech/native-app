@@ -9,6 +9,7 @@ import {
 import {ms, s, vs} from 'react-native-size-matters';
 import {HOME, LOGIN, REGISTER} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
   const setMenuIcon = menu;
   return (
