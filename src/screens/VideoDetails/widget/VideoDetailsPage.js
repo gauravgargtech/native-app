@@ -7,6 +7,10 @@ import {
   Dimensions,
   ImageBackground,
   TouchableWithoutFeedback,
+  StatusBar,
+  View,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Box,
@@ -15,6 +19,8 @@ import {
   PlainText,
   SubHeadingText,
   Loader,
+  PlayerControls,
+  ProgressBar,
 } from '../../../components';
 import {
   widthPercentageToDP as wp,
@@ -27,93 +33,130 @@ import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import {connect} from 'react-redux';
+import {FullscreenClose, FullscreenOpen} from '../../../assets/icons';
 
 const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
   const {videoItem} = route.params ?? {};
-  const videoPlayer = useRef(null);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
-  const [isLoading, setIsLoading] = useState(true);
-  console.log('current time', currentTime);
+  const videoRef = useRef(null);
+  const [state, setState] = useState({
+    fullscreen: false,
+    play: false,
+    currentTime: 0,
+    duration: 0,
+    showControls: true,
+  });
 
-  const onBackward = () => {
-    videoPlayer.current.seek(currentTime - 10);
-    setCurrentTime(currentTime - 10);
-  };
-  const onForward = () => {
-    videoPlayer.current.seek(currentTime + 10);
-    setCurrentTime(currentTime + 10);
-  };
-
-  const onSeek = seek => {
-    videoPlayer?.current.seek(seek);
-  };
-
-  const onSeeking = currentVideoTime => setCurrentTime(currentVideoTime);
-
-  const onPaused = newState => {
-    setPaused(!paused);
-    setPlayerState(newState);
-  };
-
-  const onReplay = () => {
-    videoPlayer?.current.seek(currentTime);
-    setPlayerState(PLAYER_STATES.PLAYING);
-    setPaused(false);
-  };
-
-  const onProgress = data => {
-    if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
-      setCurrentTime(data.currentTime);
-    }
-  };
-
-  const onLoad = data => {
-    setDuration(Math.round(data.duration));
-    setIsLoading(false);
-  };
-
-  const onLoadStart = () => setIsLoading(true);
-
-  const onEnd = () => {
-    setPlayerState(PLAYER_STATES.ENDED);
-    setCurrentTime(duration);
-  };
+  function onEnd() {
+    setState({...state, play: false});
+    videoRef.current.seek(0);
+  }
 
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const onFullScreen = () => {
-    if (!isFullScreen) {
-      Orientation.lockToLandscape();
-    } else {
-      if (Platform.OS === 'ios') {
-        Orientation.lockToPortrait();
-      }
-      Orientation.lockToPortrait();
+
+  useEffect(() => {
+    Orientation.addOrientationListener(handleOrientation);
+
+    return () => {
+      Orientation.removeOrientationListener(handleOrientation);
+    };
+  }, []);
+
+  function handleOrientation(orientation) {
+    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+      ? setState(s => ({...s, fullscreen: true}))
+      : setState(s => ({...s, fullscreen: false}));
+  }
+
+  function onLoadEnd(data) {
+    console.log('load end::', data);
+    setState(s => ({
+      ...s,
+      duration: data.duration,
+      currentTime: data.currentTime,
+    }));
+  }
+
+  function onProgress(data) {
+    setState(s => ({
+      ...s,
+      currentTime: data.currentTime,
+    }));
+  }
+
+  function handleFullscreen() {
+    state.fullscreen
+      ? Orientation.unlockAllOrientations()
+      : Orientation.lockToLandscapeLeft();
+  }
+  function handlePlayPause() {
+    // If playing, pause and show controls immediately.
+    if (state.play) {
+      setState({...state, play: false, showControls: true});
+      return;
     }
-    setIsFullScreen(!isFullScreen);
-  };
+
+    setState({...state, play: true});
+    setTimeout(() => setState(s => ({...s, showControls: false})), 2000);
+  }
+
+  function skipBackward() {
+    videoRef.current.seek(state.currentTime - 15);
+    setState({...state, currentTime: state.currentTime - 15});
+  }
+
+  function skipForward() {
+    videoRef.current.seek(state.currentTime + 15);
+    setState({...state, currentTime: state.currentTime + 15});
+  }
+
+  function onSeek(data) {
+    videoRef.current.seek(data.seekTime);
+    setState({...state, currentTime: data.seekTime});
+  }
+
   return (
     <Box flex={1}>
       <Box height={hp('30%')} style={{marginHorizontal: isFullScreen ? 50 : 0}}>
         <Video
-          ref={ref => (videoPlayer.current = ref)}
+          ref={videoRef}
           source={{
             uri: videoItem?.url,
           }}
-          controls={true}
-          onLoadStart={onLoadStart}
-          fullscreen={true}
-          volume={1.0}
-          onLoad={onLoad}
+          style={state.fullscreen ? styles.fullscreenVideo : styles.video}
+          controls={false}
+          resizeMode={'contain'}
+          onLoad={onLoadEnd}
           onProgress={onProgress}
           onEnd={onEnd}
-          onError={e => console.log('error::', e)}
-          resizeMode={'cover'}
-          paused={paused}
-          style={styles.backgroundVideo}
+          paused={!state.play}
         />
+        {state.showControls && (
+          <View style={styles.controlOverlay}>
+            <TouchableOpacity
+              onPress={handleFullscreen}
+              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+              style={styles.fullscreenButton}>
+              <Text>{state.fullscreen ? 'close' : 'open'}</Text>
+            </TouchableOpacity>
+            <PlayerControls
+              onPlay={handlePlayPause}
+              onPause={handlePlayPause}
+              playing={state.play}
+              showPreviousAndNext={false}
+              showSkip={true}
+              skipBackwards={skipBackward}
+              skipForwards={skipForward}
+            />
+            <ProgressBar
+              currentTime={state.currentTime}
+              duration={state.duration > 0 ? state.duration : 0}
+              onSlideStart={handlePlayPause}
+              onSlideComplete={handlePlayPause}
+              onSlideCapture={onSeek}
+            />
+          </View>
+        )}
+        {/*/>*/}
         {/*<MediaControls*/}
         {/*  isFullScreen={isFullScreen}*/}
         {/*  onFullScreen={onFullScreen}*/}
@@ -228,6 +271,39 @@ const styles = StyleSheet.create({
     padding: ms(10),
     width: Platform.OS === 'ios' ? '65%' : '73%',
     justifyContent: 'space-evenly',
+  },
+
+  video: {
+    height: Dimensions.get('window').width * (9 / 16),
+    width: Dimensions.get('window').width,
+    backgroundColor: 'black',
+  },
+  fullscreenVideo: {
+    height: Dimensions.get('window').width,
+    width: Dimensions.get('window').height,
+    backgroundColor: 'black',
+  },
+  text: {
+    marginTop: 30,
+    marginHorizontal: 20,
+    fontSize: 15,
+    textAlign: 'justify',
+  },
+  fullscreenButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
+  controlOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#000000c4',
+    justifyContent: 'space-between',
   },
 });
 const mapStateToProps = ({app: {getVideo_PlaylistData}}) => ({

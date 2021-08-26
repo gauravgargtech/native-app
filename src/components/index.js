@@ -7,6 +7,8 @@ import Header from './Header';
 import CustomHeader from './CustomHeader';
 import VideoDescription from './VideoDescription';
 import Loader from './Loader';
+import PlayerControls from './PlayerControls';
+import ProgressBar from './Progressbar';
 import PlainText, {HeadingText, SubHeadingText} from './Text';
 export {
   Box,
@@ -21,4 +23,6 @@ export {
   PlainText,
   HeadingText,
   SubHeadingText,
+  PlayerControls,
+  ProgressBar,
 };
