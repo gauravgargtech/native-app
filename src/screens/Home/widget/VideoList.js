@@ -30,7 +30,7 @@ const VideoList = ({navigation, getVideoList}) => {
       justifyContent={'flex-start'}
       style={{paddingHorizontal: ms(10)}}>
       <Box p={ms(5)}>
-        {getVideoList.map(videoItem => {
+        {getVideoList.map((videoItem, index) => {
           return (
             <Box>
               <TouchableOpacity
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : '9%',
+    right: Platform.OS === 'ios' ? '13%' : '10%',
     bottom: vs(5),
     width: s(30),
     height: hp('2%'),

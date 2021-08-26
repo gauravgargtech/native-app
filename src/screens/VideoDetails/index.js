@@ -7,7 +7,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header, CustomHeader} from '../../components/index';
+import {Box, Header, CustomHeader, Loader} from '../../components/index';
 import {Colors} from '../../theme';
 import VideoDeatilsPage from './widget/VideoDetailsPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -29,6 +29,7 @@ const VideoDetails = ({
 }) => {
   const {videoItem} = route.params ?? {};
   console.log('get Video Details ID::', videoItem?.id);
+  console.log('get Video getVideo_PlaylistData::', getVideo_PlaylistData);
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
@@ -45,15 +46,19 @@ const VideoDetails = ({
   }, [isFocused]);
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
       <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <VideoDeatilsPage navigation={navigation} route={route} />
-          </ScrollView>
+          {getVideo_PlaylistData?.loading ? (
+            <Loader />
+          ) : (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <VideoDeatilsPage navigation={navigation} route={route} />
+            </ScrollView>
+          )}
         </KeyboardAvoidingView>
       </Box>
     </Box>

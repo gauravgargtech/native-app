@@ -4,7 +4,7 @@ const initialState = {
   getCategoryData: [],
   getVideoList: [],
   getVideoDetailsData: [],
-  getVideo_PlaylistData: [],
+  getVideo_PlaylistData: {playList: [], loading: false},
 };
 
 const reducers = (state = initialState, action) => {
@@ -20,8 +20,13 @@ const reducers = (state = initialState, action) => {
       return {...state, getVideoList: action.payload};
     case types.GET_VIDEO_DETAILS_SUCCESS:
       return {...state, getVideoDetailsData: action.payload};
+    case types.GET_VIDEO_PLAYLIST_START:
+      return {...state, getVideo_PlaylistData: {loading: true}};
     case types.GET_VIDEO_PLAYLIST_SUCCESS:
-      return {...state, getVideo_PlaylistData: action.payload};
+      return {
+        ...state,
+        getVideo_PlaylistData: {playList: action.payload, loading: false},
+      };
     default:
       return {...state};
   }

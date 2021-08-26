@@ -102,6 +102,7 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
           source={{
             uri: videoItem?.url,
           }}
+          controls={true}
           onLoadStart={onLoadStart}
           fullscreen={true}
           volume={1.0}
@@ -111,28 +112,25 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
           onError={e => console.log('error::', e)}
           resizeMode={'cover'}
           paused={paused}
-          style={{
-            height: 230,
-            width: '100%',
-          }}
+          style={styles.backgroundVideo}
         />
-        <MediaControls
-          isFullScreen={isFullScreen}
-          onFullScreen={onFullScreen}
-          duration={duration}
-          progress={currentTime}
-          onPaused={onPaused}
-          onReplay={onReplay}
-          onSeek={onSeek}
-          onSeeking={onSeeking}
-          mainColor={'red'}
-          playerState={playerState}
-          style={
-            isFullScreen
-              ? styles.backgroundVideoFullScreen
-              : styles.backgroundVideo
-          }
-        />
+        {/*<MediaControls*/}
+        {/*  isFullScreen={isFullScreen}*/}
+        {/*  onFullScreen={onFullScreen}*/}
+        {/*  duration={duration}*/}
+        {/*  progress={currentTime}*/}
+        {/*  onPaused={onPaused}*/}
+        {/*  onReplay={onReplay}*/}
+        {/*  onSeek={onSeek}*/}
+        {/*  onSeeking={onSeeking}*/}
+        {/*  mainColor={'red'}*/}
+        {/*  playerState={playerState}*/}
+        {/*  style={*/}
+        {/*    isFullScreen*/}
+        {/*      ? styles.backgroundVideoFullScreen*/}
+        {/*      : styles.backgroundVideo*/}
+        {/*  }*/}
+        {/*/>*/}
       </Box>
       <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
         <Image source={ProfileAvtar} style={styles.channelIcon} />
@@ -146,7 +144,7 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
         <Box style={{paddingVertical: ms(10)}}>
           <SubHeadingText fontSize={fontSizes[3]}>PlayList</SubHeadingText>
           <Box style={{paddingTop: ms(20)}}>
-            {getVideo_PlaylistData.map(playlistItem => {
+            {getVideo_PlaylistData?.playList?.map(playlistItem => {
               return (
                 <Box>
                   <ImageBackground
@@ -182,13 +180,14 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
 };
 const styles = StyleSheet.create({
   backgroundVideo: {
-    height: 230,
+    height: '100%',
     width: '100%',
   },
   backgroundVideoFullScreen: {
     height: Dimensions.get('screen').height,
     width: Dimensions.get('screen').width,
   },
+
   videoDescriptionView: {
     marginLeft: 10,
     padding: ms(10),
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : '9%',
+    right: Platform.OS === 'ios' ? '13%' : '10%',
     bottom: vs(5),
     width: s(30),
     height: hp('2%'),

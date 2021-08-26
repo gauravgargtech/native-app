@@ -16,7 +16,7 @@ import {ms} from 'react-native-size-matters';
 const Register = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
       <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
