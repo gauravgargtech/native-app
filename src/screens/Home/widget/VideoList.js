@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : '10%',
+    right: Platform.OS === 'ios' ? '13%' : wp('9.8%'),
     bottom: vs(5),
     width: s(30),
     height: hp('2%'),

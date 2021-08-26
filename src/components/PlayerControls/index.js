@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Text, Image} from 'react-native';
+import {SubHeadingText} from '../../components';
 import {
   VideoSkipBack,
   VideoPrevious,
@@ -8,6 +9,8 @@ import {
   VideoNext,
   VideoSkipForward,
 } from '../../assets/icons';
+import {Box} from '../../components';
+import {Colors} from '../../theme';
 
 const PlayerControls = ({
   playing,
@@ -46,7 +49,7 @@ const PlayerControls = ({
       {showSkip && (
         <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
           {/*<VideoSkipBack />*/}
-          <Text>skipBack</Text>
+          <SubHeadingText color={Colors.white}>skipBack</SubHeadingText>
         </TouchableOpacity>
       )}
       {/*{showSkip && (*/}
@@ -58,14 +61,18 @@ const PlayerControls = ({
       <TouchableOpacity
         style={styles.touchable}
         onPress={playing ? onPause : onPlay}>
-        <Text>{playing ? 'Pause' : 'Play'}</Text>
-        {/*{playing ? <VideoPause /> : <VideoPlay />}*/}
+        {/*<SubHeadingText color={'white'}>{playing ? 'Pause' : 'Play'}</SubHeadingText>*/}
+        {playing ? (
+          <Image source={VideoPause} style={{width: 15, height: 15}} />
+        ) : (
+          <Image source={VideoPlay} style={{width: 15, height: 15}} />
+        )}
       </TouchableOpacity>
 
       {showSkip && (
         <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
           {/*<VideoSkipForward />*/}
-          <Text>Forward</Text>
+          <SubHeadingText color={Colors.white}>Forward</SubHeadingText>
         </TouchableOpacity>
       )}
 

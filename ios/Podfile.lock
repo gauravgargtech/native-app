@@ -377,9 +377,11 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.6.0):
+  - RNScreens (3.5.0):
     - React-Core
     - React-RCTImage
+  - RNSVG (12.1.1):
+    - React
   - RNVectorIcons (8.1.0):
     - React-Core
   - Yoga (1.14.0)
@@ -445,6 +447,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -537,6 +540,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -573,10 +578,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 11ec08ad247abb44113ccb3d2b66f7e856d1cdf4
   React-jsinspector: 2aa5dc1b9a02a81c0dcc70c00f2cbe1cd4b875c4
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
-  react-native-safe-area-context: 8465df05de8106c584b117f0e027e17174d6e02e
-  react-native-slider: 35e10a0530858687513f6911ff478a97a8e38e13
-  react-native-video: 1574074179ecaf6a9dd067116c8f31bf9fec15c8
-  react-native-webview: b176c6404ad40d10cfc818be41c053f85a72d751
+  react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
+  react-native-slider: 45621a704755687be2a7614c8e91c93baf6ac988
+  react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
+  react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
   React-perflogger: 494c61caaf9b7da0a0a612fa4ed570ab7ab5819b
   React-RCTActionSheet: 0ea18583618e2451889be1ce1f658ae8cb436b2e
   React-RCTAnimation: 487a44abe7f082afa2997add929765b9c81d4abc
@@ -591,11 +596,12 @@ SPEC CHECKSUMS:
   ReactCommon: c11b11a5dc8187826144b7b3d72125c77a1b7b1a
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: f89561404f0efaa5352b627dc35e5a97a845a2cd
-  RNScreens: eb0dfb2d6b21d2d7f980ad46b14eb306d2f1062e
+  RNScreens: 01ab149b5dd5c27f5ff26741b1d2bdf2cee1af35
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 1561f557b0c2b6047a91f7619f666134e2288916
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: 8c4cab98c1e4234ba9f75223cd9dd2870a4e5bb3
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2

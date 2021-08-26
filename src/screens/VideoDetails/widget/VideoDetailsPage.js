@@ -61,10 +61,11 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
     };
   }, []);
 
-  function handleOrientation(orientation) {
+  function handleOrientation(orientation: string) {
     orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
-      ? setState(s => ({...s, fullscreen: true}))
-      : setState(s => ({...s, fullscreen: false}));
+      ? (setState(s => ({...s, fullscreen: true})), StatusBar.setHidden(true))
+      : (setState(s => ({...s, fullscreen: false})),
+        StatusBar.setHidden(false));
   }
 
   function onLoadEnd(data) {
@@ -81,6 +82,7 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
       ...s,
       currentTime: data.currentTime,
     }));
+    console.log('cureent time ::',state.currentTime);
   }
 
   function handleFullscreen() {
@@ -100,62 +102,73 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
   }
 
   function skipBackward() {
-    videoRef.current.seek(state.currentTime - 15);
-    setState({...state, currentTime: state.currentTime - 15});
+    videoRef.current.seek(state.currentTime - 10);
+    setState({...state, currentTime: state.currentTime - 10});
   }
 
   function skipForward() {
-    videoRef.current.seek(state.currentTime + 15);
-    setState({...state, currentTime: state.currentTime + 15});
+    videoRef.current.seek(state.currentTime + 10);
+    setState({...state, currentTime: state.currentTime + 10});
   }
 
   function onSeek(data) {
     videoRef.current.seek(data.seekTime);
     setState({...state, currentTime: data.seekTime});
   }
+  function showControls() {
+    state.showControls
+      ? setState({...state, showControls: false})
+      : setState({...state, showControls: true});
+  }
 
   return (
     <Box flex={1}>
-      <Box height={hp('30%')} style={{marginHorizontal: isFullScreen ? 50 : 0}}>
-        <Video
-          ref={videoRef}
-          source={{
-            uri: videoItem?.url,
-          }}
-          style={state.fullscreen ? styles.fullscreenVideo : styles.video}
-          controls={false}
-          resizeMode={'contain'}
-          onLoad={onLoadEnd}
-          onProgress={onProgress}
-          onEnd={onEnd}
-          paused={!state.play}
-        />
-        {state.showControls && (
-          <View style={styles.controlOverlay}>
-            <TouchableOpacity
-              onPress={handleFullscreen}
-              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-              style={styles.fullscreenButton}>
-              <Text>{state.fullscreen ? 'close' : 'open'}</Text>
-            </TouchableOpacity>
-            <PlayerControls
-              onPlay={handlePlayPause}
-              onPause={handlePlayPause}
-              playing={state.play}
-              showPreviousAndNext={false}
-              showSkip={true}
-              skipBackwards={skipBackward}
-              skipForwards={skipForward}
+      <Box height={hp('30%')}>
+        <TouchableWithoutFeedback onPress={showControls}>
+          <Box>
+            <Video
+              ref={videoRef}
+              source={{
+                uri: videoItem?.url,
+              }}
+              style={state.fullscreen ? styles.fullscreenVideo : styles.video}
+              controls={false}
+              resizeMode={'contain'}
+              onLoad={onLoadEnd}
+              onProgress={onProgress}
+              onEnd={onEnd}
+              paused={!state.play}
             />
-            <ProgressBar
-              currentTime={state.currentTime}
-              duration={state.duration > 0 ? state.duration : 0}
-              onSlideStart={handlePlayPause}
-              onSlideComplete={handlePlayPause}
-              onSlideCapture={onSeek}
-            />
-          </View>
-        )}
+            {state.showControls && (
+              <View style={styles.controlOverlay}>
+                <TouchableOpacity
+                  onPress={handleFullscreen}
+                  hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  style={styles.fullscreenButton}>
+                  <SubHeadingText color={'white'}>
+                    {state.fullscreen ? 'close' : 'open'}
+                  </SubHeadingText>
+                </TouchableOpacity>
+                <PlayerControls
+                  onPlay={handlePlayPause}
+                  onPause={handlePlayPause}
+                  playing={state.play}
+                  showPreviousAndNext={false}
+                  showSkip={true}
+                  skipBackwards={skipBackward}
+                  skipForwards={skipForward}
+                />
+                <ProgressBar
+                  currentTime={state.currentTime}
+                  duration={state.duration > 0 ? state.duration : 0}
+                  onSlideStart={handlePlayPause}
+                  onSlideComplete={handlePlayPause}
+                  onSlideCapture={onSeek}
+                />
+              </View>
+            )}
+          </Box>
+        </TouchableWithoutFeedback>
         {/*/>*/}
         {/*<MediaControls*/}
         {/*  isFullScreen={isFullScreen}*/}
@@ -255,7 +268,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : '10%',
+    right: Platform.OS === 'ios' ? '13%' : wp('9.8%'),
     bottom: vs(5),
     width: s(30),
     height: hp('2%'),
