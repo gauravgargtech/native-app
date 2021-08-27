@@ -6,6 +6,7 @@ const initialState = {
   getVideoDetailsData: [],
   getVideo_PlaylistData: {playList: [], loading: false},
   addCommentData: [],
+  getCurrentItem: {},
 };
 
 const reducers = (state = initialState, action) => {
@@ -30,6 +31,8 @@ const reducers = (state = initialState, action) => {
       };
     case types.ADD_VIDEO_COMMENT_SUCCESS:
       return {...state, addCommentData: action.payload};
+    case types.GET_CURRENT_VIDEO_PLAYER_TIME:
+      return {...state, getCurrentItem: action.payload};
     default:
       return {...state};
   }

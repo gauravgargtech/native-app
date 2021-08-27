@@ -77,3 +77,12 @@ export const addCommentAction =
       payload: getPromise(),
     });
   };
+
+export const getCurrentVideo_Action =
+  getCurrentVideoData =>
+  (dispatch, getState, {api}) => {
+    return dispatch({
+      type: types.GET_CURRENT_VIDEO_PLAYER_TIME,
+      payload: getCurrentVideoData,
+    });
+  };

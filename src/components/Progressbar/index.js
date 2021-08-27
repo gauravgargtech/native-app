@@ -1,34 +1,72 @@
 import React from 'react';
 import Slider from '@react-native-community/slider';
 import {View, Text, StyleSheet} from 'react-native';
+import {Box} from '../../components';
+import {Colors} from '../../theme';
 
 const ProgressBar = ({
   currentTime,
   duration,
-  onSlideCapture,
+  onSeek,
   onSlideStart,
   onSlideComplete,
 }) => {
   const position = getMinutesFromSeconds(currentTime);
   const fullDuration = getMinutesFromSeconds(duration);
 
+  const getTimeCurrentTime = () => {
+    let unix_timestamp = currentTime;
+    let formattedTime;
+
+    const hours = '0' + ~~(unix_timestamp / 3600);
+    const minutes = '0' + ~~((unix_timestamp % 3600) / 60);
+    const seconds = '0' + ~~(unix_timestamp % 60);
+    formattedTime =
+      (hours == '00' ? '' : hours + ':') +
+      minutes.substr(-2) +
+      ':' +
+      seconds.substr(-2);
+
+    return {formattedTime: formattedTime};
+  };
+
+  const getTimeDuration = () => {
+    let unix_timestamp = duration;
+    let formattedTime;
+    const date = new Date(unix_timestamp * 1000);
+    if (date == 'Invalid Date') {
+      formattedTime = unix_timestamp;
+    } else {
+      const hours = '0' + ~~(unix_timestamp / 3600);
+      const minutes = '0' + ~~((unix_timestamp % 3600) / 60);
+      const seconds = '0' + ~~(unix_timestamp % 60);
+      formattedTime =
+        (hours == '00' ? '' : hours + ':') +
+        minutes.substr(-2) +
+        ':' +
+        seconds.substr(-2);
+    }
+    return {formattedTime: formattedTime};
+  };
+
   return (
     <View style={styles.wrapper}>
       <Slider
-        value={currentTime}
         minimumValue={0}
+        disabled={true}
         maximumValue={duration}
-        step={1}
-        onValueChange={handleOnSlide}
-        onSlidingStart={onSlideStart}
-        onSlidingComplete={onSlideComplete}
+        trackStyle={{height: 6}}
+        thumbStyle={{width: 15, height: 15}}
+        thumbTintColor={Colors.btnclr}
         minimumTrackTintColor={'#F44336'}
         maximumTrackTintColor={'#FFFFFF'}
-        thumbTintColor={'#F44336'}
+        onSlidingComplete={onSeek}
+        onValueChange={handleOnSlide}
+        value={currentTime}
       />
       <View style={styles.timeWrapper}>
-        <Text style={styles.timeLeft}>{position}</Text>
-        <Text style={styles.timeRight}>{fullDuration}</Text>
+        <Text style={styles.timeLeft}>{getTimeCurrentTime()?.formattedTime}</Text>
+        <Text style={styles.timeRight}>{getTimeDuration()?.formattedTime}</Text>
       </View>
     </View>
   );
@@ -43,7 +81,7 @@ const ProgressBar = ({
   }
 
   function handleOnSlide(time: number) {
-    onSlideCapture({seekTime: time});
+    onSeek({seekTime: time});
   }
 };
 

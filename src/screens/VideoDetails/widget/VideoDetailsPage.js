@@ -32,10 +32,14 @@ import {
 import {ms, vs, s} from 'react-native-size-matters';
 import {Colors, fonts, fontSizes} from '../../../theme';
 import {ProfileAvtar} from '../../../assets/images';
-import Video from 'react-native-video';
+import Video, {
+  OnSeekData,
+  OnLoadData,
+  OnProgressData,
+} from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
-import {addCommentAction} from '../../../store/actions';
+import {addCommentAction, getCurrentVideo_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
 import {FullscreenClose, FullscreenOpen} from '../../../assets/icons';
 
@@ -45,22 +49,28 @@ const VideoDeatilsPage = ({
   getVideo_PlaylistData,
   addCommentAction,
   addCommentData,
+  getCurrentVideo_Action,
+  getCurrentItem,
 }) => {
   const {videoItem} = route.params ?? {};
   const videoRef = useRef(null);
+  const [duration, setDuration] = useState(0);
   const [commentText, setCommentText] = useState(null);
   const [isCommentfocus, setIsCommentFocus] = useState(false);
   const [state, setState] = useState({
     fullscreen: false,
     play: false,
-    currentTime: 0,
-    duration: 0,
     showControls: true,
   });
 
   function onEnd() {
-    setState({...state, play: false});
-    videoRef.current.seek(0);
+    getCurrentItem.currentTime[0].currentTime = duration;
+    const updateTime = getCurrentItem?.currentTime?.map(item => {
+      return {...item};
+    });
+    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    // setState({...state, play: false});
+    // videoRef.current.seek(0);
   }
 
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -80,22 +90,22 @@ const VideoDeatilsPage = ({
         StatusBar.setHidden(false));
   }
 
-  function onLoadEnd(data) {
-    console.log('load end::', data);
-    setState(s => ({
-      ...s,
-      duration: data.duration,
-      currentTime: data.currentTime,
-    }));
-  }
+  const onLoad = (data: OnLoadData) => {
+    setDuration(Math.floor(192));
+  };
 
-  function onProgress(data) {
-    setState(s => ({
-      ...s,
-      currentTime: data.currentTime,
-    }));
-    console.log('cureent time ::', state.currentTime);
-  }
+  const onProgress = data => {
+    getCurrentItem.currentTime[0].currentTime = Math.round(data.currentTime);
+    const updateTime = getCurrentItem?.currentTime?.map(item => {
+      return {...item};
+    });
+    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    // setState(s => ({
+    //   ...s,
+    //   currentTime: data.currentTime,
+    // }));
+    console.log('cureent time ::', getCurrentItem?.currentTime[0]?.currentTime);
+  };
 
   function handleFullscreen() {
     state.fullscreen
@@ -113,20 +123,30 @@ const VideoDeatilsPage = ({
     setTimeout(() => setState(s => ({...s, showControls: false})), 2000);
   }
 
-  function skipBackward() {
-    videoRef.current.seek(state.currentTime - 10);
-    setState({...state, currentTime: state.currentTime - 10});
-  }
+  const skipBackward = () => {
+    videoRef.current.seek(getCurrentItem?.currentTime[0]?.currentTime - 10);
+    // videoRef.current.seek(state.currentTime - 10);
+    // setState({...state, currentTime: state.currentTime - 10});
+  };
 
-  function skipForward() {
-    videoRef.current.seek(state.currentTime + 10);
-    setState({...state, currentTime: state.currentTime + 10});
-  }
+  const skipForward = () => {
+    videoRef.current.seek(getCurrentItem?.currentTime[0]?.currentTime + 10);
+    getCurrentItem.currentTime[0].currentTime = Math.round(
+      getCurrentItem?.currentTime[0]?.currentTime + 10,
+    );
+    const updateTime = getCurrentItem?.currentTime?.map(item => {
+      return {...item};
+    });
+    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    // videoRef.current.seek(state.currentTime + 10);
+    // setState({...state, currentTime: state.currentTime + 10});
+  };
 
-  function onSeek(data) {
-    videoRef.current.seek(data.seekTime);
-    setState({...state, currentTime: data.seekTime});
-  }
+  const onSeek = (seek: OnSeekData) => {
+    videoRef.current.seek(getCurrentItem?.currentTime[0]?.currentTime);
+    // videoRef.current.seek(data.seekTime);
+    // setState({...state, currentTime: data.seekTime});
+  };
   function showControls() {
     state.showControls
       ? setState({...state, showControls: false})
@@ -140,31 +160,39 @@ const VideoDeatilsPage = ({
     setIsCommentFocus(false);
   };
 
-  const AddComment = () => {
+  const AddComment = async () => {
     const videoID = videoItem?.id;
     const comment = commentText;
     const userID = 0;
     if (comment != null) {
-      addCommentAction(videoID, comment, userID);
+      await addCommentAction(videoID, comment, userID);
       setCommentText(null);
       Alert.alert(`Message : ${addCommentData?.message}`);
     }
   };
+  const getSliderValue = () => {
+    let slider;
+    getCurrentItem?.currentTime?.map(item => {
+      slider = item.currentTime;
+    });
+    return {slider: slider};
+  };
   console.log('add Comment Data :::', addCommentData);
+  console.log('duration', duration);
   return (
     <Box flex={1}>
       <Box height={hp('30%')}>
         <TouchableWithoutFeedback onPress={showControls}>
           <Box>
             <Video
-              ref={videoRef}
+              ref={ref => (videoRef.current = ref)}
               source={{
                 uri: videoItem?.url,
               }}
               style={state.fullscreen ? styles.fullscreenVideo : styles.video}
               controls={false}
               resizeMode={'contain'}
-              onLoad={onLoadEnd}
+              onLoad={onLoad}
               onProgress={onProgress}
               onEnd={onEnd}
               paused={!state.play}
@@ -189,11 +217,11 @@ const VideoDeatilsPage = ({
                   skipForwards={skipForward}
                 />
                 <ProgressBar
-                  currentTime={state.currentTime}
-                  duration={state.duration > 0 ? state.duration : 0}
+                  currentTime={getSliderValue()?.slider}
+                  duration={duration}
                   onSlideStart={handlePlayPause}
                   onSlideComplete={handlePlayPause}
-                  onSlideCapture={onSeek}
+                  onSeek={onSeek}
                 />
               </View>
             )}
@@ -404,8 +432,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-const mapStateToProps = ({app: {getVideo_PlaylistData, addCommentData}}) => ({
+const mapStateToProps = ({
+  app: {getVideo_PlaylistData, addCommentData, getCurrentItem},
+}) => ({
   getVideo_PlaylistData,
   addCommentData,
+  getCurrentItem,
 });
-export default connect(mapStateToProps, {addCommentAction})(VideoDeatilsPage);
+export default connect(mapStateToProps, {
+  addCommentAction,
+  getCurrentVideo_Action,
+})(VideoDeatilsPage);

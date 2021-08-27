@@ -19,11 +19,33 @@ import {
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
+import {getCurrentVideo_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../../assets/images';
 import {VIDEO_DETAILS} from '../../../navigator/routes';
 
-const VideoList = ({navigation, getVideoList}) => {
+const VideoList = ({
+  navigation,
+  getVideoList,
+  getCurrentVideo_Action,
+  getCurrentItem,
+}) => {
+  const currentTime = 0;
+  const onClickVideo = async ({videoItem}) => {
+    navigation.navigate(VIDEO_DETAILS, {
+      videoItem: videoItem,
+    });
+
+    try {
+      const getCurrentVideoData = {
+        videoData: videoItem,
+        currentTime: [{currentTime: currentTime}],
+      };
+      await getCurrentVideo_Action(getCurrentVideoData);
+    } catch (e) {
+      console.log('ERRORS AT GET_AUDIO_DATA', e);
+    }
+  };
   return (
     <Box
       flex={0.9}
@@ -33,12 +55,7 @@ const VideoList = ({navigation, getVideoList}) => {
         {getVideoList.map((videoItem, index) => {
           return (
             <Box>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(VIDEO_DETAILS, {
-                    videoItem: videoItem,
-                  })
-                }>
+              <TouchableOpacity onPress={() => onClickVideo({videoItem})}>
                 <ImageBackground
                   source={{
                     uri: videoItem?.thumbnail,
@@ -104,7 +121,8 @@ const styles = StyleSheet.create({
     borderRadius: 90 / 2,
   },
 });
-const mapStateToProps = ({app: {getVideoList}}) => ({
+const mapStateToProps = ({app: {getVideoList, getCurrentItem}}) => ({
   getVideoList,
+  getCurrentItem,
 });
-export default connect(mapStateToProps, {})(VideoList);
+export default connect(mapStateToProps, {getCurrentVideo_Action})(VideoList);
