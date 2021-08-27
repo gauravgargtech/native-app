@@ -11,6 +11,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   Box,
@@ -21,23 +22,34 @@ import {
   Loader,
   PlayerControls,
   ProgressBar,
+  Input,
+  Textinput,
 } from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {ms, vs, s} from 'react-native-size-matters';
-import {Colors, fontSizes} from '../../../theme';
+import {Colors, fonts, fontSizes} from '../../../theme';
 import {ProfileAvtar} from '../../../assets/images';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
+import {addCommentAction} from '../../../store/actions';
 import {connect} from 'react-redux';
 import {FullscreenClose, FullscreenOpen} from '../../../assets/icons';
 
-const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
+const VideoDeatilsPage = ({
+  navigation,
+  route,
+  getVideo_PlaylistData,
+  addCommentAction,
+  addCommentData,
+}) => {
   const {videoItem} = route.params ?? {};
   const videoRef = useRef(null);
+  const [commentText, setCommentText] = useState(null);
+  const [isCommentfocus, setIsCommentFocus] = useState(false);
   const [state, setState] = useState({
     fullscreen: false,
     play: false,
@@ -82,7 +94,7 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
       ...s,
       currentTime: data.currentTime,
     }));
-    console.log('cureent time ::',state.currentTime);
+    console.log('cureent time ::', state.currentTime);
   }
 
   function handleFullscreen() {
@@ -121,6 +133,24 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
       : setState({...state, showControls: true});
   }
 
+  const onFocus = () => {
+    setIsCommentFocus(true);
+  };
+  const onBlur = () => {
+    setIsCommentFocus(false);
+  };
+
+  const AddComment = () => {
+    const videoID = videoItem?.id;
+    const comment = commentText;
+    const userID = 0;
+    if (comment != null) {
+      addCommentAction(videoID, comment, userID);
+      setCommentText(null);
+      Alert.alert(`Message : ${addCommentData?.message}`);
+    }
+  };
+  console.log('add Comment Data :::', addCommentData);
   return (
     <Box flex={1}>
       <Box height={hp('30%')}>
@@ -169,7 +199,6 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
             )}
           </Box>
         </TouchableWithoutFeedback>
-        {/*/>*/}
         {/*<MediaControls*/}
         {/*  isFullScreen={isFullScreen}*/}
         {/*  onFullScreen={onFullScreen}*/}
@@ -197,6 +226,40 @@ const VideoDeatilsPage = ({navigation, route, getVideo_PlaylistData}) => {
       <Box p={ms(20)}>
         <SubHeadingText fontSize={fontSizes[3]}>Video Details</SubHeadingText>
         <SubHeadingText fontSize={fontSizes[3]}>comment</SubHeadingText>
+        <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
+          <Image source={ProfileAvtar} style={styles.channelIcon} />
+          <Box style={styles.videoCommentView}>
+            <Box
+              flex={1}
+              height={hp('8%')}
+              style={[
+                styles.TextInputContainer,
+                {borderColor: isCommentfocus ? Colors.blueclr : Colors.grey},
+              ]}>
+              <Textinput
+                value={commentText}
+                onChangeText={val => setCommentText(val)}
+                placeholder={'Add Public Comment'}
+                style={{
+                  fontSize: fontSizes[1.2],
+                  fontFamily: fonts.RobotoRegular,
+                }}
+                placeholderTextColor={Colors.black}
+                onFocus={() => onFocus()}
+                onBlur={() => onBlur()}
+              />
+            </Box>
+          </Box>
+        </Box>
+        <Box p={ms(5)}>
+          <Button
+            disabled={!commentText?.length ? true : false}
+            title={'Comment'}
+            buttonStyle={styles.btnStyleComment}
+            titleStyle={styles.btnTitleComment}
+            onPress={() => AddComment()}
+          />
+        </Box>
         <Box style={{paddingVertical: ms(10)}}>
           <SubHeadingText fontSize={fontSizes[3]}>PlayList</SubHeadingText>
           <Box style={{paddingTop: ms(20)}}>
@@ -249,6 +312,28 @@ const styles = StyleSheet.create({
     padding: ms(10),
     width: wp('75%'),
     justifyContent: 'space-evenly',
+  },
+  videoCommentView: {
+    marginLeft: 10,
+    padding: ms(10),
+    width: wp('70%'),
+    justifyContent: 'space-evenly',
+  },
+  TextInputContainer: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: Colors.grey,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    backgroundColor: Colors.white,
+  },
+  btnStyleComment: {
+    borderRadius: 30,
+  },
+  btnTitleComment: {
+    color: Colors.white,
+    fontFamily: fonts.RobotoBold,
+    fontSize: fontSizes[4],
   },
   channelIcon: {
     width: wp('15%'),
@@ -319,7 +404,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-const mapStateToProps = ({app: {getVideo_PlaylistData}}) => ({
+const mapStateToProps = ({app: {getVideo_PlaylistData, addCommentData}}) => ({
   getVideo_PlaylistData,
+  addCommentData,
 });
-export default connect(mapStateToProps, {})(VideoDeatilsPage);
+export default connect(mapStateToProps, {addCommentAction})(VideoDeatilsPage);

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: wp('90%'),
     paddingVertical: 14,
     borderRadius: 10,
-    color: Colors.white,
+    color: Colors.black,
     textAlign: 'left',
     justifyContent: 'flex-start',
   },

@@ -49,17 +49,13 @@ const VideoDetails = ({
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
       <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-          {getVideo_PlaylistData?.loading ? (
-            <Loader />
-          ) : (
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <VideoDeatilsPage navigation={navigation} route={route} />
-            </ScrollView>
-          )}
-        </KeyboardAvoidingView>
+        {getVideo_PlaylistData?.loading ? (
+          <Loader />
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <VideoDeatilsPage navigation={navigation} route={route} />
+          </ScrollView>
+        )}
       </Box>
     </Box>
   );

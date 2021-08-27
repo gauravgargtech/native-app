@@ -10,6 +10,7 @@ import Loader from './Loader';
 import PlayerControls from './PlayerControls';
 import ProgressBar from './Progressbar';
 import PlainText, {HeadingText, SubHeadingText} from './Text';
+import Textinput from './Textinput';
 export {
   Box,
   Input,
@@ -25,4 +26,5 @@ export {
   SubHeadingText,
   PlayerControls,
   ProgressBar,
+  Textinput,
 };

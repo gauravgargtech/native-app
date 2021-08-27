@@ -63,3 +63,17 @@ export const getVideoPlaylistAction =
       payload: getPromise(),
     });
   };
+
+export const addCommentAction =
+  (videoID, comment, userID) =>
+  (dispatch, getState, {api}) => {
+    console.log('comment of user', comment);
+    const getPromise = async () => {
+      const {data} = await api.addComment(videoID, comment, userID);
+      return data;
+    };
+    return dispatch({
+      type: types.ADD_VIDEO_COMMENT,
+      payload: getPromise(),
+    });
+  };

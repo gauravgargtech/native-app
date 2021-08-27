@@ -9,6 +9,9 @@ const getVideoDetails_API = videoID => `${Baseurl}/api/videos/${videoID}`;
 const getVideoPlaylist_API = videoID =>
   `${Baseurl}/api/videos/playlist/${videoID}`;
 
+const addComment_Api = (videoID, comment, userID) =>
+  `${Baseurl}/api/video/comment?video_id=${videoID}&comment=${comment}&user_id=${userID}`;
+
 const postApi = (url, values, options) => {
   console.log('url and value', url, values);
   return axios.post(url, values, {
@@ -42,11 +45,13 @@ const getTags = () => getApi(getTags_API);
 const getVideoList = () => getApi(getVideoList_API);
 const getVideoDetails = videoID => getApi(getVideoDetails_API(videoID));
 const getVideoPlaylist = videoID => getApi(getVideoPlaylist_API(videoID));
-
+const addComment = (videoID, comment, userID) =>
+  postApi(addComment_Api(videoID, comment, userID));
 export default {
   getCategory,
   getTags,
   getVideoList,
   getVideoDetails,
   getVideoPlaylist,
+  addComment,
 };

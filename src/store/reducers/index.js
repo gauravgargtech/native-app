@@ -5,6 +5,7 @@ const initialState = {
   getVideoList: [],
   getVideoDetailsData: [],
   getVideo_PlaylistData: {playList: [], loading: false},
+  addCommentData: [],
 };
 
 const reducers = (state = initialState, action) => {
@@ -27,6 +28,8 @@ const reducers = (state = initialState, action) => {
         ...state,
         getVideo_PlaylistData: {playList: action.payload, loading: false},
       };
+    case types.ADD_VIDEO_COMMENT_SUCCESS:
+      return {...state, addCommentData: action.payload};
     default:
       return {...state};
   }
