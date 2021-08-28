@@ -9,11 +9,20 @@ import {
 } from 'react-native-responsive-screen';
 import {Colors} from '../../theme';
 
-const ProgressBar = ({
+interface Props {
+  currentTime: number;
+  duration: number;
+  onSeek: () => void;
+  onSlideCapture: (data: {seekTime: number}) => void;
+  onSlideStart: () => void;
+  onSlideComplete: () => void;
+}
+
+const ProgressBar: React.FC<Props> = ({
   currentTime,
   duration,
   onSeek,
-                       onSeeking,
+  onSeeking,
   onSlideStart,
   onSlideComplete,
 }) => {
@@ -66,7 +75,7 @@ const ProgressBar = ({
         minimumTrackTintColor={'#F44336'}
         maximumTrackTintColor={'#FFFFFF'}
         onSlidingComplete={onSeek}
-        onValueChange={onSeeking}
+        onValueChange={onSeek}
         value={currentTime}
       />
       <View style={styles.timeWrapper}>
@@ -89,6 +98,7 @@ const ProgressBar = ({
 
   function handleOnSlide(time: number) {
     onSeek({seekTime: time});
+    console.log('on slide cureent time ::', currentTime);
   }
 };
 

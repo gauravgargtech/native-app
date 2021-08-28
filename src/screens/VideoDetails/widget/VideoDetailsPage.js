@@ -25,6 +25,7 @@ import {
   Input,
   Textinput,
   CustomHeader,
+  HeadingText,
 } from '../../../components';
 import {
   widthPercentageToDP as wp,
@@ -40,7 +41,11 @@ import Video, {
 } from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
-import {addCommentAction, getCurrentVideo_Action} from '../../../store/actions';
+import {
+  addCommentAction,
+  getCommentAction,
+  getCurrentVideo_Action,
+} from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {
@@ -48,6 +53,7 @@ import {
   FullscreenOpen,
   VideoPause,
 } from '../../../assets/icons';
+import Slider from 'react-native-slider';
 
 const VideoDeatilsPage = ({
   navigation,
@@ -57,6 +63,8 @@ const VideoDeatilsPage = ({
   addCommentData,
   getCurrentVideo_Action,
   getCurrentItem,
+  getCommentAction,
+  getCommentData,
 }) => {
   const {videoItem} = route.params ?? {};
   const videoRef = useRef(null);
@@ -68,7 +76,10 @@ const VideoDeatilsPage = ({
     play: false,
     showControls: true,
   });
-
+  useEffect(() => {
+    getCommentAction(videoItem?.id);
+  }, []);
+  console.log('getCommentData', getCommentData);
   function onEnd() {
     getCurrentItem.currentTime[0].currentTime = duration;
     const updateTime = getCurrentItem?.currentTime?.map(item => {
@@ -171,11 +182,21 @@ const VideoDeatilsPage = ({
   };
 
   const onSeek = (seek: OnSeekData) => {
-    videoRef.current.seek(getCurrentItem?.currentTime[0]?.currentTime);
+    videoRef?.current.seek(seek);
+    getCurrentItem.currentTime[0].currentTime = Math.round(seek);
+    const updateTime = getCurrentItem?.currentTime?.map(item => {
+      return {...item};
+    });
+    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    console.log(
+      'on slide seek time ::',
+      getCurrentItem?.currentTime[0]?.currentTime,
+    );
     // videoRef.current.seek(data.seekTime);
     // setState({...state, currentTime: data.seekTime});
   };
-  const onSeeking = (currentVideoTime) =>  getCurrentVideo_Action({...getCurrentItem, currentTime: currentVideoTime});
+  const onSeeking = currentVideoTime =>
+    getCurrentVideo_Action({...getCurrentItem, currentTime: currentVideoTime});
   function showControls() {
     state.showControls
       ? setState({...state, showControls: false})
@@ -196,9 +217,10 @@ const VideoDeatilsPage = ({
     if (comment != null) {
       await addCommentAction(videoID, comment, userID);
       setCommentText(null);
-      Alert.alert(`Message : ${addCommentData?.message}`);
+      Alert.alert(`Message : ${addCommentData?.data.message}`);
     }
   };
+
   const getSliderValue = () => {
     let slider;
     getCurrentItem?.currentTime?.map(item => {
@@ -263,7 +285,7 @@ const VideoDeatilsPage = ({
                       skipForwards={skipForward}
                     />
                     <ProgressBar
-                      currentTime={getSliderValue()?.slider}
+                      currentTime={getCurrentItem?.currentTime[0]?.currentTime}
                       duration={duration}
                       onSlideStart={handlePlayPause}
                       onSlideComplete={handlePlayPause}
@@ -305,9 +327,38 @@ const VideoDeatilsPage = ({
               Video Details
             </SubHeadingText>
             <SubHeadingText fontSize={fontSizes[3]}>comment</SubHeadingText>
+            <Box p={ms(10)}>
+              {getCommentData?.map(commentItem => {
+                return (
+                  <Box
+                    flexDirection={'row'}
+                    style={{paddingVertical: 8}}
+                    alignItems={'center'}>
+                    <Box>
+                      <Image source={ProfileAvtar} style={styles.channelIcon} />
+                    </Box>
+                    <Box ml={ms(10)} width={wp('70%')}>
+                      <HeadingText
+                        fontSize={fontSizes[3]}
+                        style={{paddingVertical: 5}}>
+                        {commentItem?.name}
+                      </HeadingText>
+                      <SubHeadingText
+                        numberOfLines={2}
+                        height={hp('10%')}
+                        fontSize={fontSizes[2]}
+                        style={{paddingVertical: 5}}>
+                        {commentItem?.comment}
+                      </SubHeadingText>
+                    </Box>
+                  </Box>
+                );
+              })}
+            </Box>
+            {addCommentData?.loading ? <Loader /> : null}
             <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
               <Image source={ProfileAvtar} style={styles.channelIcon} />
-              <Box style={styles.videoCommentView}>
+              <Box style={styles.videoAddCommentView}>
                 <Box
                   flex={1}
                   height={hp('8%')}
@@ -400,7 +451,13 @@ const styles = StyleSheet.create({
     width: wp('75%'),
     justifyContent: 'space-evenly',
   },
-  videoCommentView: {
+  DisplayBoletsForComment: {
+    backgroundColor: Colors.black,
+    width: 10,
+    height: 10,
+    borderRadius: 10 / 2,
+  },
+  videoAddCommentView: {
     marginLeft: 10,
     padding: ms(10),
     width: wp('70%'),
@@ -492,13 +549,15 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {getVideo_PlaylistData, addCommentData, getCurrentItem},
+  app: {getVideo_PlaylistData, addCommentData, getCommentData, getCurrentItem},
 }) => ({
   getVideo_PlaylistData,
   addCommentData,
+  getCommentData,
   getCurrentItem,
 });
 export default connect(mapStateToProps, {
   addCommentAction,
+  getCommentAction,
   getCurrentVideo_Action,
 })(VideoDeatilsPage);

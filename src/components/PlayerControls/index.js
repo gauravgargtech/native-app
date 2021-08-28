@@ -46,12 +46,12 @@ const PlayerControls = ({
         </TouchableOpacity>
       )}
 
-      {showSkip && (
-        <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
-          {/*<VideoSkipBack />*/}
-          <SubHeadingText color={Colors.white}>skipBack</SubHeadingText>
-        </TouchableOpacity>
-      )}
+      {/*{showSkip && (*/}
+      {/*  <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>*/}
+      {/*    /!*<VideoSkipBack />*!/*/}
+      {/*    <SubHeadingText color={Colors.white}>skipBack</SubHeadingText>*/}
+      {/*  </TouchableOpacity>*/}
+      {/*)}*/}
       {/*{showSkip && (*/}
       {/*  <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>*/}
       {/*    <VideoSkipBack />*/}
@@ -70,12 +70,12 @@ const PlayerControls = ({
         )}
       </TouchableOpacity>
 
-      {showSkip && (
-        <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
-          {/*<VideoSkipForward />*/}
-          <SubHeadingText color={Colors.white}>Forward</SubHeadingText>
-        </TouchableOpacity>
-      )}
+      {/*{showSkip && (*/}
+      {/*  <TouchableOpacity style={styles.touchable} onPress={skipForwards}>*/}
+      {/*    /!*<VideoSkipForward />*!/*/}
+      {/*    <SubHeadingText color={Colors.white}>Forward</SubHeadingText>*/}
+      {/*  </TouchableOpacity>*/}
+      {/*)}*/}
 
       {showPreviousAndNext && (
         <TouchableOpacity

@@ -78,6 +78,19 @@ export const addCommentAction =
     });
   };
 
+export const getCommentAction =
+  (videoID) =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getComment(videoID);
+      return data?.comments;
+    };
+    return dispatch({
+      type: types.GET_VIDEO_COMMENT,
+      payload: getPromise(),
+    });
+  };
+
 export const getCurrentVideo_Action =
   getCurrentVideoData =>
   (dispatch, getState, {api}) => {

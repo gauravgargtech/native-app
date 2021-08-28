@@ -11,6 +11,7 @@ const getVideoPlaylist_API = videoID =>
 
 const addComment_Api = (videoID, comment, userID) =>
   `${Baseurl}/api/video/comment?video_id=${videoID}&comment=${comment}&user_id=${userID}`;
+const getComment_API = videoID => `${Baseurl}/api/video/comments/${videoID}`;
 
 const postApi = (url, values, options) => {
   console.log('url and value', url, values);
@@ -47,6 +48,7 @@ const getVideoDetails = videoID => getApi(getVideoDetails_API(videoID));
 const getVideoPlaylist = videoID => getApi(getVideoPlaylist_API(videoID));
 const addComment = (videoID, comment, userID) =>
   postApi(addComment_Api(videoID, comment, userID));
+const getComment = videoID => getApi(getComment_API(videoID));
 export default {
   getCategory,
   getTags,
@@ -54,4 +56,5 @@ export default {
   getVideoDetails,
   getVideoPlaylist,
   addComment,
+  getComment,
 };
