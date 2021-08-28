@@ -1,13 +1,19 @@
 import React from 'react';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
+import Slider from 'react-native-slider';
 import {View, Text, StyleSheet} from 'react-native';
 import {Box} from '../../components';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import {Colors} from '../../theme';
 
 const ProgressBar = ({
   currentTime,
   duration,
   onSeek,
+                       onSeeking,
   onSlideStart,
   onSlideComplete,
 }) => {
@@ -26,7 +32,6 @@ const ProgressBar = ({
       minutes.substr(-2) +
       ':' +
       seconds.substr(-2);
-
     return {formattedTime: formattedTime};
   };
 
@@ -53,19 +58,21 @@ const ProgressBar = ({
     <View style={styles.wrapper}>
       <Slider
         minimumValue={0}
-        disabled={true}
         maximumValue={duration}
-        trackStyle={{height: 6}}
+        style={{height: '40%'}}
+        trackStyle={{height: 5}}
         thumbStyle={{width: 15, height: 15}}
         thumbTintColor={Colors.btnclr}
         minimumTrackTintColor={'#F44336'}
         maximumTrackTintColor={'#FFFFFF'}
         onSlidingComplete={onSeek}
-        onValueChange={handleOnSlide}
+        onValueChange={onSeeking}
         value={currentTime}
       />
       <View style={styles.timeWrapper}>
-        <Text style={styles.timeLeft}>{getTimeCurrentTime()?.formattedTime}</Text>
+        <Text style={styles.timeLeft}>
+          {getTimeCurrentTime()?.formattedTime}
+        </Text>
         <Text style={styles.timeRight}>{getTimeDuration()?.formattedTime}</Text>
       </View>
     </View>
@@ -88,6 +95,9 @@ const ProgressBar = ({
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
+    justifyContent: 'center',
   },
   timeWrapper: {
     flexDirection: 'row',

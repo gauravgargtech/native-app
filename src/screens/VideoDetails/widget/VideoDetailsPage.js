@@ -24,6 +24,7 @@ import {
   ProgressBar,
   Input,
   Textinput,
+  CustomHeader,
 } from '../../../components';
 import {
   widthPercentageToDP as wp,
@@ -41,7 +42,12 @@ import Orientation from 'react-native-orientation-locker';
 import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import {addCommentAction, getCurrentVideo_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
-import {FullscreenClose, FullscreenOpen} from '../../../assets/icons';
+import moment from 'moment';
+import {
+  FullscreenClose,
+  FullscreenOpen,
+  VideoPause,
+} from '../../../assets/icons';
 
 const VideoDeatilsPage = ({
   navigation,
@@ -91,7 +97,20 @@ const VideoDeatilsPage = ({
   }
 
   const onLoad = (data: OnLoadData) => {
-    setDuration(Math.floor(192));
+    const hms = videoItem?.total_time;
+    const a = hms.split('.');
+
+    console.log('length', a);
+    if (a.length == 2) {
+      const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
+      setDuration(Math.floor(total_duration));
+    } else {
+      const total_duration = moment
+        .duration(`${a[0]}:${a[1]}:${a[2]}`)
+        .asSeconds();
+      console.log('duration seconds hh:mm:ss', total_duration);
+    }
+    // videoRef?.current?.presentFullscreenPlayer();
   };
 
   const onProgress = data => {
@@ -104,13 +123,21 @@ const VideoDeatilsPage = ({
     //   ...s,
     //   currentTime: data.currentTime,
     // }));
-    console.log('cureent time ::', getCurrentItem?.currentTime[0]?.currentTime);
   };
 
   function handleFullscreen() {
-    state.fullscreen
-      ? Orientation.unlockAllOrientations()
-      : Orientation.lockToLandscapeLeft();
+    if (Platform.OS == 'ios') {
+      videoRef?.current?.presentFullscreenPlayer();
+    } else {
+      state.fullscreen
+        ? Orientation.unlockAllOrientations()
+        : Orientation.lockToLandscapeLeft();
+
+      // setState({...state, fullscreen: !state.fullscreen});
+      // state.fullscreen ? (setState(s => ({...s, fullscreen: true})), StatusBar.setHidden(true))
+      //     : (setState(s => ({...s, fullscreen: false})),
+      //         StatusBar.setHidden(false));
+    }
   }
   function handlePlayPause() {
     // If playing, pause and show controls immediately.
@@ -138,6 +165,7 @@ const VideoDeatilsPage = ({
       return {...item};
     });
     getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    console.log('cureent time ::', getCurrentItem?.currentTime[0]?.currentTime);
     // videoRef.current.seek(state.currentTime + 10);
     // setState({...state, currentTime: state.currentTime + 10});
   };
@@ -147,6 +175,7 @@ const VideoDeatilsPage = ({
     // videoRef.current.seek(data.seekTime);
     // setState({...state, currentTime: data.seekTime});
   };
+  const onSeeking = (currentVideoTime) =>  getCurrentVideo_Action({...getCurrentItem, currentTime: currentVideoTime});
   function showControls() {
     state.showControls
       ? setState({...state, showControls: false})
@@ -177,152 +206,182 @@ const VideoDeatilsPage = ({
     });
     return {slider: slider};
   };
-  console.log('add Comment Data :::', addCommentData);
-  console.log('duration', duration);
+
   return (
-    <Box flex={1}>
-      <Box height={hp('30%')}>
-        <TouchableWithoutFeedback onPress={showControls}>
-          <Box>
-            <Video
-              ref={ref => (videoRef.current = ref)}
-              source={{
-                uri: videoItem?.url,
-              }}
-              style={state.fullscreen ? styles.fullscreenVideo : styles.video}
-              controls={false}
-              resizeMode={'contain'}
-              onLoad={onLoad}
-              onProgress={onProgress}
-              onEnd={onEnd}
-              paused={!state.play}
-            />
-            {state.showControls && (
-              <View style={styles.controlOverlay}>
-                <TouchableOpacity
-                  onPress={handleFullscreen}
-                  hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-                  style={styles.fullscreenButton}>
-                  <SubHeadingText color={'white'}>
-                    {state.fullscreen ? 'close' : 'open'}
-                  </SubHeadingText>
-                </TouchableOpacity>
-                <PlayerControls
-                  onPlay={handlePlayPause}
-                  onPause={handlePlayPause}
-                  playing={state.play}
-                  showPreviousAndNext={false}
-                  showSkip={true}
-                  skipBackwards={skipBackward}
-                  skipForwards={skipForward}
+    <>
+      {!state.fullscreen ? (
+        <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      ) : null}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Box flex={1}>
+          <Box height={state.fullscreen ? hp('51%') : hp('30%')}>
+            <TouchableWithoutFeedback onPress={showControls}>
+              <Box>
+                <Video
+                  ref={ref => (videoRef.current = ref)}
+                  source={{
+                    uri: videoItem?.url,
+                  }}
+                  style={
+                    state.fullscreen
+                      ? styles.fullscreenVideo
+                      : styles.backgroundVideo
+                  }
+                  controls={false}
+                  resizeMode={'contain'}
+                  onLoad={onLoad}
+                  onProgress={onProgress}
+                  onEnd={onEnd}
+                  paused={!state.play}
                 />
-                <ProgressBar
-                  currentTime={getSliderValue()?.slider}
-                  duration={duration}
-                  onSlideStart={handlePlayPause}
-                  onSlideComplete={handlePlayPause}
-                  onSeek={onSeek}
-                />
-              </View>
-            )}
+                {console.log('Full screen', state.fullscreen)}
+                {state.showControls && (
+                  <View style={styles.controlOverlay}>
+                    <TouchableOpacity
+                      onPress={handleFullscreen}
+                      hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                      style={styles.fullscreenButton}>
+                      {state.fullscreen ? (
+                        <Image
+                          source={FullscreenClose}
+                          style={{width: 15, height: 15}}
+                        />
+                      ) : (
+                        <Image
+                          source={FullscreenOpen}
+                          style={{width: 15, height: 15}}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <PlayerControls
+                      onPlay={handlePlayPause}
+                      onPause={handlePlayPause}
+                      playing={state.play}
+                      showPreviousAndNext={false}
+                      showSkip={true}
+                      skipBackwards={skipBackward}
+                      skipForwards={skipForward}
+                    />
+                    <ProgressBar
+                      currentTime={getSliderValue()?.slider}
+                      duration={duration}
+                      onSlideStart={handlePlayPause}
+                      onSlideComplete={handlePlayPause}
+                      onSeek={onSeek}
+                      onSeeking={onSeeking}
+                    />
+                  </View>
+                )}
+              </Box>
+            </TouchableWithoutFeedback>
+            {/*<MediaControls*/}
+            {/*  isFullScreen={isFullScreen}*/}
+            {/*  onFullScreen={onFullScreen}*/}
+            {/*  duration={duration}*/}
+            {/*  progress={currentTime}*/}
+            {/*  onPaused={onPaused}*/}
+            {/*  onReplay={onReplay}*/}
+            {/*  onSeek={onSeek}*/}
+            {/*  onSeeking={onSeeking}*/}
+            {/*  mainColor={'red'}*/}
+            {/*  playerState={playerState}*/}
+            {/*  style={*/}
+            {/*    isFullScreen*/}
+            {/*      ? styles.backgroundVideoFullScreen*/}
+            {/*      : styles.backgroundVideo*/}
+            {/*  }*/}
+            {/*/>*/}
           </Box>
-        </TouchableWithoutFeedback>
-        {/*<MediaControls*/}
-        {/*  isFullScreen={isFullScreen}*/}
-        {/*  onFullScreen={onFullScreen}*/}
-        {/*  duration={duration}*/}
-        {/*  progress={currentTime}*/}
-        {/*  onPaused={onPaused}*/}
-        {/*  onReplay={onReplay}*/}
-        {/*  onSeek={onSeek}*/}
-        {/*  onSeeking={onSeeking}*/}
-        {/*  mainColor={'red'}*/}
-        {/*  playerState={playerState}*/}
-        {/*  style={*/}
-        {/*    isFullScreen*/}
-        {/*      ? styles.backgroundVideoFullScreen*/}
-        {/*      : styles.backgroundVideo*/}
-        {/*  }*/}
-        {/*/>*/}
-      </Box>
-      <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
-        <Image source={ProfileAvtar} style={styles.channelIcon} />
-        <Box style={styles.videoDescriptionView}>
-          <VideoDescription videoItem={videoItem} />
-        </Box>
-      </Box>
-      <Box p={ms(20)}>
-        <SubHeadingText fontSize={fontSizes[3]}>Video Details</SubHeadingText>
-        <SubHeadingText fontSize={fontSizes[3]}>comment</SubHeadingText>
-        <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
-          <Image source={ProfileAvtar} style={styles.channelIcon} />
-          <Box style={styles.videoCommentView}>
-            <Box
-              flex={1}
-              height={hp('8%')}
-              style={[
-                styles.TextInputContainer,
-                {borderColor: isCommentfocus ? Colors.blueclr : Colors.grey},
-              ]}>
-              <Textinput
-                value={commentText}
-                onChangeText={val => setCommentText(val)}
-                placeholder={'Add Public Comment'}
-                style={{
-                  fontSize: fontSizes[1.2],
-                  fontFamily: fonts.RobotoRegular,
-                }}
-                placeholderTextColor={Colors.black}
-                onFocus={() => onFocus()}
-                onBlur={() => onBlur()}
-              />
+          {/*{!state.fullscreen ? (*/}
+          {/*  <>*/}
+          <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
+            <Image source={ProfileAvtar} style={styles.channelIcon} />
+            <Box style={styles.videoDescriptionView}>
+              <VideoDescription videoItem={videoItem} />
             </Box>
           </Box>
-        </Box>
-        <Box p={ms(5)}>
-          <Button
-            disabled={!commentText?.length ? true : false}
-            title={'Comment'}
-            buttonStyle={styles.btnStyleComment}
-            titleStyle={styles.btnTitleComment}
-            onPress={() => AddComment()}
-          />
-        </Box>
-        <Box style={{paddingVertical: ms(10)}}>
-          <SubHeadingText fontSize={fontSizes[3]}>PlayList</SubHeadingText>
-          <Box style={{paddingTop: ms(20)}}>
-            {getVideo_PlaylistData?.playList?.map(playlistItem => {
-              return (
-                <Box>
-                  <ImageBackground
-                    source={{
-                      uri: playlistItem?.thumbnail,
+          <Box p={ms(20)}>
+            <SubHeadingText fontSize={fontSizes[3]}>
+              Video Details
+            </SubHeadingText>
+            <SubHeadingText fontSize={fontSizes[3]}>comment</SubHeadingText>
+            <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
+              <Image source={ProfileAvtar} style={styles.channelIcon} />
+              <Box style={styles.videoCommentView}>
+                <Box
+                  flex={1}
+                  height={hp('8%')}
+                  style={[
+                    styles.TextInputContainer,
+                    {
+                      borderColor: isCommentfocus
+                        ? Colors.blueclr
+                        : Colors.grey,
+                    },
+                  ]}>
+                  <Textinput
+                    value={commentText}
+                    onChangeText={val => setCommentText(val)}
+                    placeholder={'Add Public Comment'}
+                    style={{
+                      fontSize: fontSizes[1.2],
+                      fontFamily: fonts.RobotoRegular,
                     }}
-                    style={styles.thumbnailImageStyle}
-                    resizeMode={'contain'}>
-                    <Box style={styles.total_timingView}>
-                      <PlainText color={Colors.white}>
-                        {playlistItem?.total_time}
-                      </PlainText>
-                    </Box>
-                  </ImageBackground>
-                  <Box style={styles.videoDescriptionMainContainer}>
-                    <Image
-                      source={ProfileAvtar}
-                      style={styles.channelIcon}
-                      resizeMode={'contain'}
-                    />
-                    <Box style={styles.videoDescriptionPlaylistView}>
-                      <VideoDescription videoItem={playlistItem} />
-                    </Box>
-                  </Box>
+                    placeholderTextColor={Colors.black}
+                    onFocus={() => onFocus()}
+                    onBlur={() => onBlur()}
+                  />
                 </Box>
-              );
-            })}
+              </Box>
+            </Box>
+            <Box p={ms(5)}>
+              <Button
+                disabled={!commentText?.length ? true : false}
+                title={'Comment'}
+                buttonStyle={styles.btnStyleComment}
+                titleStyle={styles.btnTitleComment}
+                onPress={() => AddComment()}
+              />
+            </Box>
+            <Box style={{paddingVertical: ms(10)}}>
+              <SubHeadingText fontSize={fontSizes[3]}>PlayList</SubHeadingText>
+              <Box style={{paddingTop: ms(20)}}>
+                {getVideo_PlaylistData?.playList?.map(playlistItem => {
+                  return (
+                    <Box>
+                      <ImageBackground
+                        source={{
+                          uri: playlistItem?.thumbnail,
+                        }}
+                        style={styles.thumbnailImageStyle}
+                        resizeMode={'contain'}>
+                        <Box style={styles.total_timingView}>
+                          <PlainText color={Colors.white}>
+                            {playlistItem?.total_time}
+                          </PlainText>
+                        </Box>
+                      </ImageBackground>
+                      <Box style={styles.videoDescriptionMainContainer}>
+                        <Image
+                          source={ProfileAvtar}
+                          style={styles.channelIcon}
+                          resizeMode={'contain'}
+                        />
+                        <Box style={styles.videoDescriptionPlaylistView}>
+                          <VideoDescription videoItem={playlistItem} />
+                        </Box>
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Box>
           </Box>
+          {/*  </>*/}
+          {/*) : null}*/}
         </Box>
-      </Box>
-    </Box>
+      </ScrollView>
+    </>
   );
 };
 const styles = StyleSheet.create({
@@ -420,7 +479,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'flex-end',
     alignItems: 'center',
-    paddingRight: 10,
+    paddingRight: 15,
   },
   controlOverlay: {
     position: 'absolute',

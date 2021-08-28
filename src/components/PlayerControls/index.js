@@ -60,6 +60,7 @@ const PlayerControls = ({
 
       <TouchableOpacity
         style={styles.touchable}
+        hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
         onPress={playing ? onPause : onPlay}>
         {/*<SubHeadingText color={'white'}>{playing ? 'Pause' : 'Play'}</SubHeadingText>*/}
         {playing ? (
