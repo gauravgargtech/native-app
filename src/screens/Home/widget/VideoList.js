@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {
   Box,
+  Thumbnail,
   VideoDescription,
   SubHeadingText,
   PlainText,
@@ -23,6 +24,7 @@ import {getCurrentVideo_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../../assets/images';
 import {VIDEO_DETAILS} from '../../../navigator/routes';
+const ChannelIconUrl = imageURL => `https://kid.greatequip.com${imageURL}`;
 
 const VideoList = ({
   navigation,
@@ -56,28 +58,7 @@ const VideoList = ({
           return (
             <Box>
               <TouchableOpacity onPress={() => onClickVideo({videoItem})}>
-                <ImageBackground
-                  source={{
-                    uri: videoItem?.thumbnail,
-                  }}
-                  style={styles.thumbnailImageStyle}
-                  resizeMode={'contain'}>
-                  <Box style={styles.total_timingView}>
-                    <PlainText color={Colors.white}>
-                      {videoItem?.total_time}
-                    </PlainText>
-                  </Box>
-                </ImageBackground>
-                <Box style={styles.videoDescriptionMainContainer}>
-                  <Image
-                    source={ProfileAvtar}
-                    style={styles.channelIcon}
-                    resizeMode={'contain'}
-                  />
-                  <Box style={styles.videoDescriptionView}>
-                    <VideoDescription videoItem={videoItem} />
-                  </Box>
-                </Box>
+                <Thumbnail videoItem={videoItem} />
               </TouchableOpacity>
             </Box>
           );

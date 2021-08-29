@@ -12,8 +12,11 @@ const VideoDescription = ({videoItem}) => {
         fontSize={fontSizes[1.5]}>
         {videoItem?.title}
       </SubHeadingText>
-      <SubHeadingText color={Colors.grey} fontSize={fontSizes[1]} style={{paddingVertical:ms(3)}}>
-        Entertainment
+      <SubHeadingText
+        color={Colors.grey}
+        fontSize={fontSizes[1]}
+        style={{paddingVertical: ms(3)}}>
+        {videoItem?.video_type}
       </SubHeadingText>
       <Box flexDirection={'row'}>
         <PlainText color={Colors.grey} fontSize={fontSizes[1]}>

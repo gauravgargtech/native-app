@@ -5,13 +5,8 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Drawer = createDrawerNavigator();
-import {Home, Login, Register, VideoDetails} from '../screens';
-import {
-  HOME,
-  LOGIN,
-  REGISTER,
-  VIDEO_DETAILS,
-} from './routes';
+import {Home, Search, Login, Register, VideoDetails} from '../screens';
+import {HOME, SEARCH, LOGIN, REGISTER, VIDEO_DETAILS} from './routes';
 import LearnAppHomeNavigator from './LearnAppHomeNavigator';
 import CustomDrawerContent from './CustomDrawerContent';
 import {getCategoryAction} from '../store/actions';
@@ -55,6 +50,7 @@ const DrawerNavigator = ({getCategoryAction, getCategoryData}) => {
         ),
       }}>
       <Drawer.Screen name={HOME} component={Home} />
+      <Drawer.Screen name={SEARCH} component={Search} />
       <Drawer.Screen name={LOGIN} component={Login} />
       <Drawer.Screen name={REGISTER} component={Register} />
       <Drawer.Screen name={VIDEO_DETAILS} component={VideoDetails} />

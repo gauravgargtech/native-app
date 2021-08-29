@@ -11,3 +11,7 @@ export {default as MenuIcon_large} from './HomeScreen/menu_large.png';
 export {default as SearchIcon} from './HomeScreen/search.png';
 export {default as SearchIcon_medium} from './HomeScreen/search_medium.png';
 export {default as SearchIcon_large} from './HomeScreen/search_large.png';
+
+export {default as CloseIcon} from './HomeScreen/ic_close.png';
+export {default as CloseIcon_medium} from './HomeScreen/ic_close_medium.png';
+export {default as CloseIcon_large} from './HomeScreen/ic_close_large.png';

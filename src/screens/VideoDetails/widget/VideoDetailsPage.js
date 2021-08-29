@@ -16,12 +16,12 @@ import {
 import {
   Box,
   Button,
+  Thumbnail,
   VideoDescription,
-  PlainText,
+  Videoplayer,
+  CommentList,
   SubHeadingText,
   Loader,
-  PlayerControls,
-  ProgressBar,
   Input,
   Textinput,
   CustomHeader,
@@ -40,24 +40,21 @@ import Video, {
   OnProgressData,
 } from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
-import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import {
+  getVideoPlaylistAction,
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
 } from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {
-  FullscreenClose,
-  FullscreenOpen,
-  VideoPause,
-} from '../../../assets/icons';
-import Slider from 'react-native-slider';
+import {VIDEO_DETAILS} from '../../../navigator/routes';
+const ChannelIconUrl = imageURL => `https://kid.greatequip.com${imageURL}`;
 
 const VideoDeatilsPage = ({
   navigation,
   route,
+  getVideoPlaylistAction,
   getVideo_PlaylistData,
   addCommentAction,
   addCommentData,
@@ -77,9 +74,12 @@ const VideoDeatilsPage = ({
     showControls: true,
   });
   useEffect(() => {
-    getCommentAction(videoItem?.id);
-  }, []);
-  console.log('getCommentData', getCommentData);
+    getCommentAction(getCurrentItem?.videoData?.id);
+    getVideoPlaylistAction(getCurrentItem?.videoData?.id);
+  }, [getCurrentItem]);
+
+  console.log('current item', getCurrentItem);
+
   function onEnd() {
     getCurrentItem.currentTime[0].currentTime = duration;
     const updateTime = getCurrentItem?.currentTime?.map(item => {
@@ -111,7 +111,6 @@ const VideoDeatilsPage = ({
     const hms = videoItem?.total_time;
     const a = hms.split('.');
 
-    console.log('length', a);
     if (a.length == 2) {
       const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
       setDuration(Math.floor(total_duration));
@@ -119,7 +118,7 @@ const VideoDeatilsPage = ({
       const total_duration = moment
         .duration(`${a[0]}:${a[1]}:${a[2]}`)
         .asSeconds();
-      console.log('duration seconds hh:mm:ss', total_duration);
+      setDuration(Math.floor(total_duration));
     }
     // videoRef?.current?.presentFullscreenPlayer();
   };
@@ -143,11 +142,6 @@ const VideoDeatilsPage = ({
       state.fullscreen
         ? Orientation.unlockAllOrientations()
         : Orientation.lockToLandscapeLeft();
-
-      // setState({...state, fullscreen: !state.fullscreen});
-      // state.fullscreen ? (setState(s => ({...s, fullscreen: true})), StatusBar.setHidden(true))
-      //     : (setState(s => ({...s, fullscreen: false})),
-      //         StatusBar.setHidden(false));
     }
   }
   function handlePlayPause() {
@@ -176,7 +170,6 @@ const VideoDeatilsPage = ({
       return {...item};
     });
     getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
-    console.log('cureent time ::', getCurrentItem?.currentTime[0]?.currentTime);
     // videoRef.current.seek(state.currentTime + 10);
     // setState({...state, currentTime: state.currentTime + 10});
   };
@@ -197,6 +190,7 @@ const VideoDeatilsPage = ({
   };
   const onSeeking = currentVideoTime =>
     getCurrentVideo_Action({...getCurrentItem, currentTime: currentVideoTime});
+
   function showControls() {
     state.showControls
       ? setState({...state, showControls: false})
@@ -211,7 +205,7 @@ const VideoDeatilsPage = ({
   };
 
   const AddComment = async () => {
-    const videoID = videoItem?.id;
+    const videoID = getCurrentItem?.videoData?.id;
     const comment = commentText;
     const userID = 0;
     if (comment != null) {
@@ -221,12 +215,19 @@ const VideoDeatilsPage = ({
     }
   };
 
-  const getSliderValue = () => {
-    let slider;
-    getCurrentItem?.currentTime?.map(item => {
-      slider = item.currentTime;
-    });
-    return {slider: slider};
+  const currentTime = 0;
+  const onClickVideo = async ({playlistItem}) => {
+    try {
+      const getCurrentVideoData = {
+        videoData: playlistItem,
+        currentTime: [{currentTime: currentTime}],
+      };
+      await getCurrentVideo_Action(getCurrentVideoData);
+    } catch (e) {
+      console.log('ERRORS AT GET_AUDIO_DATA', e);
+    }
+    getCommentAction(getCurrentItem?.videoData?.id);
+    getVideoPlaylistAction(getCurrentItem?.videoData?.id);
   };
 
   return (
@@ -237,89 +238,37 @@ const VideoDeatilsPage = ({
       <ScrollView showsVerticalScrollIndicator={false}>
         <Box flex={1}>
           <Box height={state.fullscreen ? hp('51%') : hp('30%')}>
-            <TouchableWithoutFeedback onPress={showControls}>
-              <Box>
-                <Video
-                  ref={ref => (videoRef.current = ref)}
-                  source={{
-                    uri: videoItem?.url,
-                  }}
-                  style={
-                    state.fullscreen
-                      ? styles.fullscreenVideo
-                      : styles.backgroundVideo
-                  }
-                  controls={false}
-                  resizeMode={'contain'}
-                  onLoad={onLoad}
-                  onProgress={onProgress}
-                  onEnd={onEnd}
-                  paused={!state.play}
-                />
-                {console.log('Full screen', state.fullscreen)}
-                {state.showControls && (
-                  <View style={styles.controlOverlay}>
-                    <TouchableOpacity
-                      onPress={handleFullscreen}
-                      hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-                      style={styles.fullscreenButton}>
-                      {state.fullscreen ? (
-                        <Image
-                          source={FullscreenClose}
-                          style={{width: 15, height: 15}}
-                        />
-                      ) : (
-                        <Image
-                          source={FullscreenOpen}
-                          style={{width: 15, height: 15}}
-                        />
-                      )}
-                    </TouchableOpacity>
-                    <PlayerControls
-                      onPlay={handlePlayPause}
-                      onPause={handlePlayPause}
-                      playing={state.play}
-                      showPreviousAndNext={false}
-                      showSkip={true}
-                      skipBackwards={skipBackward}
-                      skipForwards={skipForward}
-                    />
-                    <ProgressBar
-                      currentTime={getCurrentItem?.currentTime[0]?.currentTime}
-                      duration={duration}
-                      onSlideStart={handlePlayPause}
-                      onSlideComplete={handlePlayPause}
-                      onSeek={onSeek}
-                      onSeeking={onSeeking}
-                    />
-                  </View>
-                )}
-              </Box>
-            </TouchableWithoutFeedback>
-            {/*<MediaControls*/}
-            {/*  isFullScreen={isFullScreen}*/}
-            {/*  onFullScreen={onFullScreen}*/}
-            {/*  duration={duration}*/}
-            {/*  progress={currentTime}*/}
-            {/*  onPaused={onPaused}*/}
-            {/*  onReplay={onReplay}*/}
-            {/*  onSeek={onSeek}*/}
-            {/*  onSeeking={onSeeking}*/}
-            {/*  mainColor={'red'}*/}
-            {/*  playerState={playerState}*/}
-            {/*  style={*/}
-            {/*    isFullScreen*/}
-            {/*      ? styles.backgroundVideoFullScreen*/}
-            {/*      : styles.backgroundVideo*/}
-            {/*  }*/}
-            {/*/>*/}
+            <Videoplayer
+              showControls={showControls}
+              videoRef={videoRef}
+              videoItem={getCurrentItem?.videoData}
+              fullscreen={state.fullscreen}
+              onLoad={onLoad}
+              onProgress={onProgress}
+              onEnd={onEnd}
+              play={state.play}
+              visibleControl={state.showControls}
+              handleFullscreen={handleFullscreen}
+              handlePlayPause={handlePlayPause}
+              skipBackward={skipBackward}
+              skipForward={skipForward}
+              currentTime={getCurrentItem?.currentTime[0]?.currentTime}
+              duration={duration}
+              onSeek={onSeek}
+              onSeeking={onSeeking}
+            />
           </Box>
           {/*{!state.fullscreen ? (*/}
           {/*  <>*/}
           <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
-            <Image source={ProfileAvtar} style={styles.channelIcon} />
+            <Image
+              source={{
+                uri: ChannelIconUrl(getCurrentItem?.videoData?.channel_icon),
+              }}
+              style={styles.channelIcon}
+            />
             <Box style={styles.videoDescriptionView}>
-              <VideoDescription videoItem={videoItem} />
+              <VideoDescription videoItem={getCurrentItem?.videoData} />
             </Box>
           </Box>
           <Box p={ms(20)}>
@@ -329,30 +278,7 @@ const VideoDeatilsPage = ({
             <SubHeadingText fontSize={fontSizes[3]}>comment</SubHeadingText>
             <Box p={ms(10)}>
               {getCommentData?.map(commentItem => {
-                return (
-                  <Box
-                    flexDirection={'row'}
-                    style={{paddingVertical: 8}}
-                    alignItems={'center'}>
-                    <Box>
-                      <Image source={ProfileAvtar} style={styles.channelIcon} />
-                    </Box>
-                    <Box ml={ms(10)} width={wp('70%')}>
-                      <HeadingText
-                        fontSize={fontSizes[3]}
-                        style={{paddingVertical: 5}}>
-                        {commentItem?.name}
-                      </HeadingText>
-                      <SubHeadingText
-                        numberOfLines={2}
-                        height={hp('10%')}
-                        fontSize={fontSizes[2]}
-                        style={{paddingVertical: 5}}>
-                        {commentItem?.comment}
-                      </SubHeadingText>
-                    </Box>
-                  </Box>
-                );
+                return <CommentList commentList={commentItem} />;
               })}
             </Box>
             {addCommentData?.loading ? <Loader /> : null}
@@ -397,34 +323,26 @@ const VideoDeatilsPage = ({
             <Box style={{paddingVertical: ms(10)}}>
               <SubHeadingText fontSize={fontSizes[3]}>PlayList</SubHeadingText>
               <Box style={{paddingTop: ms(20)}}>
-                {getVideo_PlaylistData?.playList?.map(playlistItem => {
-                  return (
-                    <Box>
-                      <ImageBackground
-                        source={{
-                          uri: playlistItem?.thumbnail,
-                        }}
-                        style={styles.thumbnailImageStyle}
-                        resizeMode={'contain'}>
-                        <Box style={styles.total_timingView}>
-                          <PlainText color={Colors.white}>
-                            {playlistItem?.total_time}
-                          </PlainText>
-                        </Box>
-                      </ImageBackground>
-                      <Box style={styles.videoDescriptionMainContainer}>
-                        <Image
-                          source={ProfileAvtar}
-                          style={styles.channelIcon}
-                          resizeMode={'contain'}
-                        />
-                        <Box style={styles.videoDescriptionPlaylistView}>
-                          <VideoDescription videoItem={playlistItem} />
-                        </Box>
+                {getVideo_PlaylistData?.loading ? (
+                  <Loader />
+                ) : (
+                  getVideo_PlaylistData?.playList?.map(playlistItem => {
+                    return (
+                      <Box>
+                        <TouchableOpacity
+                          onPress={() => onClickVideo({playlistItem})}>
+                          <Thumbnail
+                            videoItem={playlistItem}
+                            descriptionStyle={
+                              styles.videoDescriptionPlaylistView
+                            }
+                            channelStyle={styles.channelIcon}
+                          />
+                        </TouchableOpacity>
                       </Box>
-                    </Box>
-                  );
-                })}
+                    );
+                  })
+                )}
               </Box>
             </Box>
           </Box>
@@ -486,32 +404,10 @@ const styles = StyleSheet.create({
   },
 
   //Playlist_style
-  thumbnailImageStyle: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    width: wp('90%'),
-    height: Platform.OS === 'ios' ? hp('18%') : hp('22%'),
-    borderRadius: 3,
-  },
-  total_timingView: {
-    backgroundColor: Colors.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : wp('9.8%'),
-    bottom: vs(5),
-    width: s(30),
-    height: hp('2%'),
-  },
-  videoDescriptionMainContainer: {
-    marginLeft: ms(20),
-    padding: ms(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   videoDescriptionPlaylistView: {
     marginLeft: 10,
     padding: ms(10),
-    width: Platform.OS === 'ios' ? '65%' : '73%',
+    width: Platform.OS === 'ios' ? '65%' : '72%',
     justifyContent: 'space-evenly',
   },
 
@@ -557,6 +453,7 @@ const mapStateToProps = ({
   getCurrentItem,
 });
 export default connect(mapStateToProps, {
+  getVideoPlaylistAction,
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,

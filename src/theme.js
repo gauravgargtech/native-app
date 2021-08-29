@@ -8,6 +8,7 @@ const Colors = {
   blueclr: '#14BEFD',
   containclr: '#38365F',
   grey: '#A1A4B2',
+  IconColor: '#565656',
   snow: '#DDEAF1',
   green: '#00FF00',
   //Tab Background Color

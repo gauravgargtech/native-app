@@ -51,7 +51,7 @@ const Home = ({
         navigation={navigation}
         menu={MenuIcon}
         headerName={'LearnReadApp'}
-        SearchIcon={SearchIcon}
+        search={SearchIcon}
         SignUP={SignUP}
       />
       <Box style={styles.mainContainer}>

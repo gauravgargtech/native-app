@@ -7,10 +7,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
-import {HOME, LOGIN, REGISTER} from '../../navigator/routes';
+import {HOME, SEARCH, LOGIN, REGISTER} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
+const CustomHeader = ({navigation, menu, headerName, search, SignUP}) => {
   const setMenuIcon = menu;
   return (
     <Box style={styles.mainHeaderContainer}>
@@ -31,7 +31,7 @@ const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
             onPress={() => navigation.navigate(HOME)}>
             <Ionicons
               name={'arrow-back-outline'}
-              color={Colors.grey}
+              color={Colors.IconColor}
               size={25}
             />
           </TouchableOpacity>
@@ -50,11 +50,13 @@ const CustomHeader = ({navigation, menu, headerName, SearchIcon, SignUP}) => {
             </SubHeadingText>
           </Box>
           <Box style={{left: ms(20)}}>
-            <Image
-              source={SearchIcon}
-              style={{width: wp('20%'), height: hp('7%')}}
-              resizeMode={'contain'}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate(SEARCH)}>
+              <Image
+                source={search}
+                style={{width: wp('20%'), height: hp('7%')}}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>
           </Box>
         </Box>
       </Box>

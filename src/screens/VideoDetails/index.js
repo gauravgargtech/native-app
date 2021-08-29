@@ -7,7 +7,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header, CustomHeader, Loader} from '../../components/index';
+import {Box, Header} from '../../components/index';
 import {Colors} from '../../theme';
 import VideoDeatilsPage from './widget/VideoDetailsPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -35,8 +35,7 @@ const VideoDetails = ({
     if (isFocused) {
       const func = async () => {
         try {
-          getVideoDetailsAction(videoItem?.id);
-          getVideoPlaylistAction(videoItem?.id);
+          getVideoDetailsAction(videoItem?.videoData?.id);
         } catch (e) {
           alert('error while get video Details');
         }
@@ -49,11 +48,7 @@ const VideoDetails = ({
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
       {/*<CustomHeader navigation={navigation} headerName={'LearnReadApp'} />*/}
       <Box style={styles.mainContainer}>
-        {getVideo_PlaylistData?.loading ? (
-          <Loader />
-        ) : (
-          <VideoDeatilsPage navigation={navigation} route={route} />
-        )}
+        <VideoDeatilsPage navigation={navigation} route={route} />
       </Box>
     </Box>
   );
@@ -66,7 +61,7 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {getVideoDetailsData, getVideo_PlaylistData},
+  app: {getVideoDetailsData, getVideo_PlaylistData, getCurrentItem},
 }) => ({
   getVideoDetailsData,
   getVideo_PlaylistData,

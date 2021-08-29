@@ -8,6 +8,7 @@ const initialState = {
   addCommentData: {data: [], loading: false},
   getCommentData:[],
   getCurrentItem: {},
+  getSearchData:{list:[],loading:false}
 };
 
 const reducers = (state = initialState, action) => {
@@ -36,6 +37,10 @@ const reducers = (state = initialState, action) => {
       return {...state, addCommentData: {data: action.payload, loading: false}};
     case types.GET_VIDEO_COMMENT_SUCCESS:
       return {...state, getCommentData: action.payload};
+    case types.GET_SEARCH_START:
+      return {...state, getSearchData: {loading: true}};
+    case types.GET_SEARCH_SUCCESS:
+      return {...state, getSearchData: {list: action.payload, loading: false}};
     case types.GET_CURRENT_VIDEO_PLAYER_TIME:
       return {...state, getCurrentItem: action.payload};
     default:

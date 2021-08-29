@@ -79,7 +79,7 @@ export const addCommentAction =
   };
 
 export const getCommentAction =
-  (videoID) =>
+  videoID =>
   (dispatch, getState, {api}) => {
     const getPromise = async () => {
       const {data} = await api.getComment(videoID);
@@ -97,5 +97,18 @@ export const getCurrentVideo_Action =
     return dispatch({
       type: types.GET_CURRENT_VIDEO_PLAYER_TIME,
       payload: getCurrentVideoData,
+    });
+  };
+
+export const getSearchAction =
+  searchText =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getSearch(searchText);
+      return data;
+    };
+    return dispatch({
+      type: types.GET_SEARCH,
+      payload: getPromise(),
     });
   };

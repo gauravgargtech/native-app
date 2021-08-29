@@ -13,6 +13,9 @@ const addComment_Api = (videoID, comment, userID) =>
   `${Baseurl}/api/video/comment?video_id=${videoID}&comment=${comment}&user_id=${userID}`;
 const getComment_API = videoID => `${Baseurl}/api/video/comments/${videoID}`;
 
+const getSearch_API = searchText =>
+  `${Baseurl}/api/video/search?q=${searchText}`;
+
 const postApi = (url, values, options) => {
   console.log('url and value', url, values);
   return axios.post(url, values, {
@@ -49,6 +52,7 @@ const getVideoPlaylist = videoID => getApi(getVideoPlaylist_API(videoID));
 const addComment = (videoID, comment, userID) =>
   postApi(addComment_Api(videoID, comment, userID));
 const getComment = videoID => getApi(getComment_API(videoID));
+const getSearch = searchText => getApi(getSearch_API(searchText));
 export default {
   getCategory,
   getTags,
@@ -57,4 +61,5 @@ export default {
   getVideoPlaylist,
   addComment,
   getComment,
+  getSearch,
 };
