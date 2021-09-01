@@ -12,10 +12,7 @@ import {Colors} from '../../theme';
 import VideoDeatilsPage from './widget/VideoDetailsPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
-import {
-  getVideoDetailsAction,
-  getVideoPlaylistAction,
-} from '../../store/actions';
+import {getVideoDetailsAction} from '../../store/actions';
 import {connect} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 
@@ -24,12 +21,8 @@ const VideoDetails = ({
   route,
   getVideoDetailsAction,
   getVideoDetailsData,
-  getVideoPlaylistAction,
-  getVideo_PlaylistData,
 }) => {
   const {videoItem} = route.params ?? {};
-  console.log('get Video Details ID::', videoItem?.id);
-  console.log('get Video getVideo_PlaylistData::', getVideo_PlaylistData);
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
@@ -60,13 +53,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
 });
-const mapStateToProps = ({
-  app: {getVideoDetailsData, getVideo_PlaylistData, getCurrentItem},
-}) => ({
+const mapStateToProps = ({app: {getVideoDetailsData}}) => ({
   getVideoDetailsData,
-  getVideo_PlaylistData,
 });
 export default connect(mapStateToProps, {
   getVideoDetailsAction,
-  getVideoPlaylistAction,
 })(VideoDetails);

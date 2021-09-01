@@ -16,7 +16,13 @@ import {Colors, fontSizes, fonts} from '../../../theme';
 import {SearchIcon, CloseIcon_large} from '../../../assets/images';
 import {HOME, VIDEO_DETAILS} from '../../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {getSearchAction, getCurrentVideo_Action} from '../../../store/actions';
+import {
+  getSearchAction,
+  getCurrentVideo_Action,
+  getCurrentTime_Action,
+  getCommentAction,
+  getVideoPlaylistAction,
+} from '../../../store/actions';
 import {connect} from 'react-redux';
 
 const SearchPage = ({
@@ -24,7 +30,13 @@ const SearchPage = ({
   getSearchAction,
   getSearchData,
   getCurrentVideo_Action,
-  getCurrentItem,
+  getCurrentVideo,
+  getCurrentTime_Action,
+  getCurrentVideoTime,
+  getCommentAction,
+  getCommentData,
+  getVideoPlaylistAction,
+  getVideo_PlaylistData,
 }) => {
   const [search, setSearch] = useState('');
   const currentTime = 0;
@@ -53,13 +65,19 @@ const SearchPage = ({
     });
 
     try {
-      const getCurrentVideoData = {
+      const getPlayerVideo = {
         videoData: searchItem,
+      };
+      const getPlayerVideoTime = {
         currentTime: [{currentTime: currentTime}],
       };
-      await getCurrentVideo_Action(getCurrentVideoData);
+      await getCurrentVideo_Action(getPlayerVideo);
+      await getCurrentTime_Action(getPlayerVideoTime);
+
+      await getCommentAction(getCurrentVideo?.videoData?.id);
+      await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
     } catch (e) {
-      console.log('ERRORS AT GET_AUDIO_DATA', e);
+      console.log('ERRORS AT GET_VIDEO_DATA', e);
     }
   };
 
@@ -142,11 +160,25 @@ const styles = StyleSheet.create({
     width: wp('68%'),
   },
 });
-const mapStateToProps = ({app: {getSearchData, getCurrentItem}}) => ({
+const mapStateToProps = ({
+  app: {
+    getSearchData,
+    getCurrentVideo,
+    getCurrentVideoTime,
+    getCommentData,
+    getVideo_PlaylistData,
+  },
+}) => ({
   getSearchData,
-  getCurrentItem,
+  getCurrentVideo,
+  getCurrentVideoTime,
+  getCommentData,
+  getVideo_PlaylistData,
 });
 export default connect(mapStateToProps, {
   getSearchAction,
   getCurrentVideo_Action,
+  getCurrentTime_Action,
+  getCommentAction,
+  getVideoPlaylistAction,
 })(SearchPage);

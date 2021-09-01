@@ -92,11 +92,20 @@ export const getCommentAction =
   };
 
 export const getCurrentVideo_Action =
-  getCurrentVideoData =>
+  getCurrentVideo =>
+  (dispatch, getState, {api}) => {
+    return dispatch({
+      type: types.GET_CURRENT_VIDEO,
+      payload: getCurrentVideo,
+    });
+  };
+
+export const getCurrentTime_Action =
+  getCurrentVideoTime =>
   (dispatch, getState, {api}) => {
     return dispatch({
       type: types.GET_CURRENT_VIDEO_PLAYER_TIME,
-      payload: getCurrentVideoData,
+      payload: getCurrentVideoTime,
     });
   };
 
@@ -109,6 +118,32 @@ export const getSearchAction =
     };
     return dispatch({
       type: types.GET_SEARCH,
+      payload: getPromise(),
+    });
+  };
+
+export const getTagsData_Action =
+  videoID =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getTagsData(videoID);
+      return data;
+    };
+    return dispatch({
+      type: types.GET_TAGS_DATA,
+      payload: getPromise(),
+    });
+  };
+
+export const getCategoryData_Action =
+  videoID =>
+  (dispatch, getState, {api}) => {
+    const getPromise = async () => {
+      const {data} = await api.getCategoryData(videoID);
+      return data;
+    };
+    return dispatch({
+      type: types.GET_CATEGORY_DATA,
       payload: getPromise(),
     });
   };

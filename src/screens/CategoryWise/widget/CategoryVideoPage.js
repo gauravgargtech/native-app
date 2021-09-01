@@ -20,61 +20,50 @@ import {
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
-import {
-  getCurrentVideo_Action,
-  getCurrentTime_Action,
-  getCommentAction,
-  getVideoPlaylistAction,
-} from '../../../store/actions';
+// import {
+//   getCurrentVideo_Action,
+//   getCurrentTime_Action,
+//   getCommentAction,
+//   getVideoPlaylistAction,
+// } from '../../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../../assets/images';
 import {VIDEO_DETAILS} from '../../../navigator/routes';
 const ChannelIconUrl = imageURL => `https://kid.greatequip.com${imageURL}`;
 
-const VideoList = ({
-  navigation,
-  getVideoList,
-  getCurrentVideo_Action,
-  getCurrentVideo,
-  getCurrentTime_Action,
-  getCurrentVideoTime,
-  getCommentAction,
-  getCommentData,
-  getVideoPlaylistAction,
-  getVideo_PlaylistData,
-}) => {
-  const currentTime = 0;
-  const onClickVideo = async ({videoItem}) => {
-    navigation.navigate(VIDEO_DETAILS, {
-      videoItem: videoItem,
-    });
-
-    try {
-      const getPlayerVideo = {
-        videoData: videoItem,
-      };
-      const getPlayerVideoTime = {
-        currentTime: [{currentTime: currentTime}],
-      };
-      await getCurrentVideo_Action(getPlayerVideo);
-      await getCurrentTime_Action(getPlayerVideoTime);
-
-      await getCommentAction(getCurrentVideo?.videoData?.id);
-      await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
-    } catch (e) {
-      console.log('ERRORS AT GET_VIDEO_DATA', e);
-    }
-  };
+const CategoryVideoPage = ({navigation, getCategoryDataList}) => {
+  // const currentTime = 0;
+  // const onClickVideo = async ({videoItem}) => {
+  //   navigation.navigate(VIDEO_DETAILS, {
+  //     videoItem: videoItem,
+  //   });
+  //
+  //   try {
+  //     const getPlayerVideo = {
+  //       videoData: videoItem,
+  //     };
+  //     const getPlayerVideoTime = {
+  //       currentTime: [{currentTime: currentTime}],
+  //     };
+  //     await getCurrentVideo_Action(getPlayerVideo);
+  //     await getCurrentTime_Action(getPlayerVideoTime);
+  //
+  //     await getCommentAction(getCurrentVideo?.videoData?.id);
+  //     await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
+  //   } catch (e) {
+  //     console.log('ERRORS AT GET_VIDEO_DATA', e);
+  //   }
+  // };
   return (
     <Box
       flex={0.9}
       justifyContent={'flex-start'}
       style={{paddingHorizontal: ms(10)}}>
       <Box p={ms(5)}>
-        {getVideoList.map((videoItem, index) => {
+        {getCategoryDataList.map((videoItem, index) => {
           return (
             <Box>
-              <TouchableOpacity onPress={() => onClickVideo({videoItem})}>
+              <TouchableOpacity onPress={() => console.log('Category Clicked')}>
                 <Thumbnail videoItem={videoItem} />
               </TouchableOpacity>
             </Box>
@@ -119,24 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 90 / 2,
   },
 });
-const mapStateToProps = ({
-  app: {
-    getVideoList,
-    getCurrentVideo,
-    getCurrentVideoTime,
-    getCommentData,
-    getVideo_PlaylistData,
-  },
-}) => ({
-  getVideoList,
-  getCurrentVideo,
-  getCurrentVideoTime,
-  getCommentData,
-  getVideo_PlaylistData,
+const mapStateToProps = ({app: {getCategoryDataList}}) => ({
+    getCategoryDataList,
 });
-export default connect(mapStateToProps, {
-  getCurrentVideo_Action,
-  getCurrentTime_Action,
-  getCommentAction,
-  getVideoPlaylistAction,
-})(VideoList);
+export default connect(mapStateToProps, {})(CategoryVideoPage);

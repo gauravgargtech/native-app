@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -45,6 +45,7 @@ import {
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
+  getCurrentTime_Action,
 } from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -59,13 +60,17 @@ const VideoDeatilsPage = ({
   addCommentAction,
   addCommentData,
   getCurrentVideo_Action,
-  getCurrentItem,
+  getCurrentVideo,
+  getCurrentTime_Action,
+  getCurrentVideoTime,
   getCommentAction,
   getCommentData,
 }) => {
   const {videoItem} = route.params ?? {};
   const videoRef = useRef(null);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(
+    getCurrentVideo?.videoData?.total_time,
+  );
   const [commentText, setCommentText] = useState(null);
   const [isCommentfocus, setIsCommentFocus] = useState(false);
   const [state, setState] = useState({
@@ -73,22 +78,94 @@ const VideoDeatilsPage = ({
     play: false,
     showControls: true,
   });
+
   useEffect(() => {
-    getCommentAction(getCurrentItem?.videoData?.id);
-    getVideoPlaylistAction(getCurrentItem?.videoData?.id);
-  }, [getCurrentItem]);
+    showPlayList();
+  }, [getCurrentVideo]);
 
-  console.log('current item', getCurrentItem);
+  console.log('current item ID', getCurrentVideo?.videoData?.id);
 
-  function onEnd() {
-    getCurrentItem.currentTime[0].currentTime = duration;
-    const updateTime = getCurrentItem?.currentTime?.map(item => {
+  // useMemo(() => {
+  //   const updatePlaylist = getVideo_PlaylistData?.playList?.filter(
+  //     playlistItem => {
+  //       if (playlistItem?.id !== getCurrentVideo?.videoData?.id) {
+  //         return playlistItem;
+  //       }
+  //     },
+  //   );
+  //   console.log(
+  //     'update Play list',
+  //     updatePlaylist?.map(item => {
+  //       return item?.id;
+  //     }),
+  //   );
+  // }, [getCurrentVideo]);
+
+  const showPlayList = () => {
+    // let updatedItems = getVideo_PlaylistData?.playList?.map(playlistItem => {
+    //   if (playlistItem?.id !== getCurrentVideo?.videoData?.id) {
+    //     return playlistItem;
+    //   }
+    // });
+    // console.log('updated items', updatedItems);
+    // getVideoPlaylistAction({...getVideo_PlaylistData, playList: updatedItems});
+    // console.log('getVideo_PlaylistData', getVideo_PlaylistData);
+  };
+
+  const onEnd = () => {
+    console.log('Duration', duration);
+    getCurrentVideoTime.currentTime[0].currentTime = duration;
+    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
       return {...item};
     });
-    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+
+    const allNext = getVideo_PlaylistData?.playList?.map(
+      (all, index, element) => {
+        const current = getVideo_PlaylistData?.playList?.filter(
+          PlaylistItem => {
+            if (PlaylistItem?.title === getCurrentVideo?.videoData?.title) {
+              return PlaylistItem;
+            }
+          },
+        );
+        console.log('Current video', current);
+        if (all?.title === current[0]?.title) {
+          return element[index + 1];
+        }
+      },
+    );
+    console.log('All next video', allNext);
+    const nextOne = allNext?.filter(item => {
+      if (item !== undefined) {
+        return item;
+      }
+    });
+    console.log('one next video', nextOne);
+    const currentTime = 0;
+    try {
+      if (nextOne[0] != undefined) {
+        const getPlayerVideo = {
+          videoData: nextOne[0],
+        };
+        const getPlayerVideoTime = {
+          currentTime: [{currentTime: currentTime}],
+        };
+        getCurrentVideo_Action(getPlayerVideo);
+        getCurrentTime_Action(getPlayerVideoTime);
+
+        getCommentAction(getCurrentVideo?.videoData?.id);
+        getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
+      } else {
+        Alert.alert('No Available Next Episodes.');
+      }
+    } catch (e) {
+      console.log('ERRORS AT GET_NEXT_VIDEO_DATA', e);
+    }
+
     // setState({...state, play: false});
     // videoRef.current.seek(0);
-  }
+  };
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -108,7 +185,7 @@ const VideoDeatilsPage = ({
   }
 
   const onLoad = (data: OnLoadData) => {
-    const hms = videoItem?.total_time;
+    const hms = getCurrentVideo?.videoData?.total_time;
     const a = hms.split('.');
 
     if (a.length == 2) {
@@ -124,11 +201,13 @@ const VideoDeatilsPage = ({
   };
 
   const onProgress = data => {
-    getCurrentItem.currentTime[0].currentTime = Math.round(data.currentTime);
-    const updateTime = getCurrentItem?.currentTime?.map(item => {
+    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+      data.currentTime,
+    );
+    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
       return {...item};
     });
-    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     // setState(s => ({
     //   ...s,
     //   currentTime: data.currentTime,
@@ -156,40 +235,47 @@ const VideoDeatilsPage = ({
   }
 
   const skipBackward = () => {
-    videoRef.current.seek(getCurrentItem?.currentTime[0]?.currentTime - 10);
+    videoRef.current.seek(
+      getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
+    );
     // videoRef.current.seek(state.currentTime - 10);
     // setState({...state, currentTime: state.currentTime - 10});
   };
 
   const skipForward = () => {
-    videoRef.current.seek(getCurrentItem?.currentTime[0]?.currentTime + 10);
-    getCurrentItem.currentTime[0].currentTime = Math.round(
-      getCurrentItem?.currentTime[0]?.currentTime + 10,
+    videoRef.current.seek(
+      getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
     );
-    const updateTime = getCurrentItem?.currentTime?.map(item => {
+    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+      getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
+    );
+    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
       return {...item};
     });
-    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     // videoRef.current.seek(state.currentTime + 10);
     // setState({...state, currentTime: state.currentTime + 10});
   };
 
   const onSeek = (seek: OnSeekData) => {
     videoRef?.current.seek(seek);
-    getCurrentItem.currentTime[0].currentTime = Math.round(seek);
-    const updateTime = getCurrentItem?.currentTime?.map(item => {
+    getCurrentVideoTime.currentTime[0].currentTime = Math.round(seek);
+    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
       return {...item};
     });
-    getCurrentVideo_Action({...getCurrentItem, currentTime: updateTime});
+    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     console.log(
       'on slide seek time ::',
-      getCurrentItem?.currentTime[0]?.currentTime,
+      getCurrentVideoTime?.currentTime[0]?.currentTime,
     );
     // videoRef.current.seek(data.seekTime);
     // setState({...state, currentTime: data.seekTime});
   };
   const onSeeking = currentVideoTime =>
-    getCurrentVideo_Action({...getCurrentItem, currentTime: currentVideoTime});
+    getCurrentTime_Action({
+      ...getCurrentVideoTime,
+      currentTime: currentVideoTime,
+    });
 
   function showControls() {
     state.showControls
@@ -205,7 +291,7 @@ const VideoDeatilsPage = ({
   };
 
   const AddComment = async () => {
-    const videoID = getCurrentItem?.videoData?.id;
+    const videoID = getCurrentVideo?.videoData?.id;
     const comment = commentText;
     const userID = 0;
     if (comment != null) {
@@ -218,16 +304,28 @@ const VideoDeatilsPage = ({
   const currentTime = 0;
   const onClickVideo = async ({playlistItem}) => {
     try {
-      const getCurrentVideoData = {
+      const getPlayerVideo = {
         videoData: playlistItem,
+      };
+      const getPlayerVideoTime = {
         currentTime: [{currentTime: currentTime}],
       };
-      await getCurrentVideo_Action(getCurrentVideoData);
+      await getCurrentVideo_Action(getPlayerVideo);
+      await getCurrentTime_Action(getPlayerVideoTime);
+
+      await getCommentAction(getCurrentVideo?.videoData?.id);
+      await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
     } catch (e) {
-      console.log('ERRORS AT GET_AUDIO_DATA', e);
+      console.log('ERRORS AT GET_VIDEO_DATA', e);
     }
-    getCommentAction(getCurrentItem?.videoData?.id);
-    getVideoPlaylistAction(getCurrentItem?.videoData?.id);
+  };
+
+  const getSliderValue = () => {
+    let slider;
+    getCurrentVideoTime?.currentTime?.map(item => {
+      slider = item.currentTime;
+    });
+    return {slider: slider};
   };
 
   return (
@@ -241,7 +339,7 @@ const VideoDeatilsPage = ({
             <Videoplayer
               showControls={showControls}
               videoRef={videoRef}
-              videoItem={getCurrentItem?.videoData}
+              videoItem={getCurrentVideo?.videoData}
               fullscreen={state.fullscreen}
               onLoad={onLoad}
               onProgress={onProgress}
@@ -252,7 +350,7 @@ const VideoDeatilsPage = ({
               handlePlayPause={handlePlayPause}
               skipBackward={skipBackward}
               skipForward={skipForward}
-              currentTime={getCurrentItem?.currentTime[0]?.currentTime}
+              currentTime={getSliderValue()?.slider}
               duration={duration}
               onSeek={onSeek}
               onSeeking={onSeeking}
@@ -263,12 +361,12 @@ const VideoDeatilsPage = ({
           <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
             <Image
               source={{
-                uri: ChannelIconUrl(getCurrentItem?.videoData?.channel_icon),
+                uri: ChannelIconUrl(getCurrentVideo?.videoData?.channel_icon),
               }}
               style={styles.channelIcon}
             />
             <Box style={styles.videoDescriptionView}>
-              <VideoDescription videoItem={getCurrentItem?.videoData} />
+              <VideoDescription videoItem={getCurrentVideo?.videoData} />
             </Box>
           </Box>
           <Box p={ms(20)}>
@@ -445,16 +543,24 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {getVideo_PlaylistData, addCommentData, getCommentData, getCurrentItem},
+  app: {
+    getVideo_PlaylistData,
+    addCommentData,
+    getCommentData,
+    getCurrentVideo,
+    getCurrentVideoTime,
+  },
 }) => ({
   getVideo_PlaylistData,
   addCommentData,
   getCommentData,
-  getCurrentItem,
+  getCurrentVideo,
+  getCurrentVideoTime,
 });
 export default connect(mapStateToProps, {
   getVideoPlaylistAction,
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
+  getCurrentTime_Action,
 })(VideoDeatilsPage);

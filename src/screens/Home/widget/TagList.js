@@ -7,9 +7,28 @@ import {
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
+import {getTagsData_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
-const TagList = ({navigation, getTagsData}) => {
-  const [selected, setSelected] = useState('ALL');
+import {TAGS_WISE} from '../../../navigator/routes';
+
+const TagList = ({
+  navigation,
+  getTagsData,
+  getTagsData_Action,
+  getTagsDataList,
+}) => {
+  const [selected, setSelected] = useState('');
+
+  const onClickTags = async ({tagsItem}) => {
+    setSelected(tagsItem.text);
+    navigation.navigate(TAGS_WISE, {tagsItem: tagsItem});
+    try {
+      await getTagsData_Action(tagsItem?.id);
+      console.log('get Tags Data List', getTagsDataList);
+    } catch (e) {
+      console.log('ERRORS AT GET_TAGS_DATA', e);
+    }
+  };
 
   return (
     <Box flex={0.1} justifyContent={'flex-start'}>
@@ -20,7 +39,7 @@ const TagList = ({navigation, getTagsData}) => {
           flexDirection={'row'}>
           {getTagsData?.list?.map(tagsItem => {
             return (
-              <TouchableOpacity onPress={() => setSelected(tagsItem.text)}>
+              <TouchableOpacity onPress={() => onClickTags({tagsItem})}>
                 <Box
                   style={[
                     styles.tagView,
@@ -59,5 +78,8 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(7),
   },
 });
-const mapStateToProps = ({app: {getTagsData}}) => ({getTagsData});
-export default connect(mapStateToProps, {})(TagList);
+const mapStateToProps = ({app: {getTagsData, getTagsDataList}}) => ({
+  getTagsData,
+  getTagsDataList,
+});
+export default connect(mapStateToProps, {getTagsData_Action})(TagList);
