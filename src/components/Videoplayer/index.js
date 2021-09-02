@@ -11,11 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Video, {
-  OnSeekData,
-  OnLoadData,
-  OnProgressData,
-} from 'react-native-video';
+import Video, {OnSeekData, OnLoadData} from 'react-native-video';
 import {FullscreenClose, FullscreenOpen} from '../../assets/icons';
 import Orientation from 'react-native-orientation-locker';
 import {
@@ -46,6 +42,7 @@ const Videoplayer = ({
   const [showControls, setShowControls] = useState(true);
 
   const videoUrl = getCurrentVideo?.videoData?.url;
+  console.log('video url:', videoUrl);
 
   const onEnd = () => {
     console.log('Duration', duration);
@@ -87,8 +84,8 @@ const Videoplayer = ({
         getCurrentVideo_Action(getPlayerVideo);
         getCurrentTime_Action(getPlayerVideoTime);
 
-        getCommentAction(getCurrentVideo?.videoData?.id);
-        getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
+        getCommentAction(nextOne[0]?.id);
+        getVideoPlaylistAction(nextOne[0]?.id);
       } else {
         Alert.alert('No Available Next Episodes.');
       }
@@ -127,6 +124,7 @@ const Videoplayer = ({
         .asSeconds();
       setDuration(Math.floor(total_duration));
     }
+    // setDuration(Math.round(data.duration));
     // videoRef?.current?.presentFullscreenPlayer();
   };
 
@@ -154,7 +152,6 @@ const Videoplayer = ({
     }
   }
   function handlePlayPause() {
-    // If playing, pause and show controls immediately.
     if (play) {
       // setState({...state, play: false, showControls: true});
       setPlay(false);
@@ -171,13 +168,13 @@ const Videoplayer = ({
     videoRef.current.seek(
       getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
     );
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-      getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
-    );
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+    //   getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
+    // );
+    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+    //   return {...item};
+    // });
+    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     // videoRef.current.seek(state.currentTime - 10);
     // setState({...state, currentTime: state.currentTime - 10});
   };
@@ -186,28 +183,28 @@ const Videoplayer = ({
     videoRef.current.seek(
       getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
     );
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-      getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
-    );
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+    //   getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
+    // );
+    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+    //   return {...item};
+    // });
+    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     // videoRef.current.seek(state.currentTime + 10);
     // setState({...state, currentTime: state.currentTime + 10});
   };
 
   const onSeek = (seek: OnSeekData) => {
     videoRef?.current.seek(seek);
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(seek);
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    console.log(
-      'on slide seek time ::',
-      getCurrentVideoTime?.currentTime[0]?.currentTime,
-    );
+    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(seek);
+    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+    //   return {...item};
+    // });
+    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+    // console.log(
+    //   'on slide seek time ::',
+    //   getCurrentVideoTime?.currentTime[0]?.currentTime,
+    // );
     // videoRef.current.seek(data.seekTime);
     // setState({...state, currentTime: data.seekTime});
   };
@@ -229,7 +226,7 @@ const Videoplayer = ({
     return {slider: slider};
   };
   return (
-    <TouchableWithoutFeedback onPress={showControls}>
+    <TouchableWithoutFeedback onPress={visibleControls}>
       <Box height={fullscreen ? hp('51%') : hp('30%')}>
         <Video
           ref={ref => (videoRef.current = ref)}
@@ -245,7 +242,7 @@ const Videoplayer = ({
           paused={!play}
         />
         {console.log('Full screen', fullscreen)}
-        {visibleControls && (
+        {showControls && (
           <View style={styles.controlOverlay}>
             <TouchableOpacity
               onPress={handleFullscreen}

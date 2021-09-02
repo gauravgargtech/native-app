@@ -1,12 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-  SafeAreaView,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {StyleSheet, StatusBar, SafeAreaView} from 'react-native';
 import {Box, Header} from '../../components/index';
 import {Colors} from '../../theme';
 import VideoDeatilsPage from './widget/VideoDetailsPage';

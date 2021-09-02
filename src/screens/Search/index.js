@@ -4,10 +4,8 @@ import {
   ScrollView,
   StatusBar,
   SafeAreaView,
-  Platform,
-  KeyboardAvoidingView,
 } from 'react-native';
-import {Box, Header, CustomHeader, Loader} from '../../components/index';
+import {Box} from '../../components/index';
 import {Colors} from '../../theme';
 import SearchPage from './widget/SearchPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';

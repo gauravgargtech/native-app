@@ -4486,6 +4486,11 @@ jetifier@^2.0.0:
   resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-2.0.0.tgz#699391367ca1fe7bc4da5f8bf691eb117758e4cb"
   integrity sha512-J4Au9KuT74te+PCCCHKgAjyLlEa+2VyIAEPNCdE5aNkAJ6FAJcAqcdzEkSnzNksIa9NkGmC4tPiClk2e7tCJuQ==
 
+jetify@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jetify/-/jetify-1.0.2.tgz#f0c8558d97abeecd8cd374ecb6a301afdef4a7de"
+  integrity sha512-LmeaeeM5l37oZRs6O0O0jMafEw7ra1++YJN2tnbCPnfjulnXryMlQKRib/4e64fJ2rzOWomyDsSFjD+7ZSXyKg==
+
 joi@^17.2.1:
   version "17.4.2"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.2.tgz#02f4eb5cf88e515e614830239379dcbbe28ce7f7"

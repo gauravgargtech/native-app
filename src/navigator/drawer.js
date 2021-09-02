@@ -64,7 +64,11 @@ const DrawerNavigator = ({
   return (
     <Drawer.Navigator
       drawerContent={props => (
-        <CustomDrawerContent {...props} getCategoryData={getCategoryData} getCategoryData_Action={getCategoryData_Action} />
+        <CustomDrawerContent
+          {...props}
+          getCategoryData={getCategoryData}
+          getCategoryData_Action={getCategoryData_Action}
+        />
       )}
       screenOptions={{
         headerShown: false,
@@ -83,4 +87,7 @@ const DrawerNavigator = ({
   );
 };
 const mapStateToProps = ({app: {getCategoryData}}) => ({getCategoryData});
-export default connect(mapStateToProps, {getCategoryAction,getCategoryData_Action})(DrawerNavigator);
+export default connect(mapStateToProps, {
+  getCategoryAction,
+  getCategoryData_Action,
+})(DrawerNavigator);

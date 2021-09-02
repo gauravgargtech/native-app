@@ -16,6 +16,7 @@
     "@types/react-native-video": "3.1.5",
     "axios": "^0.21.1",
     "jetifier": "^2.0.0",
+    "jetify": "^1.0.2",
     "moment": "^2.29.1",
     "react": "17.0.2",
     "react-native": "0.65.0",

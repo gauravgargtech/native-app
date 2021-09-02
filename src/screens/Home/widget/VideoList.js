@@ -1,19 +1,6 @@
 import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  Image,
-  ImageBackground,
-  View,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
-import {
-  Box,
-  Thumbnail,
-  VideoDescription,
-  SubHeadingText,
-  PlainText,
-} from '../../../components';
+import {StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {Box, Thumbnail} from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -27,9 +14,7 @@ import {
   getVideoPlaylistAction,
 } from '../../../store/actions';
 import {connect} from 'react-redux';
-import {ProfileAvtar} from '../../../assets/images';
 import {VIDEO_DETAILS} from '../../../navigator/routes';
-const ChannelIconUrl = imageURL => `https://kid.greatequip.com${imageURL}`;
 
 const VideoList = ({
   navigation,
@@ -59,8 +44,8 @@ const VideoList = ({
       await getCurrentVideo_Action(getPlayerVideo);
       await getCurrentTime_Action(getPlayerVideoTime);
 
-      await getCommentAction(getCurrentVideo?.videoData?.id);
-      await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
+      await getCommentAction(videoItem?.id);
+      await getVideoPlaylistAction(videoItem.id);
     } catch (e) {
       console.log('ERRORS AT GET_VIDEO_DATA', e);
     }

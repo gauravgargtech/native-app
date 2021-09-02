@@ -74,8 +74,8 @@ const SearchPage = ({
       await getCurrentVideo_Action(getPlayerVideo);
       await getCurrentTime_Action(getPlayerVideoTime);
 
-      await getCommentAction(getCurrentVideo?.videoData?.id);
-      await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
+      await getCommentAction(searchItem?.id);
+      await getVideoPlaylistAction(searchItem?.id);
     } catch (e) {
       console.log('ERRORS AT GET_VIDEO_DATA', e);
     }
