@@ -67,23 +67,27 @@ const VideoDeatilsPage = ({
   getCommentData,
 }) => {
   const {videoItem} = route.params ?? {};
-  const videoRef = useRef(null);
-  const [duration, setDuration] = useState(
-    getCurrentVideo?.videoData?.total_time,
-  );
+  // const videoRef = useRef(null);
+  // const [duration, setDuration] = useState(
+  //   getCurrentVideo?.videoData?.total_time,
+  // );
+  // const [fullscreen, setFullscreen] = useState(false);
+  // const [play, setPlay] = useState(true);
+  // const [showControls, setShowControls] = useState(true);
+
   const [commentText, setCommentText] = useState(null);
   const [isCommentfocus, setIsCommentFocus] = useState(false);
-  const [state, setState] = useState({
-    fullscreen: false,
-    play: false,
-    showControls: true,
-  });
-
-  useEffect(() => {
-    showPlayList();
-  }, [getCurrentVideo]);
+  // const [state, setState] = useState({
+  //   fullscreen: false,
+  //   play: false,
+  //   showControls: true,
+  // });
 
   console.log('current item ID', getCurrentVideo?.videoData?.id);
+
+  const Player = useMemo(() => {
+    return Videoplayer;
+  }, [getCurrentVideo]);
 
   // useMemo(() => {
   //   const updatePlaylist = getVideo_PlaylistData?.playList?.filter(
@@ -112,176 +116,174 @@ const VideoDeatilsPage = ({
     // console.log('getVideo_PlaylistData', getVideo_PlaylistData);
   };
 
-  const onEnd = () => {
-    console.log('Duration', duration);
-    getCurrentVideoTime.currentTime[0].currentTime = duration;
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-
-    const allNext = getVideo_PlaylistData?.playList?.map(
-      (all, index, element) => {
-        const current = getVideo_PlaylistData?.playList?.filter(
-          PlaylistItem => {
-            if (PlaylistItem?.title === getCurrentVideo?.videoData?.title) {
-              return PlaylistItem;
-            }
-          },
-        );
-        console.log('Current video', current);
-        if (all?.title === current[0]?.title) {
-          return element[index + 1];
-        }
-      },
-    );
-    console.log('All next video', allNext);
-    const nextOne = allNext?.filter(item => {
-      if (item !== undefined) {
-        return item;
-      }
-    });
-    console.log('one next video', nextOne);
-    const currentTime = 0;
-    try {
-      if (nextOne[0] != undefined) {
-        const getPlayerVideo = {
-          videoData: nextOne[0],
-        };
-        const getPlayerVideoTime = {
-          currentTime: [{currentTime: currentTime}],
-        };
-        getCurrentVideo_Action(getPlayerVideo);
-        getCurrentTime_Action(getPlayerVideoTime);
-
-        getCommentAction(getCurrentVideo?.videoData?.id);
-        getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
-      } else {
-        Alert.alert('No Available Next Episodes.');
-      }
-    } catch (e) {
-      console.log('ERRORS AT GET_NEXT_VIDEO_DATA', e);
-    }
-
-    // setState({...state, play: false});
-    // videoRef.current.seek(0);
-  };
-
-  const [isFullScreen, setIsFullScreen] = useState(false);
-
-  useEffect(() => {
-    Orientation.addOrientationListener(handleOrientation);
-
-    return () => {
-      Orientation.removeOrientationListener(handleOrientation);
-    };
-  }, []);
-
-  function handleOrientation(orientation: string) {
-    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
-      ? (setState(s => ({...s, fullscreen: true})), StatusBar.setHidden(true))
-      : (setState(s => ({...s, fullscreen: false})),
-        StatusBar.setHidden(false));
-  }
-
-  const onLoad = (data: OnLoadData) => {
-    const hms = getCurrentVideo?.videoData?.total_time;
-    const a = hms.split('.');
-
-    if (a.length == 2) {
-      const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
-      setDuration(Math.floor(total_duration));
-    } else {
-      const total_duration = moment
-        .duration(`${a[0]}:${a[1]}:${a[2]}`)
-        .asSeconds();
-      setDuration(Math.floor(total_duration));
-    }
-    // videoRef?.current?.presentFullscreenPlayer();
-  };
-
-  const onProgress = data => {
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-      data.currentTime,
-    );
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    // setState(s => ({
-    //   ...s,
-    //   currentTime: data.currentTime,
-    // }));
-  };
-
-  function handleFullscreen() {
-    if (Platform.OS == 'ios') {
-      videoRef?.current?.presentFullscreenPlayer();
-    } else {
-      state.fullscreen
-        ? Orientation.unlockAllOrientations()
-        : Orientation.lockToLandscapeLeft();
-    }
-  }
-  function handlePlayPause() {
-    // If playing, pause and show controls immediately.
-    if (state.play) {
-      setState({...state, play: false, showControls: true});
-      return;
-    }
-
-    setState({...state, play: true});
-    setTimeout(() => setState(s => ({...s, showControls: false})), 2000);
-  }
-
-  const skipBackward = () => {
-    videoRef.current.seek(
-      getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
-    );
-    // videoRef.current.seek(state.currentTime - 10);
-    // setState({...state, currentTime: state.currentTime - 10});
-  };
-
-  const skipForward = () => {
-    videoRef.current.seek(
-      getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
-    );
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-      getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
-    );
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    // videoRef.current.seek(state.currentTime + 10);
-    // setState({...state, currentTime: state.currentTime + 10});
-  };
-
-  const onSeek = (seek: OnSeekData) => {
-    videoRef?.current.seek(seek);
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(seek);
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    console.log(
-      'on slide seek time ::',
-      getCurrentVideoTime?.currentTime[0]?.currentTime,
-    );
-    // videoRef.current.seek(data.seekTime);
-    // setState({...state, currentTime: data.seekTime});
-  };
-  const onSeeking = currentVideoTime =>
-    getCurrentTime_Action({
-      ...getCurrentVideoTime,
-      currentTime: currentVideoTime,
-    });
-
-  function showControls() {
-    state.showControls
-      ? setState({...state, showControls: false})
-      : setState({...state, showControls: true});
-  }
+  // const onEnd = () => {
+  //   console.log('Duration', duration);
+  //   getCurrentVideoTime.currentTime[0].currentTime = duration;
+  //   const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+  //     return {...item};
+  //   });
+  //   getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+  //
+  //   const allNext = getVideo_PlaylistData?.playList?.map(
+  //     (all, index, element) => {
+  //       const current = getVideo_PlaylistData?.playList?.filter(
+  //         PlaylistItem => {
+  //           if (PlaylistItem?.title === getCurrentVideo?.videoData?.title) {
+  //             return PlaylistItem;
+  //           }
+  //         },
+  //       );
+  //       console.log('Current video', current);
+  //       if (all?.title === current[0]?.title) {
+  //         return element[index + 1];
+  //       }
+  //     },
+  //   );
+  //   console.log('All next video', allNext);
+  //   const nextOne = allNext?.filter(item => {
+  //     if (item !== undefined) {
+  //       return item;
+  //     }
+  //   });
+  //   console.log('one next video', nextOne);
+  //   const currentTime = 0;
+  //   try {
+  //     if (nextOne[0] != undefined) {
+  //       const getPlayerVideo = {
+  //         videoData: nextOne[0],
+  //       };
+  //       const getPlayerVideoTime = {
+  //         currentTime: [{currentTime: currentTime}],
+  //       };
+  //       getCurrentVideo_Action(getPlayerVideo);
+  //       getCurrentTime_Action(getPlayerVideoTime);
+  //
+  //       getCommentAction(getCurrentVideo?.videoData?.id);
+  //       getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
+  //     } else {
+  //       Alert.alert('No Available Next Episodes.');
+  //     }
+  //   } catch (e) {
+  //     console.log('ERRORS AT GET_NEXT_VIDEO_DATA', e);
+  //   }
+  //
+  //   // setState({...state, play: false});
+  //   // videoRef.current.seek(0);
+  // };
+  //
+  // useEffect(() => {
+  //   Orientation.addOrientationListener(handleOrientation);
+  //
+  //   return () => {
+  //     Orientation.removeOrientationListener(handleOrientation);
+  //   };
+  // }, []);
+  //
+  // function handleOrientation(orientation: string) {
+  //   orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+  //     ? (setFullscreen(true), StatusBar.setHidden(true))
+  //     : (setFullscreen(false), StatusBar.setHidden(false));
+  // }
+  //
+  // const onLoad = (data: OnLoadData) => {
+  //   const hms = getCurrentVideo?.videoData?.total_time;
+  //   const a = hms.split('.');
+  //
+  //   if (a.length == 2) {
+  //     const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
+  //     setDuration(Math.floor(total_duration));
+  //   } else {
+  //     const total_duration = moment
+  //       .duration(`${a[0]}:${a[1]}:${a[2]}`)
+  //       .asSeconds();
+  //     setDuration(Math.floor(total_duration));
+  //   }
+  //   // videoRef?.current?.presentFullscreenPlayer();
+  // };
+  //
+  // const onProgress = data => {
+  //   getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+  //     data.currentTime,
+  //   );
+  //   const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+  //     return {...item};
+  //   });
+  //   getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+  //   // setState(s => ({
+  //   //   ...s,
+  //   //   currentTime: data.currentTime,
+  //   // }));
+  // };
+  //
+  // function handleFullscreen() {
+  //   if (Platform.OS == 'ios') {
+  //     videoRef?.current?.presentFullscreenPlayer();
+  //   } else {
+  //     fullscreen
+  //       ? Orientation.unlockAllOrientations()
+  //       : Orientation.lockToLandscapeLeft();
+  //   }
+  // }
+  // function handlePlayPause() {
+  //   // If playing, pause and show controls immediately.
+  //   if (play) {
+  //     // setState({...state, play: false, showControls: true});
+  //     setPlay(false);
+  //     setShowControls(true);
+  //     return;
+  //   }
+  //
+  //   // setState({...state, play: true});
+  //   setPlay(true);
+  //   setTimeout(() => setShowControls(false), 2000);
+  // }
+  //
+  // const skipBackward = () => {
+  //   videoRef.current.seek(
+  //     getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
+  //   );
+  //   // videoRef.current.seek(state.currentTime - 10);
+  //   // setState({...state, currentTime: state.currentTime - 10});
+  // };
+  //
+  // const skipForward = () => {
+  //   videoRef.current.seek(
+  //     getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
+  //   );
+  //   getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+  //     getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
+  //   );
+  //   const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+  //     return {...item};
+  //   });
+  //   getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+  //   // videoRef.current.seek(state.currentTime + 10);
+  //   // setState({...state, currentTime: state.currentTime + 10});
+  // };
+  //
+  // const onSeek = (seek: OnSeekData) => {
+  //   videoRef?.current.seek(seek);
+  //   getCurrentVideoTime.currentTime[0].currentTime = Math.round(seek);
+  //   const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+  //     return {...item};
+  //   });
+  //   getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+  //   console.log(
+  //     'on slide seek time ::',
+  //     getCurrentVideoTime?.currentTime[0]?.currentTime,
+  //   );
+  //   // videoRef.current.seek(data.seekTime);
+  //   // setState({...state, currentTime: data.seekTime});
+  // };
+  // const onSeeking = currentVideoTime =>
+  //   getCurrentTime_Action({
+  //     ...getCurrentVideoTime,
+  //     currentTime: currentVideoTime,
+  //   });
+  //
+  // function visibleControls() {
+  //   showControls ? setShowControls(false) : setShowControls(true);
+  // }
 
   const onFocus = () => {
     setIsCommentFocus(true);
@@ -330,34 +332,15 @@ const VideoDeatilsPage = ({
 
   return (
     <>
-      {!state.fullscreen ? (
-        <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
-      ) : null}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Box flex={1}>
-          <Box height={state.fullscreen ? hp('51%') : hp('30%')}>
-            <Videoplayer
-              showControls={showControls}
-              videoRef={videoRef}
-              videoItem={getCurrentVideo?.videoData}
-              fullscreen={state.fullscreen}
-              onLoad={onLoad}
-              onProgress={onProgress}
-              onEnd={onEnd}
-              play={state.play}
-              visibleControl={state.showControls}
-              handleFullscreen={handleFullscreen}
-              handlePlayPause={handlePlayPause}
-              skipBackward={skipBackward}
-              skipForward={skipForward}
-              currentTime={getSliderValue()?.slider}
-              duration={duration}
-              onSeek={onSeek}
-              onSeeking={onSeeking}
-            />
-          </Box>
-          {/*{!state.fullscreen ? (*/}
-          {/*  <>*/}
+      {/*{!fullscreen ? (*/}
+      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      {/*) : null}*/}
+
+      <Box flex={1}>
+        <Player />
+        {/*{!state.fullscreen ? (*/}
+        {/*  <>*/}
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
             <Image
               source={{
@@ -444,10 +427,10 @@ const VideoDeatilsPage = ({
               </Box>
             </Box>
           </Box>
-          {/*  </>*/}
-          {/*) : null}*/}
-        </Box>
-      </ScrollView>
+        </ScrollView>
+        {/*  </>*/}
+        {/*) : null}*/}
+      </Box>
     </>
   );
 };
