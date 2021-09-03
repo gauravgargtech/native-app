@@ -16,6 +16,7 @@ import {Colors} from '../../theme';
 import {
   TapGestureHandler,
   GestureHandlerRootView,
+  State,
 } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedGestureHandler,
@@ -77,6 +78,12 @@ const PlayerControls = ({
     };
   });
 
+  const onForwardState = event => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      alert('Hey single tap!');
+    }
+  };
+
   return (
     <View style={styles.wrapper}>
       {showPreviousAndNext && (
@@ -93,19 +100,20 @@ const PlayerControls = ({
       )}
 
       {showSkip && (
-        // <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
-        //   {/*<VideoSkipBack />*/}
-        //   {/*<SubHeadingText color={Colors.white}>skipBack</SubHeadingText>*/}
-        <TapGestureHandler
-          ref={doubleTapRefBackward}
-          numberOfTaps={2}
-          onGestureEvent={eventHandlerBackward}
-          onHandlerStateChange={skipBackwards}>
-          <Animated.View style={[styles.touchable, gestureHandleBackward]}>
-            <Image source={Backward} style={{width: 25, height: 25}} />
-          </Animated.View>
-        </TapGestureHandler>
-        // </TouchableOpacity>
+        <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
+          {/*<VideoSkipBack />*/}
+          {/*<SubHeadingText color={Colors.white}>skipBack</SubHeadingText>*/}
+          <Image source={Backward} style={{width: 25, height: 25}} />
+          {/*// <TapGestureHandler*/}
+          {/*//   ref={doubleTapRefBackward}*/}
+          {/*//   numberOfTaps={2}*/}
+          {/*//   onGestureEvent={eventHandlerBackward}*/}
+          {/*//   onHandlerStateChange={skipBackwards}>*/}
+          {/*//   <Animated.View style={[styles.touchable, gestureHandleBackward]}>*/}
+          {/*//     <Image source={Backward} style={{width: 25, height: 25}} />*/}
+          {/*//   </Animated.View>*/}
+          {/*// </TapGestureHandler>*/}
+        </TouchableOpacity>
       )}
       {/*{showSkip && (*/}
       {/*  <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>*/}
@@ -126,19 +134,20 @@ const PlayerControls = ({
       </TouchableOpacity>
 
       {showSkip && (
-        // // <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
-        //   {/*<VideoSkipForward />*/}
-        //   {/*<SubHeadingText color={Colors.white}>Forward</SubHeadingText>*/}
-        <TapGestureHandler
-          ref={doubleTapRefForward}
-          numberOfTaps={2}
-          onGestureEvent={eventHandlerForward}
-          onHandlerStateChange={skipForwards}>
-          <Animated.View style={[styles.touchable, gestureHandleForward]}>
-            <Image source={Forward} style={{width: 25, height: 25}} />
-          </Animated.View>
-        </TapGestureHandler>
-        // </TouchableOpacity>
+        <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
+          {/*<VideoSkipForward />*/}
+          {/*<SubHeadingText color={Colors.white}>Forward</SubHeadingText>*/}
+          <Image source={Forward} style={{width: 25, height: 25}} />
+          {/*// <TapGestureHandler*/}
+          {/*//   waitFor={doubleTapRefForward}*/}
+          {/*//   numberOfTaps={2}*/}
+          {/*//   onGestureEvent={eventHandlerForward}*/}
+          {/*//   onHandlerStateChange={onForwardState}>*/}
+          {/*//   <Animated.View style={[styles.touchable, gestureHandleForward]}>*/}
+          {/*//     <Image source={Forward} style={{width: 25, height: 25}} />*/}
+          {/*//   </Animated.View>*/}
+          {/*// </TapGestureHandler>*/}
+        </TouchableOpacity>
       )}
 
       {showPreviousAndNext && (
