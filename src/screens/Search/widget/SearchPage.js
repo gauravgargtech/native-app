@@ -19,7 +19,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   getSearchAction,
   getCurrentVideo_Action,
-  getCurrentTime_Action,
   getCommentAction,
   getVideoPlaylistAction,
 } from '../../../store/actions';
@@ -31,15 +30,12 @@ const SearchPage = ({
   getSearchData,
   getCurrentVideo_Action,
   getCurrentVideo,
-  getCurrentTime_Action,
-  getCurrentVideoTime,
   getCommentAction,
   getCommentData,
   getVideoPlaylistAction,
   getVideo_PlaylistData,
 }) => {
   const [search, setSearch] = useState('');
-  const currentTime = 0;
   const searchFilterFunction = async val => {
     setSearch(val);
     try {
@@ -68,11 +64,7 @@ const SearchPage = ({
       const getPlayerVideo = {
         videoData: searchItem,
       };
-      const getPlayerVideoTime = {
-        currentTime: [{currentTime: currentTime}],
-      };
       await getCurrentVideo_Action(getPlayerVideo);
-      await getCurrentTime_Action(getPlayerVideoTime);
 
       await getCommentAction(searchItem?.id);
       await getVideoPlaylistAction(searchItem?.id);
@@ -161,24 +153,16 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {
-    getSearchData,
-    getCurrentVideo,
-    getCurrentVideoTime,
-    getCommentData,
-    getVideo_PlaylistData,
-  },
+  app: {getSearchData, getCurrentVideo, getCommentData, getVideo_PlaylistData},
 }) => ({
   getSearchData,
   getCurrentVideo,
-  getCurrentVideoTime,
   getCommentData,
   getVideo_PlaylistData,
 });
 export default connect(mapStateToProps, {
   getSearchAction,
   getCurrentVideo_Action,
-  getCurrentTime_Action,
   getCommentAction,
   getVideoPlaylistAction,
 })(SearchPage);

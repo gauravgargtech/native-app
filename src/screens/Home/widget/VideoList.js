@@ -9,7 +9,6 @@ import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
 import {
   getCurrentVideo_Action,
-  getCurrentTime_Action,
   getCommentAction,
   getVideoPlaylistAction,
 } from '../../../store/actions';
@@ -21,14 +20,11 @@ const VideoList = ({
   getVideoList,
   getCurrentVideo_Action,
   getCurrentVideo,
-  getCurrentTime_Action,
-  getCurrentVideoTime,
   getCommentAction,
   getCommentData,
   getVideoPlaylistAction,
   getVideo_PlaylistData,
 }) => {
-  const currentTime = 0;
   const onClickVideo = async ({videoItem}) => {
     navigation.navigate(VIDEO_DETAILS, {
       videoItem: videoItem,
@@ -38,11 +34,7 @@ const VideoList = ({
       const getPlayerVideo = {
         videoData: videoItem,
       };
-      const getPlayerVideoTime = {
-        currentTime: [{currentTime: currentTime}],
-      };
       await getCurrentVideo_Action(getPlayerVideo);
-      await getCurrentTime_Action(getPlayerVideoTime);
 
       await getCommentAction(videoItem?.id);
       await getVideoPlaylistAction(videoItem.id);
@@ -105,23 +97,15 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {
-    getVideoList,
-    getCurrentVideo,
-    getCurrentVideoTime,
-    getCommentData,
-    getVideo_PlaylistData,
-  },
+  app: {getVideoList, getCurrentVideo, getCommentData, getVideo_PlaylistData},
 }) => ({
   getVideoList,
   getCurrentVideo,
-  getCurrentVideoTime,
   getCommentData,
   getVideo_PlaylistData,
 });
 export default connect(mapStateToProps, {
   getCurrentVideo_Action,
-  getCurrentTime_Action,
   getCommentAction,
   getVideoPlaylistAction,
 })(VideoList);

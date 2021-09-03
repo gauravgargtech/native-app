@@ -45,7 +45,6 @@ import {
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
-  getCurrentTime_Action,
 } from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -61,8 +60,6 @@ const VideoDeatilsPage = ({
   addCommentData,
   getCurrentVideo_Action,
   getCurrentVideo,
-  getCurrentTime_Action,
-  getCurrentVideoTime,
   getCommentAction,
   getCommentData,
 }) => {
@@ -76,7 +73,6 @@ const VideoDeatilsPage = ({
   const Player = useMemo(() => {
     return Videoplayer;
   }, [getCurrentVideo]);
-
 
   const onFocus = () => {
     setIsCommentFocus(true);
@@ -96,17 +92,12 @@ const VideoDeatilsPage = ({
     }
   };
 
-  const currentTime = 0;
   const onClickVideo = async ({playlistItem}) => {
     try {
       const getPlayerVideo = {
         videoData: playlistItem,
       };
-      const getPlayerVideoTime = {
-        currentTime: [{currentTime: currentTime}],
-      };
       await getCurrentVideo_Action(getPlayerVideo);
-      await getCurrentTime_Action(getPlayerVideoTime);
 
       await getCommentAction(playlistItem.id);
       await getVideoPlaylistAction(playlistItem.id);
@@ -126,6 +117,11 @@ const VideoDeatilsPage = ({
         {/*{!state.fullscreen ? (*/}
         {/*  <>*/}
         <ScrollView showsVerticalScrollIndicator={false}>
+          <Box p={ms(20)}>
+            <SubHeadingText fontSize={fontSizes[3]}>
+              Video Details
+            </SubHeadingText>
+          </Box>
           <Box p={ms(10)} flexDirection={'row'} alignItems={'center'}>
             <Image
               source={{
@@ -138,9 +134,6 @@ const VideoDeatilsPage = ({
             </Box>
           </Box>
           <Box p={ms(20)}>
-            <SubHeadingText fontSize={fontSizes[3]}>
-              Video Details
-            </SubHeadingText>
             <SubHeadingText fontSize={fontSizes[3]}>comment</SubHeadingText>
             <Box p={ms(10)}>
               {getCommentData?.map(commentItem => {
@@ -269,24 +262,16 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {
-    getVideo_PlaylistData,
-    addCommentData,
-    getCommentData,
-    getCurrentVideo,
-    getCurrentVideoTime,
-  },
+  app: {getVideo_PlaylistData, addCommentData, getCommentData, getCurrentVideo},
 }) => ({
   getVideo_PlaylistData,
   addCommentData,
   getCommentData,
   getCurrentVideo,
-  getCurrentVideoTime,
 });
 export default connect(mapStateToProps, {
   getVideoPlaylistAction,
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
-  getCurrentTime_Action,
 })(VideoDeatilsPage);

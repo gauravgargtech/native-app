@@ -12,6 +12,7 @@ import {useIsFocused} from '@react-navigation/native';
 const VideoDetails = ({
   navigation,
   route,
+  getCurrentVideo,
   getVideoDetailsAction,
   getVideoDetailsData,
 }) => {
@@ -21,7 +22,7 @@ const VideoDetails = ({
     if (isFocused) {
       const func = async () => {
         try {
-          getVideoDetailsAction(videoItem?.videoData?.id);
+          getVideoDetailsAction(getCurrentVideo?.videoData?.id);
         } catch (e) {
           alert('error while get video Details');
         }
@@ -46,8 +47,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
 });
-const mapStateToProps = ({app: {getVideoDetailsData}}) => ({
+const mapStateToProps = ({app: {getVideoDetailsData, getCurrentVideo}}) => ({
   getVideoDetailsData,
+  getCurrentVideo,
 });
 export default connect(mapStateToProps, {
   getVideoDetailsAction,

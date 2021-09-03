@@ -5,7 +5,7 @@ const Baseurl = 'https://kid.greatequip.com';
 const getCategory_API = `${Baseurl}/api/categories`;
 const getTags_API = `${Baseurl}/api/tags`;
 const getVideoList_API = `${Baseurl}/api/videos`;
-const getVideoDetails_API = videoID => `${Baseurl}/api/videos/${videoID}`;
+const getVideoDetails_API = videoID => `${Baseurl}/api/video/${videoID}`;
 const getVideoPlaylist_API = videoID =>
   `${Baseurl}/api/videos/playlist/${videoID}`;
 

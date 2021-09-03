@@ -18,7 +18,7 @@ import {
   getVideoPlaylistAction,
   getCommentAction,
   getCurrentVideo_Action,
-  getCurrentTime_Action,
+  // getCurrentTime_Action,
 } from '../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -30,10 +30,11 @@ const Videoplayer = ({
   getCommentData,
   getCurrentVideo_Action,
   getCurrentVideo,
-  getCurrentTime_Action,
-  getCurrentVideoTime,
+  // getCurrentTime_Action,
+  // getCurrentVideoTime,
 }) => {
   const videoRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(
     getCurrentVideo?.videoData?.total_time,
   );
@@ -46,12 +47,12 @@ const Videoplayer = ({
 
   const onEnd = () => {
     console.log('Duration', duration);
-    getCurrentVideoTime.currentTime[0].currentTime = duration;
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-
+    // getCurrentVideoTime.currentTime[0].currentTime = duration;
+    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+    //   return {...item};
+    // });
+    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+    setCurrentTime(duration);
     const allNext = getVideo_PlaylistData?.playList?.map(
       (all, index, element) => {
         const current = getVideo_PlaylistData?.playList?.filter(
@@ -72,7 +73,7 @@ const Videoplayer = ({
         return item;
       }
     });
-    const currentTime = 0;
+    // const currentTime = 0;
     try {
       if (nextOne[0] != undefined) {
         const getPlayerVideo = {
@@ -82,7 +83,7 @@ const Videoplayer = ({
           currentTime: [{currentTime: currentTime}],
         };
         getCurrentVideo_Action(getPlayerVideo);
-        getCurrentTime_Action(getPlayerVideoTime);
+        // getCurrentTime_Action(getPlayerVideoTime);
 
         getCommentAction(nextOne[0]?.id);
         getVideoPlaylistAction(nextOne[0]?.id);
@@ -129,17 +130,19 @@ const Videoplayer = ({
   };
 
   const onProgress = data => {
-    getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-      data.currentTime,
-    );
-    const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-      return {...item};
-    });
-    getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
+    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
+    //   data.currentTime,
+    // );
+    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
+    //   return {...item};
+    // });
+    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     // setState(s => ({
     //   ...s,
     //   currentTime: data.currentTime,
     // }));
+    setCurrentTime(Math.round(data.currentTime));
+    console.log('Cureent time process time', currentTime);
   };
 
   function handleFullscreen() {
@@ -165,9 +168,10 @@ const Videoplayer = ({
   }
 
   const skipBackward = () => {
-    videoRef.current.seek(
-      getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
-    );
+    // videoRef.current.seek(
+    //   getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
+    // );
+    videoRef?.current.seek(currentTime - 10);
     // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
     //   getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
     // );
@@ -180,9 +184,10 @@ const Videoplayer = ({
   };
 
   const skipForward = () => {
-    videoRef.current.seek(
-      getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
-    );
+    // videoRef.current.seek(
+    //   getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
+    // );
+    videoRef?.current.seek(currentTime + 10);
     // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
     //   getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
     // );
@@ -209,22 +214,23 @@ const Videoplayer = ({
     // setState({...state, currentTime: data.seekTime});
   };
   const onSeeking = currentVideoTime =>
-    getCurrentTime_Action({
-      ...getCurrentVideoTime,
-      currentTime: currentVideoTime,
-    });
+    // getCurrentTime_Action({
+    //   ...getCurrentVideoTime,
+    //   currentTime: currentVideoTime,
+    // });
+    setCurrentTime(currentVideoTime);
 
   function visibleControls() {
     showControls ? setShowControls(false) : setShowControls(true);
   }
 
-  const getSliderValue = () => {
-    let slider;
-    getCurrentVideoTime?.currentTime?.map(item => {
-      slider = item.currentTime;
-    });
-    return {slider: slider};
-  };
+  // const getSliderValue = () => {
+  //   let slider;
+  //   getCurrentVideoTime?.currentTime?.map(item => {
+  //     slider = item.currentTime;
+  //   });
+  //   return {slider: slider};
+  // };
   return (
     <TouchableWithoutFeedback onPress={visibleControls}>
       <Box height={fullscreen ? hp('51%') : hp('30%')}>
@@ -241,7 +247,6 @@ const Videoplayer = ({
           onEnd={onEnd}
           paused={!play}
         />
-        {console.log('Full screen', fullscreen)}
         {showControls && (
           <View style={styles.controlOverlay}>
             <TouchableOpacity
@@ -270,7 +275,7 @@ const Videoplayer = ({
               skipForwards={skipForward}
             />
             <ProgressBar
-              currentTime={getSliderValue()?.slider}
+              currentTime={currentTime}
               duration={duration}
               onSlideStart={handlePlayPause}
               onSlideComplete={handlePlayPause}
@@ -326,21 +331,14 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {
-    getVideo_PlaylistData,
-    getCommentData,
-    getCurrentVideo,
-    getCurrentVideoTime,
-  },
+  app: {getVideo_PlaylistData, getCommentData, getCurrentVideo},
 }) => ({
   getVideo_PlaylistData,
   getCommentData,
   getCurrentVideo,
-  getCurrentVideoTime,
 });
 export default connect(mapStateToProps, {
   getVideoPlaylistAction,
   getCommentAction,
   getCurrentVideo_Action,
-  getCurrentTime_Action,
 })(Videoplayer);

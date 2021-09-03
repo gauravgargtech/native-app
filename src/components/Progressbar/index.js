@@ -75,7 +75,6 @@ const ProgressBar: React.FC<Props> = ({
         minimumTrackTintColor={'#F44336'}
         maximumTrackTintColor={'#FFFFFF'}
         onSlidingComplete={onSeek}
-        onValueChange={onSeek}
         value={currentTime}
       />
       <View style={styles.timeWrapper}>
