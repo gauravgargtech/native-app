@@ -88,8 +88,8 @@ const VideoDeatilsPage = ({
     if (comment != null) {
       await addCommentAction(videoID, comment, userID);
       setCommentText(null);
-      Alert.alert(`Message : ${addCommentData?.data.message}`);
     }
+    Alert.alert(`Message : ${addCommentData?.data.message}`);
   };
 
   const onClickVideo = async ({playlistItem}) => {
@@ -99,8 +99,8 @@ const VideoDeatilsPage = ({
       };
       await getCurrentVideo_Action(getPlayerVideo);
 
-      await getCommentAction(playlistItem.id);
-      await getVideoPlaylistAction(playlistItem.id);
+      await getCommentAction(playlistItem?.id);
+      await getVideoPlaylistAction(playlistItem?.id);
     } catch (e) {
       console.log('ERRORS AT GET_VIDEO_DATA', e);
     }
@@ -108,12 +108,8 @@ const VideoDeatilsPage = ({
 
   return (
     <>
-      {/*{!fullscreen ? (*/}
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
-      {/*) : null}*/}
-
       <Box flex={1}>
-        <Player />
+        <Player navigation={navigation} />
         {/*{!state.fullscreen ? (*/}
         {/*  <>*/}
         <ScrollView showsVerticalScrollIndicator={false}>

@@ -6,23 +6,19 @@ import {
 } from '@react-navigation/drawer';
 import {Box} from '../components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {getCategoryData_Action} from '../store/actions';
-import {connect} from 'react-redux';
 import {CATEGORY_WISE} from './routes';
-const CustomDrawerContent = (
-  props,
-) => {
+const CustomDrawerContent = props => {
+  const {navigation, getCategoryData, getCategoryData_Action} = props;
   const onClickCategory = async ({item}) => {
-    props.navigation.navigate(item?.onPress, {categoryItem: item});
+    navigation.navigate(item?.onPress, {categoryItem: item});
     try {
-      await props.getCategoryData_Action(item?.ID);
-      console.log('get Category Data List', props.getCategoryDataList);
+      await getCategoryData_Action(item?.ID);
     } catch (e) {
       console.log('ERRORS AT GET_CATEGORY_DATA', e);
     }
   };
 
-  const drawerMenuItems = props.getCategoryData.map((categoryItem, index) => {
+  const drawerMenuItems = getCategoryData?.map((categoryItem, index) => {
     return {
       ID: categoryItem?.id,
       icon: 'home-outline',
@@ -34,10 +30,11 @@ const CustomDrawerContent = (
   });
   return (
     <Box flex={1}>
-      <DrawerContentScrollView>
-        {drawerMenuItems.map((item, index) => {
+      <DrawerContentScrollView {...props}>
+        {drawerMenuItems?.map((item, index) => {
           return (
             <DrawerItem
+              key={index}
               icon={({color, size}) => (
                 <Icon name={item?.icon} color={color} size={25} />
               )}
@@ -50,9 +47,4 @@ const CustomDrawerContent = (
     </Box>
   );
 };
-const mapStateToProps = ({app: {getCategoryDataList}}) => ({
-  getCategoryDataList,
-});
-export default connect(mapStateToProps, {getCategoryData_Action})(
-  CustomDrawerContent,
-);
+export default CustomDrawerContent;

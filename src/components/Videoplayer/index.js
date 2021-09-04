@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Box, PlayerControls, ProgressBar} from '../../components';
+import {Box, CustomHeader, PlayerControls, ProgressBar} from '../../components';
 import {
   Alert,
   Dimensions,
@@ -24,6 +24,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const Videoplayer = ({
+  navigation,
   getVideoPlaylistAction,
   getVideo_PlaylistData,
   getCommentAction,
@@ -35,9 +36,7 @@ const Videoplayer = ({
 }) => {
   const videoRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(
-    getCurrentVideo?.videoData?.total_time,
-  );
+  const [duration, setDuration] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
   const [play, setPlay] = useState(true);
   const [showControls, setShowControls] = useState(true);
@@ -46,12 +45,6 @@ const Videoplayer = ({
   console.log('video url:', videoUrl);
 
   const onEnd = () => {
-    console.log('Duration', duration);
-    // getCurrentVideoTime.currentTime[0].currentTime = duration;
-    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-    //   return {...item};
-    // });
-    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
     setCurrentTime(duration);
     const allNext = getVideo_PlaylistData?.playList?.map(
       (all, index, element) => {
@@ -73,17 +66,12 @@ const Videoplayer = ({
         return item;
       }
     });
-    // const currentTime = 0;
     try {
       if (nextOne[0] != undefined) {
         const getPlayerVideo = {
           videoData: nextOne[0],
         };
-        const getPlayerVideoTime = {
-          currentTime: [{currentTime: currentTime}],
-        };
         getCurrentVideo_Action(getPlayerVideo);
-        // getCurrentTime_Action(getPlayerVideoTime);
 
         getCommentAction(nextOne[0]?.id);
         getVideoPlaylistAction(nextOne[0]?.id);
@@ -118,34 +106,25 @@ const Videoplayer = ({
 
     if (a.length == 2) {
       const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
-      setDuration(Math.floor(total_duration));
+      setDuration(Math.round(total_duration));
     } else {
       const total_duration = moment
         .duration(`${a[0]}:${a[1]}:${a[2]}`)
         .asSeconds();
-      setDuration(Math.floor(total_duration));
+      setDuration(Math.round(total_duration));
     }
+    console.log('Duration type', typeof duration);
     // setDuration(Math.round(data.duration));
     // videoRef?.current?.presentFullscreenPlayer();
   };
 
   const onProgress = data => {
-    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-    //   data.currentTime,
-    // );
-    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-    //   return {...item};
-    // });
-    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    // setState(s => ({
-    //   ...s,
-    //   currentTime: data.currentTime,
-    // }));
     setCurrentTime(Math.round(data.currentTime));
     console.log('Cureent time process time', currentTime);
+    console.log('Duration time on Progess', duration);
   };
 
-  function handleFullscreen() {
+  const handleFullscreen = () => {
     if (Platform.OS == 'ios') {
       videoRef?.current?.presentFullscreenPlayer();
     } else {
@@ -153,8 +132,8 @@ const Videoplayer = ({
         ? Orientation.unlockAllOrientations()
         : Orientation.lockToLandscapeLeft();
     }
-  }
-  function handlePlayPause() {
+  };
+  const handlePlayPause = () => {
     if (play) {
       // setState({...state, play: false, showControls: true});
       setPlay(false);
@@ -165,127 +144,86 @@ const Videoplayer = ({
     // setState({...state, play: true});
     setPlay(true);
     setTimeout(() => setShowControls(false), 2000);
-  }
+  };
 
   const skipBackward = () => {
-    // videoRef.current.seek(
-    //   getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
-    // );
     videoRef?.current.seek(currentTime - 10);
-    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-    //   getCurrentVideoTime?.currentTime[0]?.currentTime - 10,
-    // );
-    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-    //   return {...item};
-    // });
-    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    // videoRef.current.seek(state.currentTime - 10);
-    // setState({...state, currentTime: state.currentTime - 10});
   };
 
   const skipForward = () => {
-    // videoRef.current.seek(
-    //   getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
-    // );
     videoRef?.current.seek(currentTime + 10);
-    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(
-    //   getCurrentVideoTime?.currentTime[0]?.currentTime + 10,
-    // );
-    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-    //   return {...item};
-    // });
-    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    // videoRef.current.seek(state.currentTime + 10);
-    // setState({...state, currentTime: state.currentTime + 10});
   };
 
   const onSeek = (seek: OnSeekData) => {
     videoRef?.current.seek(seek);
-    // getCurrentVideoTime.currentTime[0].currentTime = Math.round(seek);
-    // const updateTime = getCurrentVideoTime?.currentTime?.map(item => {
-    //   return {...item};
-    // });
-    // getCurrentTime_Action({...getCurrentVideoTime, currentTime: updateTime});
-    // console.log(
-    //   'on slide seek time ::',
-    //   getCurrentVideoTime?.currentTime[0]?.currentTime,
-    // );
-    // videoRef.current.seek(data.seekTime);
-    // setState({...state, currentTime: data.seekTime});
   };
-  const onSeeking = currentVideoTime =>
-    // getCurrentTime_Action({
-    //   ...getCurrentVideoTime,
-    //   currentTime: currentVideoTime,
-    // });
+  const onSeeking = currentVideoTime => {
     setCurrentTime(currentVideoTime);
-
-  function visibleControls() {
+  };
+  const visibleControls = () => {
     showControls ? setShowControls(false) : setShowControls(true);
-  }
-
-  // const getSliderValue = () => {
-  //   let slider;
-  //   getCurrentVideoTime?.currentTime?.map(item => {
-  //     slider = item.currentTime;
-  //   });
-  //   return {slider: slider};
-  // };
+  };
   return (
-    <TouchableWithoutFeedback onPress={visibleControls}>
-      <Box height={fullscreen ? hp('51%') : hp('30%')}>
-        <Video
-          ref={ref => (videoRef.current = ref)}
-          source={{
-            uri: videoUrl,
-          }}
-          style={fullscreen ? styles.fullscreenVideo : styles.backgroundVideo}
-          controls={false}
-          resizeMode={'contain'}
-          onLoad={onLoad}
-          onProgress={onProgress}
-          onEnd={onEnd}
-          paused={!play}
-        />
-        {showControls && (
-          <View style={styles.controlOverlay}>
-            <TouchableOpacity
-              onPress={handleFullscreen}
-              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-              style={styles.fullscreenButton}>
-              {fullscreen ? (
-                <Image
-                  source={FullscreenClose}
-                  style={{width: 15, height: 15}}
-                />
-              ) : (
-                <Image
-                  source={FullscreenOpen}
-                  style={{width: 15, height: 15}}
-                />
-              )}
-            </TouchableOpacity>
-            <PlayerControls
-              onPlay={handlePlayPause}
-              onPause={handlePlayPause}
-              playing={play}
-              showPreviousAndNext={false}
-              showSkip={true}
-              skipBackwards={skipBackward}
-              skipForwards={skipForward}
-            />
-            <ProgressBar
-              currentTime={currentTime}
-              duration={duration}
-              onSlideStart={handlePlayPause}
-              onSlideComplete={handlePlayPause}
-              onSeek={onSeek}
-              onSeeking={onSeeking}
-            />
-          </View>
-        )}
-      </Box>
-    </TouchableWithoutFeedback>
+    <>
+      {!fullscreen ? (
+        <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      ) : null}
+      <TouchableWithoutFeedback onPress={visibleControls}>
+        <Box height={fullscreen ? hp('51%') : hp('30%')}>
+          <Video
+            ref={ref => (videoRef.current = ref)}
+            source={{
+              uri: videoUrl,
+            }}
+            poster={getCurrentVideo?.videoData?.thumbnail}
+            style={fullscreen ? styles.fullscreenVideo : styles.backgroundVideo}
+            controls={false}
+            resizeMode={'contain'}
+            onLoad={onLoad}
+            onProgress={onProgress}
+            onEnd={onEnd}
+            paused={!play}
+          />
+          {showControls && (
+            <View style={styles.controlOverlay}>
+              <TouchableOpacity
+                onPress={handleFullscreen}
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                style={styles.fullscreenButton}>
+                {fullscreen ? (
+                  <Image
+                    source={FullscreenClose}
+                    style={{width: 15, height: 15}}
+                  />
+                ) : (
+                  <Image
+                    source={FullscreenOpen}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+              </TouchableOpacity>
+              <PlayerControls
+                onPlay={handlePlayPause}
+                onPause={handlePlayPause}
+                playing={play}
+                showPreviousAndNext={false}
+                showSkip={true}
+                skipBackwards={skipBackward}
+                skipForwards={skipForward}
+              />
+              <ProgressBar
+                currentTime={currentTime}
+                duration={duration}
+                onSlideStart={handlePlayPause}
+                onSlideComplete={handlePlayPause}
+                onSeek={onSeek}
+                onSeeking={onSeeking}
+              />
+            </View>
+          )}
+        </Box>
+      </TouchableWithoutFeedback>
+    </>
   );
 };
 const styles = StyleSheet.create({

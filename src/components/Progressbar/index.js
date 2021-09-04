@@ -1,6 +1,6 @@
 import React from 'react';
-// import Slider from '@react-native-community/slider';
-import Slider from 'react-native-slider';
+import Slider from '@react-native-community/slider';
+// import Slider from 'react-native-slider';
 import {View, Text, StyleSheet} from 'react-native';
 import {Box} from '../../components';
 import {
@@ -69,8 +69,9 @@ const ProgressBar: React.FC<Props> = ({
         minimumValue={0}
         maximumValue={duration}
         style={{height: '40%'}}
-        trackStyle={{height: 5}}
-        thumbStyle={{width: 15, height: 15}}
+        // trackStyle={{height: 5}}
+        // thumbStyle={{width: 15, height: 15}}
+        tapToSeek={true}
         thumbTintColor={Colors.btnclr}
         minimumTrackTintColor={'#F44336'}
         maximumTrackTintColor={'#FFFFFF'}
@@ -107,6 +108,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     justifyContent: 'center',
+  },
+  slider: {
+    width: 300,
+    opacity: 1,
+    height: 50,
+    marginTop: 50,
   },
   timeWrapper: {
     flexDirection: 'row',

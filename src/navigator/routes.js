@@ -1,5 +1,3 @@
-import Animated from 'react-native-reanimated';
-
 const LEARNAPP = '@main';
 
 export const HOME = `${LEARNAPP}_HOME`;

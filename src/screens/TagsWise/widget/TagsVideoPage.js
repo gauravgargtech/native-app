@@ -20,51 +20,54 @@ import {
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
-// import {
-//   getCurrentVideo_Action,
-//   getCurrentTime_Action,
-//   getCommentAction,
-//   getVideoPlaylistAction,
-// } from '../../../store/actions';
+import {
+  getCurrentVideo_Action,
+  getCommentAction,
+  getVideoPlaylistAction,
+} from '../../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../../assets/images';
 import {VIDEO_DETAILS} from '../../../navigator/routes';
-const ChannelIconUrl = imageURL => `https://kid.greatequip.com${imageURL}`;
 
-const TagsVideoPage = ({navigation, getTagsDataList}) => {
-  // const currentTime = 0;
-  // const onClickVideo = async ({videoItem}) => {
-  //   navigation.navigate(VIDEO_DETAILS, {
-  //     videoItem: videoItem,
-  //   });
-  //
-  //   try {
-  //     const getPlayerVideo = {
-  //       videoData: videoItem,
-  //     };
-  //     const getPlayerVideoTime = {
-  //       currentTime: [{currentTime: currentTime}],
-  //     };
-  //     await getCurrentVideo_Action(getPlayerVideo);
-  //     await getCurrentTime_Action(getPlayerVideoTime);
-  //
-  //     await getCommentAction(getCurrentVideo?.videoData?.id);
-  //     await getVideoPlaylistAction(getCurrentVideo?.videoData?.id);
-  //   } catch (e) {
-  //     console.log('ERRORS AT GET_VIDEO_DATA', e);
-  //   }
-  // };
+const TagsVideoPage = ({
+  navigation,
+  getTagsDataList,
+  getCurrentVideo_Action,
+  getCurrentVideo,
+  getCommentAction,
+  getCommentData,
+  getVideoPlaylistAction,
+  getVideo_PlaylistData,
+}) => {
+  const onClickTagsDataVideo = async ({tagsDataItem}) => {
+    navigation.navigate(VIDEO_DETAILS, {
+      videoItem: tagsDataItem,
+    });
+
+    try {
+      const getPlayerVideo = {
+        videoData: tagsDataItem,
+      };
+      await getCurrentVideo_Action(getPlayerVideo);
+
+      await getCommentAction(tagsDataItem?.id);
+      await getVideoPlaylistAction(tagsDataItem?.id);
+    } catch (e) {
+      console.log('ERRORS AT GET_VIDEO_DATA', e);
+    }
+  };
   return (
     <Box
       flex={0.9}
       justifyContent={'flex-start'}
       style={{paddingHorizontal: ms(10)}}>
       <Box p={ms(5)}>
-        {getTagsDataList.map((videoItem, index) => {
+        {getTagsDataList.map((tagsDataItem, index) => {
           return (
             <Box>
-              <TouchableOpacity onPress={() => console.log('Tags Clicked')}>
-                <Thumbnail videoItem={videoItem} />
+              <TouchableOpacity
+                onPress={() => onClickTagsDataVideo({tagsDataItem})}>
+                <Thumbnail videoItem={tagsDataItem} />
               </TouchableOpacity>
             </Box>
           );
@@ -108,7 +111,21 @@ const styles = StyleSheet.create({
     borderRadius: 90 / 2,
   },
 });
-const mapStateToProps = ({app: {getTagsDataList}}) => ({
+const mapStateToProps = ({
+  app: {
+    getTagsDataList,
+    getCurrentVideo,
+    getCommentData,
+    getVideo_PlaylistData,
+  },
+}) => ({
   getTagsDataList,
+  getCurrentVideo,
+  getCommentData,
+  getVideo_PlaylistData,
 });
-export default connect(mapStateToProps, {})(TagsVideoPage);
+export default connect(mapStateToProps, {
+  getCurrentVideo_Action,
+  getCommentAction,
+  getVideoPlaylistAction,
+})(TagsVideoPage);

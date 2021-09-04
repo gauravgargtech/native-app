@@ -22,7 +22,7 @@ const VideoDetails = ({
     if (isFocused) {
       const func = async () => {
         try {
-          getVideoDetailsAction(getCurrentVideo?.videoData?.id);
+          await getVideoDetailsAction(getCurrentVideo?.videoData?.id);
         } catch (e) {
           alert('error while get video Details');
         }

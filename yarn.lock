@@ -1156,6 +1156,18 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
+"@react-native-community/netinfo@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.2.tgz#3b61757c46d0f387815d42b651bbee1eb998a385"
+  integrity sha512-HbVIv6p+VAzSqALkfKKNbtSy0TneL7EILIqxiOjt/5weVdTuZ88NRyPNQAZBh6W8QYirXJo3f00ryMk9iLs7gQ==
+
+"@react-native-community/slider@^4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.1.6.tgz#5e6d886b8369b532bf4b91c3cda50ba43b8952ad"
+  integrity sha512-WI7VUWKQlj0LPK453RmpOEKj6gpe4gmSL5B6cDnhO6mqytlCCz92hVja5ZG6X/2NsHLTCl99GLVKXvCfkaY5xw==
+  dependencies:
+    flow-bin "0.113.0"
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -2666,6 +2678,18 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.8.tgz#d2266a792729fb227cd216fb572f43728e1ad340"
   integrity sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw==
 
+"d3-path@1 - 2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-2.0.0.tgz#55d86ac131a0548adae241eebfb56b4582dd09d8"
+  integrity sha512-ZwZQxKhBnv9yHaiWd6ZU4x5BtCQ7pXszEV9CU6kRgwIQVQGLMv1oiL4M+MK/n79sYzsj+gcgpPQSctJUsLN7fA==
+
+d3-shape@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-2.1.0.tgz#3b6a82ccafbc45de55b57fcf956c584ded3b666f"
+  integrity sha512-PnjUqfM2PpskbSLTJvAzp2Wv4CZsnAgTfcVRTwW03QR3MkXF8Uo7B1y/lWkAsmbKwuecto++4NlsYcvYpXpTHA==
+  dependencies:
+    d3-path "1 - 2"
+
 data-urls@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/data-urls/-/data-urls-2.0.0.tgz#156485a72963a970f5d5821aaf642bef2bf2db9b"
@@ -3394,6 +3418,11 @@ flatted@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.2.tgz#4575b21e2bcee7434aa9be662f4b7b5f9c2b5138"
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
+
+flow-bin@0.113.0:
+  version "0.113.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.113.0.tgz#6457d250dbc6f71ca51e75f00a96d23cde5d987a"
+  integrity sha512-76uE2LGNe50wm+Jup8Np4FBcMbyy5V2iE+K25PPIYLaEMGHrL1jnQfP9L0hTzA5oh2ZJlexRLMlaPqIYIKH9nw==
 
 flow-parser@0.*:
   version "0.158.0"
@@ -5923,10 +5952,25 @@ react-native-gesture-handler@^1.10.3:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-keep-awake@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-4.0.0.tgz#d89fdc3fb60b3cffa979ef37dc5816196df998a2"
+  integrity sha512-0Fotox+eLXQooeibVs3P60yASYUWjtRw9MZNmbuHt5UZQrgUrAKsE4jm7gTr4tPU1m1RkwGzcgUFpcOkh/ec7g==
+
+react-native-music-control@^1.3.0, react-native-music-control@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-music-control/-/react-native-music-control-1.4.0.tgz#8c1793e3899a327b6f74fada4f8d04b9f2b3d0c7"
+  integrity sha512-fyljEq3h8gXo5zzQyGP/x3cFhyMvruoaLZFJRxM79+M0WajjFKXLbhhofbGHsA78wnGW+IQ+BbJQf9qUTTsXjg==
+
 react-native-orientation-locker@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.3.1.tgz#e47cfdd4a7390df6ccdbc748a6eca9e8be953b0d"
   integrity sha512-BJPe/GvGO8nNdtqQat30CS9H2o+Qt8hv9AMYCxLS5l5k5+BP3FLScU2+GBg2DizDQCOnTtA24o8heI7kwy+rvw==
+
+react-native-orientation@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"
+  integrity sha512-A0h0E+2f95X4avmhaBG1ZT8WDxBACA/q//JN2eF1E7kq8AJVxt5XDiavv+aSBkBlqFsfF3bIS+T/DB5mXmnxuA==
 
 react-native-ratings@8.0.4:
   version "8.0.4"
@@ -5990,7 +6034,7 @@ react-native-svg-transformer@^0.14.3:
     path-dirname "^1.0.2"
     semver "^5.6.0"
 
-react-native-svg@^12.1.1:
+react-native-svg@^12.1.0, react-native-svg@^12.1.1:
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.1.tgz#5f292410b8bcc07bbc52b2da7ceb22caf5bcaaee"
   integrity sha512-NIAJ8jCnXGCqGWXkkJ1GTzO4a3Md5at5sagYV8Vh4MXYnL4z5Rh428Wahjhh+LIjx40EE5xM5YtwyJBqOIba2Q==
@@ -6012,6 +6056,18 @@ react-native-vector-icons@^8.1.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
+react-native-video-players@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-video-players/-/react-native-video-players-1.0.6.tgz#34b08267f1ad7ace70928caaa8abdab0e033d7bf"
+  integrity sha512-WcGWtDySe9QVe+dcerex+70vVuW21dtIZv4/v89TyuqliTBWm6z5H1R2Be68lFT0qOwpzeFyFrhhkzFa4tTnNQ==
+  dependencies:
+    d3-shape "^2.0.0"
+    react-native-keep-awake "^4.0.0"
+    react-native-music-control "^1.3.0"
+    react-native-orientation "^3.1.3"
+    react-native-svg "^12.1.0"
+    react-native-video "^5.1.1"
+
 react-native-video@5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.0.2.tgz#8f07da0cd85a1d4b316d115f3786409efc9e39fb"
@@ -6020,6 +6076,15 @@ react-native-video@5.0.2:
     keymirror "^0.1.1"
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
+
+react-native-video@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.1.1.tgz#89a7989efeb8d404611c06154d1da227a745d7d8"
+  integrity sha512-zee8gRUrjPWRoZSEBiMebClqu1iAuCQNLjzqpmXFrRWEoJj7azM3BPqLQWJgsnfLiYUYGySeApC/G60THM5+tw==
+  dependencies:
+    keymirror "^0.1.1"
+    prop-types "^15.7.2"
+    shaka-player "^2.5.9"
 
 react-native-webview@^11.13.0:
   version "11.13.0"
@@ -6481,7 +6546,7 @@ setprototypeof@1.1.1:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
 
-shaka-player@^2.4.4:
+shaka-player@^2.4.4, shaka-player@^2.5.9:
   version "2.5.23"
   resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.5.23.tgz#db92d1c6cf2314f0180a2cec11b0e2f2560336f5"
   integrity sha512-3MC9k0OXJGw8AZ4n/ZNCZS2yDxx+3as5KgH6Tx4Q5TRboTBBCu6dYPI5vp1DxKeyU12MBN1Zcbs7AKzXv2EnCg==

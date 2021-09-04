@@ -1,8 +1,5 @@
 import React, {useEffect} from 'react';
-import {Text, Image, TouchableOpacity, SafeAreaView} from 'react-native';
-import {Box, SubHeadingText, CustomHeader} from '../components/index';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Drawer = createDrawerNavigator();
 import {
@@ -23,33 +20,13 @@ import {
   CATEGORY_WISE,
   VIDEO_DETAILS,
 } from './routes';
-import LearnAppHomeNavigator from './LearnAppHomeNavigator';
 import CustomDrawerContent from './CustomDrawerContent';
 import {getCategoryAction, getCategoryData_Action} from '../store/actions';
 import {connect} from 'react-redux';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Colors, fontSizes} from '../theme';
 import {ms} from 'react-native-size-matters';
-const Category = ({navigation}) => {
-  return (
-    <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
-      <CustomHeader navigation={navigation} headerName={'Category Name'} />
-      <Box
-        flex={1}
-        style={{
-          height: hp('100%'),
-          backgroundColor: Colors.white,
-          padding: ms(10),
-        }}>
-        <Box flex={1} alignItems={'center'} justifyContent={'center'}>
-          <SubHeadingText fontSize={fontSizes[5]}>
-            Category Screen Display
-          </SubHeadingText>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
+
 const DrawerNavigator = ({
   route,
   navigation,
@@ -59,7 +36,14 @@ const DrawerNavigator = ({
   getCategoryDataList,
 }) => {
   useEffect(() => {
-    getCategoryAction();
+    const category = async () => {
+      try {
+        await getCategoryAction();
+      } catch (e) {
+        alert('error while get category');
+      }
+    };
+    category();
   }, []);
   return (
     <Drawer.Navigator
@@ -86,7 +70,10 @@ const DrawerNavigator = ({
     </Drawer.Navigator>
   );
 };
-const mapStateToProps = ({app: {getCategoryData}}) => ({getCategoryData});
+const mapStateToProps = ({app: {getCategoryData, getCategoryDataList}}) => ({
+  getCategoryData,
+  getCategoryDataList,
+});
 export default connect(mapStateToProps, {
   getCategoryAction,
   getCategoryData_Action,
