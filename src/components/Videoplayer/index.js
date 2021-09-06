@@ -180,6 +180,8 @@ const Videoplayer = ({
             controls={false}
             resizeMode={'contain'}
             onLoad={onLoad}
+            onError={e => console.log('error::', e)}
+            ignoreSilentSwitch={'ignore'}
             onProgress={onProgress}
             onEnd={onEnd}
             paused={!play}

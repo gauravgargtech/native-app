@@ -69,11 +69,9 @@ const SearchPage = ({
       await getCommentAction(searchItem?.id);
       await getVideoPlaylistAction(searchItem?.id);
     } catch (e) {
-      console.log('ERRORS AT GET_VIDEO_DATA', e);
+      console.log('ERRORS AT GET_SEARCH_VIDEO_DATA', e);
     }
   };
-
-  console.log('Search data', getSearchData);
 
   return (
     <Box flex={1}>

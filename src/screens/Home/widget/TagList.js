@@ -24,7 +24,6 @@ const TagList = ({
     navigation.navigate(TAGS_WISE, {tagsItem: tagsItem});
     try {
       await getTagsData_Action(tagsItem?.id);
-      console.log('get Tags Data List', getTagsDataList);
     } catch (e) {
       console.log('ERRORS AT GET_TAGS_DATA', e);
     }

@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, TouchableOpacity, StyleSheet, Text, Image} from 'react-native';
-import {SubHeadingText} from '../../components';
 import {
   VideoSkipBack,
   VideoPrevious,
@@ -11,18 +10,6 @@ import {
   VideoNext,
   VideoSkipForward,
 } from '../../assets/icons';
-import {Box} from '../../components';
-import {Colors} from '../../theme';
-import {
-  TapGestureHandler,
-  GestureHandlerRootView,
-  State,
-} from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedGestureHandler,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
 
 const PlayerControls = ({
   playing,
@@ -43,46 +30,46 @@ const PlayerControls = ({
     'showPreviousAndNext',
     showPreviousAndNext,
   );
-  const doubleTapRefBackward = React.createRef();
-  const doubleTapRefForward = React.createRef();
-  const pressedBackward = useSharedValue(false);
-  const pressedForward = useSharedValue(false);
-
-  const eventHandlerBackward = useAnimatedGestureHandler({
-    onStart: (event, ctx) => {
-      pressedBackward.value = true;
-    },
-    onEnd: (event, ctx) => {
-      pressedBackward.value = false;
-    },
-  });
-  const gestureHandleBackward = useAnimatedStyle(() => {
-    return {
-      backgroundColor: pressedBackward.value ? '#FEEF86' : '#001972',
-      transform: [{scale: pressedBackward.value ? 1.2 : 1}],
-    };
-  });
-
-  const eventHandlerForward = useAnimatedGestureHandler({
-    onStart: (event, ctx) => {
-      pressedForward.value = true;
-    },
-    onEnd: (event, ctx) => {
-      pressedForward.value = false;
-    },
-  });
-  const gestureHandleForward = useAnimatedStyle(() => {
-    return {
-      backgroundColor: pressedForward.value ? '#FEEF86' : '#001972',
-      transform: [{scale: pressedForward.value ? 1.2 : 1}],
-    };
-  });
-
-  const onForwardState = event => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      alert('Hey single tap!');
-    }
-  };
+  // const doubleTapRefBackward = React.createRef();
+  // const doubleTapRefForward = React.createRef();
+  // const pressedBackward = useSharedValue(false);
+  // const pressedForward = useSharedValue(false);
+  //
+  // const eventHandlerBackward = useAnimatedGestureHandler({
+  //   onStart: (event, ctx) => {
+  //     pressedBackward.value = true;
+  //   },
+  //   onEnd: (event, ctx) => {
+  //     pressedBackward.value = false;
+  //   },
+  // });
+  // const gestureHandleBackward = useAnimatedStyle(() => {
+  //   return {
+  //     backgroundColor: pressedBackward.value ? '#FEEF86' : '#001972',
+  //     transform: [{scale: pressedBackward.value ? 1.2 : 1}],
+  //   };
+  // });
+  //
+  // const eventHandlerForward = useAnimatedGestureHandler({
+  //   onStart: (event, ctx) => {
+  //     pressedForward.value = true;
+  //   },
+  //   onEnd: (event, ctx) => {
+  //     pressedForward.value = false;
+  //   },
+  // });
+  // const gestureHandleForward = useAnimatedStyle(() => {
+  //   return {
+  //     backgroundColor: pressedForward.value ? '#FEEF86' : '#001972',
+  //     transform: [{scale: pressedForward.value ? 1.2 : 1}],
+  //   };
+  // });
+  //
+  // const onForwardState = event => {
+  //   if (event.nativeEvent.state === State.ACTIVE) {
+  //     alert('Hey single tap!');
+  //   }
+  // };
 
   return (
     <View style={styles.wrapper}>

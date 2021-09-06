@@ -68,8 +68,6 @@ const VideoDeatilsPage = ({
   const [commentText, setCommentText] = useState(null);
   const [isCommentfocus, setIsCommentFocus] = useState(false);
 
-  console.log('current item ID', getCurrentVideo?.videoData?.id);
-
   const Player = useMemo(() => {
     return Videoplayer;
   }, [getCurrentVideo]);
