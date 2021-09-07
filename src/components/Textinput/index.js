@@ -7,6 +7,7 @@ const Textinput = ({
   children,
   value,
   onChangeText,
+  secureTextEntry,
   onBlur,
   placeholder,
   style,
@@ -19,6 +20,7 @@ const Textinput = ({
       children={children}
       value={value}
       onChangeText={onChangeText}
+      secureTextEntry={secureTextEntry}
       onBlur={onBlur}
       placeholder={placeholder}
       style={{...style, ...styles.container}}

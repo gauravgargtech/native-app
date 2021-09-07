@@ -5,6 +5,7 @@ const Drawer = createDrawerNavigator();
 import {
   Home,
   Search,
+  SetupKids,
   Login,
   Register,
   TagsWise,
@@ -14,6 +15,7 @@ import {
 import {
   HOME,
   SEARCH,
+  SETUP_KIDS,
   LOGIN,
   REGISTER,
   TAGS_WISE,
@@ -62,6 +64,7 @@ const DrawerNavigator = ({
       }}>
       <Drawer.Screen name={HOME} component={Home} />
       <Drawer.Screen name={SEARCH} component={Search} />
+      <Drawer.Screen name={SETUP_KIDS} component={SetupKids} />
       <Drawer.Screen name={LOGIN} component={Login} />
       <Drawer.Screen name={REGISTER} component={Register} />
       <Drawer.Screen name={TAGS_WISE} component={TagsWise} />

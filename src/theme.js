@@ -17,6 +17,7 @@ const Colors = {
   greyBox: '#f2f2f2',
   borderColor: '#d9d9d9',
   //StatusBar
+  SetupKidsButton: '#007889',
   lightWhite: '#ECF0F1',
 };
 

@@ -16,11 +16,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {getTagsAction, getVideoListAction} from '../../store/actions';
 import {connect} from 'react-redux';
 import {ms} from 'react-native-size-matters';
-import {
-  SignUP,
-  SearchIcon,
-  MenuIcon,
-} from '../../assets/images';
+import {SignUP, SignIn, SearchIcon, MenuIcon} from '../../assets/images';
 
 const Home = ({
   navigation,
@@ -52,7 +48,7 @@ const Home = ({
         menu={MenuIcon}
         headerName={'LearnReadApp'}
         search={SearchIcon}
-        SignUP={SignUP}
+        SignIN={SignIn}
       />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView

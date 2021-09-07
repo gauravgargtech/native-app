@@ -2,6 +2,7 @@ const LEARNAPP = '@main';
 
 export const HOME = `${LEARNAPP}_HOME`;
 export const SEARCH = `${LEARNAPP}_SEARCH`;
+export const SETUP_KIDS = `${LEARNAPP}_SETUP_KIDS`;
 export const LOGIN = `${LEARNAPP}_LOGIN`;
 export const REGISTER = `${LEARNAPP}_REGISTER`;
 export const VIDEO_DETAILS = `${LEARNAPP}_VIDEO_DETAILS`;

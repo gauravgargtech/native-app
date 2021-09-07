@@ -1,8 +1,12 @@
 export {default as ProfileAvtar} from './ProfileAvtar.jpeg';
 
+export {default as SignIn} from './HomeScreen/signin.png';
+export {default as SignIn_medium} from './HomeScreen/signin_medium.png';
+export {default as SignIn_large} from './HomeScreen/signin_large.png';
+
 export {default as SignUP} from './HomeScreen/signup.png';
-export {default as Signup_medium} from './HomeScreen/signup_medium.png';
-export {default as Signup_large} from './HomeScreen/signup_large.png';
+export {default as SignUP_medium} from './HomeScreen/signup_medium.png';
+export {default as SignUP_large} from './HomeScreen/signup_large.png';
 
 export {default as MenuIcon} from './HomeScreen/menu.png';
 export {default as MenuIcon_medium} from './HomeScreen/menu_medium.png';

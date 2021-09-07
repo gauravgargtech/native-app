@@ -23,6 +23,8 @@ import {
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import VideoPlayerUrl from '../../assets/video/orginal_lonely.mp4';
+
 const Videoplayer = ({
   navigation,
   getVideoPlaylistAction,
@@ -81,9 +83,6 @@ const Videoplayer = ({
     } catch (e) {
       console.log('ERRORS AT GET_NEXT_VIDEO_DATA', e);
     }
-
-    // setState({...state, play: false});
-    // videoRef.current.seek(0);
   };
 
   useEffect(() => {
@@ -113,9 +112,6 @@ const Videoplayer = ({
         .asSeconds();
       setDuration(Math.round(total_duration));
     }
-    console.log('Duration type', typeof duration);
-    // setDuration(Math.round(data.duration));
-    // videoRef?.current?.presentFullscreenPlayer();
   };
 
   const onProgress = data => {
@@ -135,13 +131,10 @@ const Videoplayer = ({
   };
   const handlePlayPause = () => {
     if (play) {
-      // setState({...state, play: false, showControls: true});
       setPlay(false);
       setShowControls(true);
       return;
     }
-
-    // setState({...state, play: true});
     setPlay(true);
     setTimeout(() => setShowControls(false), 2000);
   };
@@ -172,9 +165,7 @@ const Videoplayer = ({
         <Box height={fullscreen ? hp('51%') : hp('30%')}>
           <Video
             ref={ref => (videoRef.current = ref)}
-            source={{
-              uri: videoUrl,
-            }}
+            source={VideoPlayerUrl}
             poster={getCurrentVideo?.videoData?.thumbnail}
             style={fullscreen ? styles.fullscreenVideo : styles.backgroundVideo}
             controls={false}

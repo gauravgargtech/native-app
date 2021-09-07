@@ -7,10 +7,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
-import {HOME, SEARCH, LOGIN, REGISTER} from '../../navigator/routes';
+import {HOME, SEARCH, SETUP_KIDS,LOGIN} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CustomHeader = ({navigation, menu, headerName, search, SignUP}) => {
+const CustomHeader = ({navigation, menu, headerName, search, SignIN}) => {
   const setMenuIcon = menu;
   return (
     <Box style={styles.mainHeaderContainer}>
@@ -61,9 +61,9 @@ const CustomHeader = ({navigation, menu, headerName, search, SignUP}) => {
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        <TouchableOpacity onPress={() => navigation.navigate(REGISTER)}>
+        <TouchableOpacity onPress={() => navigation.navigate(LOGIN)}>
           <Image
-            source={SignUP}
+            source={SignIN}
             style={{width: wp('20%')}}
             resizeMode={'contain'}
           />

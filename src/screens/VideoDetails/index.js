@@ -4,7 +4,6 @@ import {Box, Header} from '../../components/index';
 import {Colors} from '../../theme';
 import VideoDeatilsPage from './widget/VideoDetailsPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {ms} from 'react-native-size-matters';
 import {getVideoDetailsAction} from '../../store/actions';
 import {connect} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
