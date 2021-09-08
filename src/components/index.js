@@ -8,6 +8,7 @@ import CustomHeader from './CustomHeader';
 import Thumbnail from './Thumbnail';
 import VideoDescription from './VideoDescription';
 import Videoplayer from './Videoplayer';
+import ProfileModal from './ProfileModal';
 import CommentList from './CommentList';
 import Loader from './Loader';
 import PlayerControls from './PlayerControls';
@@ -25,6 +26,7 @@ export {
   Thumbnail,
   VideoDescription,
   Videoplayer,
+  ProfileModal,
   CommentList,
   Loader,
   PlainText,

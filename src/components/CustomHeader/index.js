@@ -1,6 +1,13 @@
-import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
-import {Box, SubHeadingText, HeadingText} from '../../components';
+import React, {useState} from 'react';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Box,
+  SubHeadingText,
+  PlainText,
+  Button,
+  HeadingText,
+  ProfileModal,
+} from '../../components';
 import {Colors, fontSizes} from '../../theme';
 import {
   widthPercentageToDP as wp,
@@ -10,6 +17,8 @@ import {ms, s, vs} from 'react-native-size-matters';
 import {HOME, SEARCH, SETUP_KIDS, LOGIN} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
+import Modal from 'react-native-modal';
+import {CloseIcon_large} from '../../assets/images';
 
 const CustomHeader = ({
   navigation,
@@ -19,8 +28,15 @@ const CustomHeader = ({
   SignIN,
   getCurrentUserData,
 }) => {
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => {
+    setVisible(true);
+  };
+  const handleCancel = () => {
+    setVisible(false);
+  };
   const setMenuIcon = menu;
-  console.log('reducer',getCurrentUserData);
+  console.log('reducer', getCurrentUserData);
   return (
     <Box style={styles.mainHeaderContainer}>
       <Box flex={0.8} alignItems={'center'} justifyContent={'center'}>
@@ -70,7 +86,7 @@ const CustomHeader = ({
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        {getCurrentUserData?.length == 0? (
+        {getCurrentUserData?.length == 0 ? (
           <TouchableOpacity onPress={() => navigation.navigate(SETUP_KIDS)}>
             <Image
               source={SignIN}
@@ -79,9 +95,19 @@ const CustomHeader = ({
             />
           </TouchableOpacity>
         ) : (
-          <HeadingText fontSize={fontSizes[4]}>
-            {getCurrentUserData[0]?.displayName}
-          </HeadingText>
+          <TouchableOpacity
+            onPress={() => {
+              showDialog();
+            }}>
+            <HeadingText fontSize={fontSizes[4]}>
+              {getCurrentUserData[0]?.displayName}
+            </HeadingText>
+            <Modal
+              style={{margin: 0, backgroundColor: Colors.white}}
+              isVisible={visible}>
+              <ProfileModal handleCancel={handleCancel} />
+            </Modal>
+          </TouchableOpacity>
         )}
       </Box>
     </Box>
