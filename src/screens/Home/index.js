@@ -13,25 +13,36 @@ import {Colors} from '../../theme';
 import TagList from './widget/TagList';
 import VideoList from './widget/VideoList';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {getTagsAction, getVideoListAction} from '../../store/actions';
+import {
+  getTagsAction,
+  getVideoListAction,
+  getLoginUser_Action,
+} from '../../store/actions';
 import {connect} from 'react-redux';
 import {ms} from 'react-native-size-matters';
 import {SignUP, SignIn, SearchIcon, MenuIcon} from '../../assets/images';
 
 const Home = ({
+  route,
   navigation,
   getTagsAction,
   getTagsData,
   getVideoListAction,
   getVideoList,
+  getLoginUser_Action,
 }) => {
+  const {currentUser} = route.params ?? {};
+  console.log('current user', currentUser);
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
       const func = async () => {
         try {
-          getTagsAction();
-          getVideoListAction();
+          await getTagsAction();
+          await getVideoListAction();
+          if (currentUser != undefined) {
+            await getLoginUser_Action(currentUser);
+          }
         } catch (e) {
           alert('error while get Tags Data');
         }
@@ -39,7 +50,6 @@ const Home = ({
       func();
     }
   }, [isFocused]);
-
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
@@ -74,10 +84,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
 });
-const mapStateToProps = ({app: {getTagsData, getVideoList}}) => ({
+const mapStateToProps = ({
+  app: {getTagsData, getVideoList, getCurrentUserData},
+}) => ({
   getTagsData,
   getVideoList,
+  getCurrentUserData,
 });
-export default connect(mapStateToProps, {getTagsAction, getVideoListAction})(
-  Home,
-);
+export default connect(mapStateToProps, {
+  getTagsAction,
+  getVideoListAction,
+  getLoginUser_Action,
+})(Home);

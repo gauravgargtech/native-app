@@ -1,17 +1,26 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
-import {Box, SubHeadingText} from '../../components';
+import {Box, SubHeadingText, HeadingText} from '../../components';
 import {Colors, fontSizes} from '../../theme';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
-import {HOME, SEARCH, SETUP_KIDS,LOGIN} from '../../navigator/routes';
+import {HOME, SEARCH, SETUP_KIDS, LOGIN} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {connect} from 'react-redux';
 
-const CustomHeader = ({navigation, menu, headerName, search, SignIN}) => {
+const CustomHeader = ({
+  navigation,
+  menu,
+  headerName,
+  search,
+  SignIN,
+  getCurrentUserData,
+}) => {
   const setMenuIcon = menu;
+  console.log('reducer',getCurrentUserData);
   return (
     <Box style={styles.mainHeaderContainer}>
       <Box flex={0.8} alignItems={'center'} justifyContent={'center'}>
@@ -61,13 +70,19 @@ const CustomHeader = ({navigation, menu, headerName, search, SignIN}) => {
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        <TouchableOpacity onPress={() => navigation.navigate(LOGIN)}>
-          <Image
-            source={SignIN}
-            style={{width: wp('20%')}}
-            resizeMode={'contain'}
-          />
-        </TouchableOpacity>
+        {getCurrentUserData?.length == 0? (
+          <TouchableOpacity onPress={() => navigation.navigate(SETUP_KIDS)}>
+            <Image
+              source={SignIN}
+              style={{width: wp('20%')}}
+              resizeMode={'contain'}
+            />
+          </TouchableOpacity>
+        ) : (
+          <HeadingText fontSize={fontSizes[4]}>
+            {getCurrentUserData[0]?.displayName}
+          </HeadingText>
+        )}
       </Box>
     </Box>
   );
@@ -90,4 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
 });
-export default CustomHeader;
+const mapStateToProps = ({app: {getCurrentUserData}}) => ({
+  getCurrentUserData,
+});
+export default connect(mapStateToProps, {})(CustomHeader);

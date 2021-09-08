@@ -18,7 +18,6 @@ import {
   getVideoPlaylistAction,
   getCommentAction,
   getCurrentVideo_Action,
-  // getCurrentTime_Action,
 } from '../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -33,8 +32,6 @@ const Videoplayer = ({
   getCommentData,
   getCurrentVideo_Action,
   getCurrentVideo,
-  // getCurrentTime_Action,
-  // getCurrentVideoTime,
 }) => {
   const videoRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);

@@ -170,7 +170,9 @@ const VideoDeatilsPage = ({
                 title={'Comment'}
                 buttonStyle={styles.btnStyleComment}
                 titleStyle={styles.btnTitleComment}
-                onPress={() => AddComment()}
+                onPress={() => {
+                  AddComment();
+                }}
               />
             </Box>
             <Box style={{paddingVertical: ms(10)}}>

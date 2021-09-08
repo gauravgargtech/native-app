@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Box,
@@ -36,14 +36,14 @@ const LoginPage = ({navigation}) => {
     password: Yup.string().required('Password Required'),
   });
 
-  const onClickLogin = values => {
-    console.log('Submit Login data successfully', values);
+  const onClickLogin = (values, resetForm) => {
     auth()
       .signInWithEmailAndPassword(values.email.trim(), values.password)
       .then(() => {
         console.log('User account signed in!');
-        const currentuser = firebase.auth().currentUser;
-        navigation.navigate(HOME);
+        const currentUser = firebase.auth().currentUser;
+        navigation.navigate(HOME, {currentUser: currentUser});
+        resetForm({values: ''});
       })
       .catch(error => {
         if (error.code === 'auth/invalid-email') {
@@ -59,73 +59,72 @@ const LoginPage = ({navigation}) => {
             'The password is invalid or the user does not have a password.',
           );
         }
-        console.error(error);
       });
   };
 
   return (
-    <Box flex={1}>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={LoginSchema}
-        onSubmit={values => onClickLogin(values)}>
-        {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-          <>
-            <Box flex={1} justifyContent={'center'} alignItems={'center'}>
-              <Box>
-                <SubHeadingText
-                  color={Colors.blackColor}
-                  fontSize={fontSizes[4]}>
-                  Login Page
-                </SubHeadingText>
-              </Box>
-              <Box style={styles.loginFormView}>
-                <Input
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  placeholder={'Enter Email'}
-                  style={{
-                    fontSize: fontSizes[1.2],
-                    fontFamily: fonts.RobotoRegular,
-                  }}
-                  placeholderTextColor={Colors.black}
-                  errorMessage={errors.email}
-                  errorStyle={{fontSize: fontSizes[1.2], right: 5}}
-                />
-                <Input
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  secureTextEntry={true}
-                  placeholder={'Enter Password'}
-                  style={{
-                    fontSize: fontSizes[1.2],
-                    fontFamily: fonts.RobotoRegular,
-                  }}
-                  placeholderTextColor={Colors.black}
-                  errorMessage={errors.password}
-                  errorStyle={{fontSize: fontSizes[1.2], right: 5}}
-                />
-              </Box>
+    <Formik
+      initialValues={{
+        email: '',
+        password: '',
+      }}
+      validationSchema={LoginSchema}
+      onSubmit={(values, {resetForm}) => {
+        onClickLogin(values, resetForm);
+      }}>
+      {({handleChange, handleBlur, handleSubmit, values, errors}) => (
+        <Box flex={1}>
+          <Box flex={1} justifyContent={'center'} alignItems={'center'}>
+            <Box>
+              <SubHeadingText color={Colors.blackColor} fontSize={fontSizes[4]}>
+                Login Page
+              </SubHeadingText>
             </Box>
-            <Box mt={10} justifyContent={'flex-end'}>
-              <Box alignItems={'center'}>
-                <Button
-                  title={'Login'}
-                  buttonStyle={styles.btnStyleLogin}
-                  titleStyle={styles.btnTitleLogin}
-                  onPress={handleSubmit}
-                />
-              </Box>
+            <Box style={styles.loginFormView}>
+              <Input
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                placeholder={'Enter Email'}
+                style={{
+                  fontSize: fontSizes[1.2],
+                  fontFamily: fonts.RobotoRegular,
+                }}
+                placeholderTextColor={Colors.black}
+                errorMessage={errors.email}
+                errorStyle={{fontSize: fontSizes[1.2], right: 5}}
+              />
+              <Input
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                secureTextEntry={true}
+                placeholder={'Enter Password'}
+                style={{
+                  fontSize: fontSizes[1.2],
+                  fontFamily: fonts.RobotoRegular,
+                }}
+                placeholderTextColor={Colors.black}
+                errorMessage={errors.password}
+                errorStyle={{fontSize: fontSizes[1.2], right: 5}}
+              />
             </Box>
-          </>
-        )}
-      </Formik>
-    </Box>
+          </Box>
+          <Box mt={10} justifyContent={'flex-end'}>
+            <Box alignItems={'center'}>
+              <Button
+                title={'Login'}
+                buttonStyle={styles.btnStyleLogin}
+                titleStyle={styles.btnTitleLogin}
+                onPress={() => {
+                  handleSubmit();
+                }}
+              />
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </Formik>
   );
 };
 const styles = StyleSheet.create({

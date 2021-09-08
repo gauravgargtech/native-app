@@ -37,14 +37,18 @@ const RegisterPage = ({navigation}) => {
     password: Yup.string().required('Password Required'),
   });
 
-  const onClickSubmit = values => {
-    console.log('Submit Register data successfully', values);
+  const onClickSubmit = (values, resetForm) => {
+    console.log('Register value', values);
+    const update = {
+      displayName: values?.username,
+    };
     auth()
       .createUserWithEmailAndPassword(values.email.trim(), values.password)
       .then(() => {
         console.log('User account created & signed in!');
-        const currentuser = firebase.auth().currentUser;
+        const currentUser = firebase.auth().currentUser.updateProfile(update);
         navigation.navigate(LOGIN);
+        resetForm({values: ''});
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -58,8 +62,11 @@ const RegisterPage = ({navigation}) => {
         if (error.code === 'auth/weak-password') {
           SnackbarComponent('The given password is invalid.');
         }
-        console.error(error);
       });
+  };
+
+  const LoginNaviagte = () => {
+    navigation.navigate(LOGIN);
   };
 
   return (
@@ -71,7 +78,9 @@ const RegisterPage = ({navigation}) => {
           password: '',
         }}
         validationSchema={RegisterSchema}
-        onSubmit={values => onClickSubmit(values)}>
+        onSubmit={(values, {resetForm}) => {
+          onClickSubmit(values, resetForm);
+        }}>
         {({handleChange, handleBlur, handleSubmit, values, errors}) => (
           <>
             <Box flex={1} justifyContent={'center'} alignItems={'center'}>
@@ -125,13 +134,31 @@ const RegisterPage = ({navigation}) => {
                 />
               </Box>
             </Box>
-            <Box mt={10} justifyContent={'flex-end'} alignItems={'center'}>
-              <Button
-                title={'Submit'}
-                buttonStyle={styles.btnStyleSubmit}
-                titleStyle={styles.btnTitleSubmit}
-                onPress={handleSubmit}
-              />
+            <Box mt={10} justifyContent={'flex-end'}>
+              <Box alignItems={'center'}>
+                <Button
+                  title={'Submit'}
+                  buttonStyle={styles.btnStyleSubmit}
+                  titleStyle={styles.btnTitleSubmit}
+                  onPress={() => {
+                    handleSubmit();
+                  }}
+                />
+              </Box>
+              <Box mt={10}>
+                <SubHeadingText
+                  color={Colors.black}
+                  fontSize={fontSizes[0.8]}
+                  letterSpacing={-0.2}>
+                  Already have an Account?{' '}
+                  <SubHeadingText
+                    color={Colors.SetupKidsButton}
+                    fontSize={fontSizes[0.8]}
+                    onPress={() => LoginNaviagte()}>
+                    Login
+                  </SubHeadingText>
+                </SubHeadingText>
+              </Box>
             </Box>
           </>
         )}

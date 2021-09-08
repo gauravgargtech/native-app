@@ -78,6 +78,7 @@ const SearchPage = ({
       <Box
         backgroundColor={Colors.white}
         borderWidth={1}
+        alignItems={'center'}
         height={hp('6%')}
         borderRadius={8}
         flexDirection={'row'}>
@@ -90,7 +91,7 @@ const SearchPage = ({
             />
           </TouchableOpacity>
         </Box>
-        <Box>
+        <Box width={wp('73%')}>
           <Input
             value={search}
             onChangeText={val => searchFilterFunction(val)}
@@ -102,7 +103,10 @@ const SearchPage = ({
           />
         </Box>
         <Box justifyContent={'center'} alignItems={'center'} width={wp('10%')}>
-          <TouchableOpacity onPress={() => clearReduxData()}>
+          <TouchableOpacity
+            onPress={() => {
+              clearReduxData();
+            }}>
             <Image
               source={CloseIcon_large}
               width={ms(5)}
@@ -142,12 +146,11 @@ const styles = StyleSheet.create({
     color: Colors.grey,
     fontFamily: fonts.RobotoRegular,
     fontSize: fontSizes[4],
-    height: hp('6.4%'),
+    marginTop: ms(6),
   },
   searchInputContainerStyle: {
     right: ms(8),
     borderBottomWidth: 0,
-    width: wp('68%'),
   },
 });
 const mapStateToProps = ({

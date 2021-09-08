@@ -5,6 +5,7 @@ import {Input as Textinput} from 'react-native-elements';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const Input = ({
+  name,
   containerStyle,
   disabled,
   disabledInputStyle,
@@ -33,6 +34,7 @@ const Input = ({
 }) => {
   return (
     <Textinput
+      name={name}
       containerStyle={containerStyle}
       disabled={disabled}
       disabledInputStyle={disabledInputStyle}

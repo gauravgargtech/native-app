@@ -100,14 +100,14 @@ export const getCurrentVideo_Action =
     });
   };
 
-export const getCurrentTime_Action =
-  getCurrentVideoTime =>
-  (dispatch, getState, {api}) => {
-    return dispatch({
-      type: types.GET_CURRENT_VIDEO_PLAYER_TIME,
-      payload: getCurrentVideoTime,
-    });
-  };
+// export const getCurrentTime_Action =
+//   getCurrentVideoTime =>
+//   (dispatch, getState, {api}) => {
+//     return dispatch({
+//       type: types.GET_CURRENT_VIDEO_PLAYER_TIME,
+//       payload: getCurrentVideoTime,
+//     });
+//   };
 
 export const getSearchAction =
   searchText =>
@@ -145,5 +145,16 @@ export const getCategoryData_Action =
     return dispatch({
       type: types.GET_CATEGORY_DATA,
       payload: getPromise(),
+    });
+  };
+
+export const getLoginUser_Action =
+  currentUser =>
+  (dispatch, getState, {api}) => {
+    let array = [];
+    array?.push(currentUser);
+    return dispatch({
+      type: types.GET_CURRENT_USER,
+      payload: array,
     });
   };
