@@ -158,3 +158,10 @@ export const getLoginUser_Action =
       payload: array,
     });
   };
+
+export const Logout_Action = () => dispatch => {
+  return dispatch({
+    type: types.LOGOUT,
+    payload: {},
+  });
+};

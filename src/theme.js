@@ -18,6 +18,7 @@ const Colors = {
   borderColor: '#d9d9d9',
   //StatusBar
   SetupKidsButton: '#007889',
+  controlsBgClr: '#000000c4',
   lightWhite: '#ECF0F1',
 };
 

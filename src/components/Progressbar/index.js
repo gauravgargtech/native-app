@@ -28,7 +28,8 @@ const ProgressBar: React.FC<Props> = ({
 }) => {
   const position = getMinutesFromSeconds(currentTime);
   const fullDuration = getMinutesFromSeconds(duration);
-
+  console.log('Progress bar Current time', currentTime);
+  console.log('Progress bar Duration time', duration);
   const getTimeCurrentTime = () => {
     let unix_timestamp = currentTime;
     let formattedTime;

@@ -18,7 +18,6 @@ import {HOME, SEARCH, SETUP_KIDS, LOGIN} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import Modal from 'react-native-modal';
-import {CloseIcon_large} from '../../assets/images';
 
 const CustomHeader = ({
   navigation,
@@ -36,7 +35,6 @@ const CustomHeader = ({
     setVisible(false);
   };
   const setMenuIcon = menu;
-  console.log('reducer', getCurrentUserData);
   return (
     <Box style={styles.mainHeaderContainer}>
       <Box flex={0.8} alignItems={'center'} justifyContent={'center'}>
@@ -53,7 +51,9 @@ const CustomHeader = ({
         ) : (
           <TouchableOpacity
             style={styles.menuIconView}
-            onPress={() => navigation.navigate(HOME)}>
+            onPress={() => {
+              navigation.navigate(HOME);
+            }}>
             <Ionicons
               name={'arrow-back-outline'}
               color={Colors.IconColor}

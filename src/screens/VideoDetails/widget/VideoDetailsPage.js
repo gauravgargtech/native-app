@@ -68,6 +68,12 @@ const VideoDeatilsPage = ({
   const [commentText, setCommentText] = useState(null);
   const [isCommentfocus, setIsCommentFocus] = useState(false);
 
+  useEffect(() => {
+    if (addCommentData?.data?.success == true) {
+      Alert.alert(`Message : ${addCommentData?.data?.message}`);
+    }
+  }, [addCommentData]);
+
   const Player = useMemo(() => {
     return Videoplayer;
   }, [getCurrentVideo]);
@@ -87,7 +93,6 @@ const VideoDeatilsPage = ({
       await addCommentAction(videoID, comment, userID);
       setCommentText(null);
     }
-    Alert.alert(`Message : ${addCommentData?.data.message}`);
   };
 
   const onClickVideo = async ({playlistItem}) => {

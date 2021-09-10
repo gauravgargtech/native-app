@@ -9,6 +9,7 @@ import Thumbnail from './Thumbnail';
 import VideoDescription from './VideoDescription';
 import Videoplayer from './Videoplayer';
 import ProfileModal from './ProfileModal';
+import ProfileOption from './ProfileOption';
 import CommentList from './CommentList';
 import Loader from './Loader';
 import PlayerControls from './PlayerControls';
@@ -27,6 +28,7 @@ export {
   VideoDescription,
   Videoplayer,
   ProfileModal,
+  ProfileOption,
   CommentList,
   Loader,
   PlainText,

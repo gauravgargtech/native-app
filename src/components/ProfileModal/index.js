@@ -1,12 +1,16 @@
 import React from 'react';
-import {Box, Button, SubHeadingText} from '../../components';
+import {Box, Button, SubHeadingText, ProfileOption} from '../../components';
 import {ms} from 'react-native-size-matters';
-import {Image, TouchableOpacity} from 'react-native';
+import {Alert, Image, TouchableOpacity} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import {CloseIcon_large, ProfileAvtar} from '../../assets/images';
-import {Colors, fontSizes} from '../../theme';
+import {CloseIcon, ProfileAvtar} from '../../assets/images';
+import {connect} from 'react-redux';
 
 const ProfileModal = ({handleCancel}) => {
+  const onClickLogout = async () => {
+    console.log('Logout');
+    Alert.alert('Logout');
+  };
   return (
     <Box flex={1}>
       <Box p={ms(15)}>
@@ -19,64 +23,27 @@ const ProfileModal = ({handleCancel}) => {
             handleCancel();
           }}>
           <Image
-            source={CloseIcon_large}
-            style={{width: 100, height: 20}}
+            source={CloseIcon}
+            width={'100%'}
+            height={'100%'}
+            // style={{width: 100, height: 20}}
             resizeMode={'contain'}
           />
         </TouchableOpacity>
       </Box>
       <Box width={'100%'} borderWidth={0.3} />
-      <Box p={ms(15)} flexDirection={'row'}>
-        <Box width={wp('10%')} alignItems={'center'}>
-          <Image
-            source={ProfileAvtar}
-            style={{width: 50, height: 35}}
-            resizeMode={'contain'}
-          />
-        </Box>
-        <Box ml={ms(20)} justifyContent={'center'}>
-          <SubHeadingText fontSize={fontSizes[3]}>Profile</SubHeadingText>
-        </Box>
-      </Box>
-      <Box p={ms(15)} flexDirection={'row'}>
-        <Box width={wp('10%')} alignItems={'center'}>
-          <Image
-            source={ProfileAvtar}
-            style={{width: 50, height: 35}}
-            resizeMode={'contain'}
-          />
-        </Box>
-        <Box ml={ms(20)} justifyContent={'center'}>
-          <SubHeadingText fontSize={fontSizes[3]}>Account</SubHeadingText>
-        </Box>
-      </Box>
-      <Box p={ms(15)} flexDirection={'row'}>
-        <Box width={wp('10%')} alignItems={'center'}>
-          <Image
-            source={ProfileAvtar}
-            style={{width: 50, height: 35}}
-            resizeMode={'contain'}
-          />
-        </Box>
-        <Box ml={ms(20)} justifyContent={'center'}>
-          <SubHeadingText fontSize={fontSizes[3]}>Settings</SubHeadingText>
-        </Box>
-      </Box>
+      <ProfileOption OptionName={'Profile'} />
+      <ProfileOption OptionName={'Account'} />
+      <ProfileOption OptionName={'Settings'} />
       <Box width={'100%'} borderWidth={0.3} />
-      <Box p={ms(15)} flexDirection={'row'}>
-        <Box width={wp('10%')} alignItems={'center'}>
-          <Image
-            source={ProfileAvtar}
-            style={{width: 50, height: 35}}
-            resizeMode={'contain'}
-          />
-        </Box>
-        <Box ml={ms(20)} justifyContent={'center'}>
-          <SubHeadingText fontSize={fontSizes[3]}>Logout</SubHeadingText>
-        </Box>
-      </Box>
+      <TouchableOpacity
+        onPress={() => {
+          onClickLogout();
+        }}>
+        <ProfileOption OptionName={'Logout'} />
+      </TouchableOpacity>
     </Box>
   );
 };
-
-export default ProfileModal;
+const mapStateToProps = ({app: {}}) => ({});
+export default connect(mapStateToProps, {})(ProfileModal);

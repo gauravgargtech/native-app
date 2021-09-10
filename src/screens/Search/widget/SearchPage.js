@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
 import {Colors, fontSizes, fonts} from '../../../theme';
-import {SearchIcon, CloseIcon_large} from '../../../assets/images';
+import {SearchIcon, CloseIcon} from '../../../assets/images';
 import {HOME, VIDEO_DETAILS} from '../../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -23,6 +23,7 @@ import {
   getVideoPlaylistAction,
 } from '../../../store/actions';
 import {connect} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
 
 const SearchPage = ({
   navigation,
@@ -35,7 +36,22 @@ const SearchPage = ({
   getVideoPlaylistAction,
   getVideo_PlaylistData,
 }) => {
+  const isFocused = useIsFocused();
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (isFocused) {
+      const func = async () => {
+        try {
+          await getSearchAction('');
+        } catch (e) {
+          alert('error while get Search Data');
+        }
+      };
+      func();
+    }
+  }, [isFocused]);
+
   const searchFilterFunction = async val => {
     setSearch(val);
     try {
@@ -104,14 +120,20 @@ const SearchPage = ({
         </Box>
         <Box justifyContent={'center'} alignItems={'center'} width={wp('10%')}>
           <TouchableOpacity
+            style={{
+              width: '50%',
+              height: '50%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             onPress={() => {
               clearReduxData();
             }}>
             <Image
-              source={CloseIcon_large}
-              width={ms(5)}
-              height={ms(5)}
-              resizeMode={'stretch'}
+              source={CloseIcon}
+              width={'100%'}
+              height={'100%'}
+              resizeMode={'contain'}
             />
           </TouchableOpacity>
         </Box>

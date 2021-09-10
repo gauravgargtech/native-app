@@ -1,9 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Box, CustomHeader, PlayerControls, ProgressBar} from '../../components';
 import {
+  ActivityIndicator,
   Alert,
   Dimensions,
   Image,
+  LayoutAnimation,
   Platform,
   StatusBar,
   StyleSheet,
@@ -23,6 +25,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import VideoPlayerUrl from '../../assets/video/orginal_lonely.mp4';
+import {Colors} from '../../theme';
 
 const Videoplayer = ({
   navigation,
@@ -39,41 +42,21 @@ const Videoplayer = ({
   const [fullscreen, setFullscreen] = useState(false);
   const [play, setPlay] = useState(true);
   const [showControls, setShowControls] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(true);
   const videoUrl = getCurrentVideo?.videoData?.url;
   console.log('video url:', videoUrl);
 
   const onEnd = () => {
     setCurrentTime(duration);
-    const allNext = getVideo_PlaylistData?.playList?.map(
-      (all, index, element) => {
-        const current = getVideo_PlaylistData?.playList?.filter(
-          PlaylistItem => {
-            if (PlaylistItem?.title === getCurrentVideo?.videoData?.title) {
-              return PlaylistItem;
-            }
-          },
-        );
-        if (all?.title === current[0]?.title) {
-          return element[index + 1];
-        }
-      },
-    );
-
-    const nextOne = allNext?.filter(item => {
-      if (item !== undefined) {
-        return item;
-      }
-    });
     try {
-      if (nextOne[0] != undefined) {
+      if (getVideo_PlaylistData?.playList[0] != undefined) {
         const getPlayerVideo = {
-          videoData: nextOne[0],
+          videoData: getVideo_PlaylistData?.playList[0],
         };
         getCurrentVideo_Action(getPlayerVideo);
 
-        getCommentAction(nextOne[0]?.id);
-        getVideoPlaylistAction(nextOne[0]?.id);
+        getCommentAction(getVideo_PlaylistData?.playList[0]?.id);
+        getVideoPlaylistAction(getVideo_PlaylistData?.playList[0]?.id);
       } else {
         Alert.alert('No Available Next Episodes.');
       }
@@ -84,11 +67,20 @@ const Videoplayer = ({
 
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
-
     return () => {
       Orientation.removeOrientationListener(handleOrientation);
+      clearData();
     };
   }, []);
+
+  const clearData = () => {
+    setCurrentTime(0);
+    setDuration(0);
+    setPlay(true);
+    setShowControls(true);
+    setFullscreen(false);
+    setIsLoading(true);
+  };
 
   function handleOrientation(orientation: string) {
     orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
@@ -103,13 +95,17 @@ const Videoplayer = ({
     if (a.length == 2) {
       const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
       setDuration(Math.round(total_duration));
+      setIsLoading(false);
     } else {
       const total_duration = moment
         .duration(`${a[0]}:${a[1]}:${a[2]}`)
         .asSeconds();
       setDuration(Math.round(total_duration));
+      setIsLoading(false);
     }
   };
+
+  const onLoadStart = () => setIsLoading(true);
 
   const onProgress = data => {
     setCurrentTime(Math.round(data.currentTime));
@@ -122,7 +118,7 @@ const Videoplayer = ({
       videoRef?.current?.presentFullscreenPlayer();
     } else {
       fullscreen
-        ? Orientation.unlockAllOrientations()
+        ? Orientation.lockToPortrait()
         : Orientation.lockToLandscapeLeft();
     }
   };
@@ -162,20 +158,25 @@ const Videoplayer = ({
         <Box height={fullscreen ? hp('51%') : hp('30%')}>
           <Video
             ref={ref => (videoRef.current = ref)}
-            source={VideoPlayerUrl}
+            source={{uri: videoUrl}}
             poster={getCurrentVideo?.videoData?.thumbnail}
-            style={fullscreen ? styles.fullscreenVideo : styles.backgroundVideo}
+            posterResizeMode={'cover'}
+            style={fullscreen ? styles.fullscreenVideo : styles.video}
             controls={false}
             resizeMode={'contain'}
+            onLoadStart={onLoadStart}
             onLoad={onLoad}
-            onError={e => console.log('error::', e)}
             ignoreSilentSwitch={'ignore'}
             onProgress={onProgress}
             onEnd={onEnd}
             paused={!play}
           />
           {showControls && (
-            <View style={styles.controlOverlay}>
+            <View
+              style={[
+                styles.controlOverlay,
+                {height: fullscreen ? Dimensions.get('window').height : null},
+              ]}>
               <TouchableOpacity
                 onPress={handleFullscreen}
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
@@ -192,15 +193,21 @@ const Videoplayer = ({
                   />
                 )}
               </TouchableOpacity>
-              <PlayerControls
-                onPlay={handlePlayPause}
-                onPause={handlePlayPause}
-                playing={play}
-                showPreviousAndNext={false}
-                showSkip={true}
-                skipBackwards={skipBackward}
-                skipForwards={skipForward}
-              />
+              {isLoading ? (
+                <Box justifyContent={'center'} flex={1} alignItems={'center'}>
+                  <ActivityIndicator size="large" color={Colors.white} />
+                </Box>
+              ) : (
+                <PlayerControls
+                  onPlay={handlePlayPause}
+                  onPause={handlePlayPause}
+                  playing={play}
+                  showPreviousAndNext={false}
+                  showSkip={true}
+                  skipBackwards={skipBackward}
+                  skipForwards={skipForward}
+                />
+              )}
               <ProgressBar
                 currentTime={currentTime}
                 duration={duration}
@@ -226,9 +233,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
   },
   video: {
-    height: Dimensions.get('window').width * (9 / 16),
+    height: '100%',
     width: Dimensions.get('window').width,
-    backgroundColor: 'black',
+    backgroundColor: Colors.black,
   },
   fullscreenVideo: {
     height: Dimensions.get('window').width,
