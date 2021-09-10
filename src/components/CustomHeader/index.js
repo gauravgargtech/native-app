@@ -26,6 +26,7 @@ const CustomHeader = ({
   search,
   SignIN,
   getCurrentUserData,
+  clearData,
 }) => {
   const [visible, setVisible] = useState(false);
   const showDialog = () => {
@@ -53,6 +54,7 @@ const CustomHeader = ({
             style={styles.menuIconView}
             onPress={() => {
               navigation.navigate(HOME);
+              clearData();
             }}>
             <Ionicons
               name={'arrow-back-outline'}

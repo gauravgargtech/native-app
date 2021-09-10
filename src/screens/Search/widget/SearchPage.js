@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
 import {Colors, fontSizes, fonts} from '../../../theme';
-import {SearchIcon, CloseIcon} from '../../../assets/images';
+import {SearchIcon, CloseIcon_large} from '../../../assets/images';
 import {HOME, VIDEO_DETAILS} from '../../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -130,7 +130,7 @@ const SearchPage = ({
               clearReduxData();
             }}>
             <Image
-              source={CloseIcon}
+              source={CloseIcon_large}
               width={'100%'}
               height={'100%'}
               resizeMode={'contain'}

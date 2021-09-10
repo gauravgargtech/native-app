@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Box, CustomHeader, PlayerControls, ProgressBar} from '../../components';
 import {
   ActivityIndicator,
@@ -43,6 +43,7 @@ const Videoplayer = ({
   const [play, setPlay] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+
   const videoUrl = getCurrentVideo?.videoData?.url;
   console.log('video url:', videoUrl);
 
@@ -69,13 +70,13 @@ const Videoplayer = ({
     Orientation.addOrientationListener(handleOrientation);
     return () => {
       Orientation.removeOrientationListener(handleOrientation);
-      clearData();
     };
   }, []);
 
   const clearData = () => {
-    setCurrentTime(0);
     setDuration(0);
+    setCurrentTime(0);
+    videoRef?.current.seek(0);
     setPlay(true);
     setShowControls(true);
     setFullscreen(false);
@@ -88,7 +89,8 @@ const Videoplayer = ({
       : (setFullscreen(false), StatusBar.setHidden(false));
   }
 
-  const onLoad = (data: OnLoadData) => {
+  const onLoad = data => {
+    clearData();
     const hms = getCurrentVideo?.videoData?.total_time;
     const a = hms.split('.');
 
@@ -109,8 +111,6 @@ const Videoplayer = ({
 
   const onProgress = data => {
     setCurrentTime(Math.round(data.currentTime));
-    console.log('Cureent time process time', currentTime);
-    console.log('Duration time on Progess', duration);
   };
 
   const handleFullscreen = () => {
@@ -140,19 +140,21 @@ const Videoplayer = ({
     videoRef?.current.seek(currentTime + 10);
   };
 
-  const onSeek = (seek: OnSeekData) => {
+  const onSeek = seek => {
     videoRef?.current.seek(seek);
   };
-  const onSeeking = currentVideoTime => {
-    setCurrentTime(currentVideoTime);
-  };
+
   const visibleControls = () => {
     showControls ? setShowControls(false) : setShowControls(true);
   };
   return (
     <>
       {!fullscreen ? (
-        <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+        <CustomHeader
+          navigation={navigation}
+          headerName={'LearnReadApp'}
+          clearData={clearData}
+        />
       ) : null}
       <TouchableWithoutFeedback onPress={visibleControls}>
         <Box height={fullscreen ? hp('51%') : hp('30%')}>
@@ -214,7 +216,6 @@ const Videoplayer = ({
                 onSlideStart={handlePlayPause}
                 onSlideComplete={handlePlayPause}
                 onSeek={onSeek}
-                onSeeking={onSeeking}
               />
             </View>
           )}

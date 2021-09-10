@@ -22,7 +22,6 @@ const ProgressBar: React.FC<Props> = ({
   currentTime,
   duration,
   onSeek,
-  onSeeking,
   onSlideStart,
   onSlideComplete,
 }) => {

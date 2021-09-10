@@ -9,3 +9,4 @@ export {default as MenuIcon} from './HomeScreen/menu.png';
 export {default as SearchIcon} from './HomeScreen/search.png';
 
 export {default as CloseIcon} from './HomeScreen/ic_close.png';
+export {default as CloseIcon_large} from './HomeScreen/ic_close_large.png';
