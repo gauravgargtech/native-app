@@ -35,6 +35,13 @@ const CustomHeader = ({
   const handleCancel = () => {
     setVisible(false);
   };
+  const goBack = () => {
+    navigation.navigate(HOME);
+    if (clearData) {
+      clearData();
+    }
+  };
+
   const setMenuIcon = menu;
   return (
     <Box style={styles.mainHeaderContainer}>
@@ -53,8 +60,7 @@ const CustomHeader = ({
           <TouchableOpacity
             style={styles.menuIconView}
             onPress={() => {
-              navigation.navigate(HOME);
-              clearData();
+              goBack();
             }}>
             <Ionicons
               name={'arrow-back-outline'}
@@ -101,8 +107,8 @@ const CustomHeader = ({
             onPress={() => {
               showDialog();
             }}>
-            <HeadingText fontSize={fontSizes[4]}>
-              {getCurrentUserData[0]?.displayName}
+            <HeadingText fontSize={fontSizes[2]}>
+              {getCurrentUserData[0]?.email}
             </HeadingText>
             <Modal
               style={{margin: 0, backgroundColor: Colors.white}}

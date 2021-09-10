@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {BackHandler} from 'react-native';
 import {Box, CustomHeader, PlayerControls, ProgressBar} from '../../components';
 import {
   ActivityIndicator,
@@ -45,7 +46,11 @@ const Videoplayer = ({
   const [isLoading, setIsLoading] = useState(true);
 
   const videoUrl = getCurrentVideo?.videoData?.url;
-  console.log('video url:', videoUrl);
+
+  const backAction = () => {
+    Orientation.lockToPortrait();
+    return true;
+  };
 
   const onEnd = () => {
     setCurrentTime(duration);
@@ -68,8 +73,10 @@ const Videoplayer = ({
 
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
+    BackHandler.addEventListener('hardwareBackPress', backAction);
     return () => {
       Orientation.removeOrientationListener(handleOrientation);
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
     };
   }, []);
 

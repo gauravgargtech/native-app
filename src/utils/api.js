@@ -20,6 +20,9 @@ const getTagsData_API = videoID => `${Baseurl}/api/video/tag/${videoID}`;
 const getCategoryData_API = videoID =>
   `${Baseurl}/api/video/category/${videoID}`;
 
+const register_api = `${Baseurl}/api/users/register`;
+const login_api = `${Baseurl}/api/users/login`;
+
 const postApi = (url, values, options) => {
   console.log('url and value', url, values);
   return axios.post(url, values, {
@@ -60,6 +63,9 @@ const getSearch = searchText => getApi(getSearch_API(searchText));
 
 const getTagsData = videoID => getApi(getTagsData_API(videoID));
 const getCategoryData = videoID => getApi(getCategoryData_API(videoID));
+
+const getRegister = param => postApi(register_api, param);
+const getLogin = param => postApi(login_api, param);
 export default {
   getCategory,
   getTags,
@@ -71,4 +77,6 @@ export default {
   getSearch,
   getTagsData,
   getCategoryData,
+  getRegister,
+  getLogin,
 };

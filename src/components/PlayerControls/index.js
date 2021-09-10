@@ -24,12 +24,6 @@ const PlayerControls = ({
   onNext,
   onPrevious,
 }) => {
-  console.log(
-    'showSkip::',
-    showSkip,
-    'showPreviousAndNext',
-    showPreviousAndNext,
-  );
   // const doubleTapRefBackward = React.createRef();
   // const doubleTapRefForward = React.createRef();
   // const pressedBackward = useSharedValue(false);

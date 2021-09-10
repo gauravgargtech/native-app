@@ -1,15 +1,17 @@
 import React from 'react';
+import {Alert, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {Box, Button, SubHeadingText, ProfileOption} from '../../components';
 import {ms} from 'react-native-size-matters';
-import {Alert, Image, TouchableOpacity} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import {CloseIcon_large, ProfileAvtar} from '../../assets/images';
+import {CloseIcon_large} from '../../assets/images';
+import {Logout_Action} from '../../store/actions';
 import {connect} from 'react-redux';
+import {ProfileAvtar} from '../../assets/images';
 
-const ProfileModal = ({handleCancel}) => {
+const ProfileModal = ({handleCancel, Logout_Action}) => {
   const onClickLogout = async () => {
-    console.log('Logout');
-    Alert.alert('Logout');
+    await Logout_Action();
+    Alert.alert('logout');
   };
   return (
     <Box flex={1}>
@@ -26,24 +28,33 @@ const ProfileModal = ({handleCancel}) => {
             source={CloseIcon_large}
             width={'100%'}
             height={'100%'}
-            // style={{width: 100, height: 20}}
             resizeMode={'contain'}
           />
         </TouchableOpacity>
       </Box>
-      <Box width={'100%'} borderWidth={0.3} />
-      <ProfileOption OptionName={'Profile'} />
-      <ProfileOption OptionName={'Account'} />
-      <ProfileOption OptionName={'Settings'} />
-      <Box width={'100%'} borderWidth={0.3} />
+      <Box style={styles.horizontalLine} />
+      <ProfileOption
+        ProfileAvtar={ProfileAvtar}
+        icon={'log-out'}
+        OptionName={'Profile'}
+      />
+      <ProfileOption icon={'user'} OptionName={'Account'} />
+      <ProfileOption icon={'settings'} OptionName={'Settings'} />
+      <Box style={styles.horizontalLine} />
       <TouchableOpacity
         onPress={() => {
           onClickLogout();
         }}>
-        <ProfileOption OptionName={'Logout'} />
+        <ProfileOption icon={'log-out'} OptionName={'Logout'} />
       </TouchableOpacity>
     </Box>
   );
 };
+const styles = StyleSheet.create({
+  horizontalLine: {
+    width: '100%',
+    borderWidth: 0.3,
+  },
+});
 const mapStateToProps = ({app: {}}) => ({});
-export default connect(mapStateToProps, {})(ProfileModal);
+export default connect(mapStateToProps, {Logout_Action})(ProfileModal);

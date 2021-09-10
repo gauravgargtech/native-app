@@ -1,10 +1,6 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {Box, Thumbnail} from '../../../components';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
 import {
@@ -61,41 +57,7 @@ const VideoList = ({
     </Box>
   );
 };
-const styles = StyleSheet.create({
-  thumbnailImageStyle: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    width: wp('90%'),
-    height: Platform.OS === 'ios' ? hp('18%') : hp('22%'),
-    borderRadius: 3,
-  },
-  total_timingView: {
-    backgroundColor: Colors.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : wp('9.8%'),
-    bottom: vs(5),
-    width: s(30),
-    height: hp('2%'),
-  },
-  videoDescriptionMainContainer: {
-    marginLeft: ms(20),
-    padding: ms(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  videoDescriptionView: {
-    marginLeft: 10,
-    padding: ms(10),
-    width: Platform.OS === 'ios' ? '65%' : '70%',
-    justifyContent: 'space-evenly',
-  },
-  channelIcon: {
-    width: wp('16%'),
-    height: hp('8%'),
-    borderRadius: 90 / 2,
-  },
-});
+
 const mapStateToProps = ({
   app: {getVideoList, getCurrentVideo, getCommentData, getVideo_PlaylistData},
 }) => ({

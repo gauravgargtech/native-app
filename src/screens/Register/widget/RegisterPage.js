@@ -1,13 +1,6 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  Box,
-  SubHeadingText,
-  PlainText,
-  Input,
-  Textinput,
-  Button,
-} from '../../../components';
+import {Alert, StyleSheet} from 'react-native';
+import {Box, SubHeadingText, Input, Button} from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -18,7 +11,9 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {LOGIN} from '../../../navigator/routes';
+import {LOGIN, REGISTER} from '../../../navigator/routes';
+import {Register} from '../../../store/actions';
+import {connect} from 'react-redux';
 
 const SnackbarComponent = props => {
   Snackbar.show({
@@ -28,7 +23,7 @@ const SnackbarComponent = props => {
   });
 };
 
-const RegisterPage = ({navigation}) => {
+const RegisterPage = ({navigation, Register, RegisterUser}) => {
   const RegisterSchema = Yup.object().shape({
     username: Yup.string().required('Username Required'),
     email: Yup.string()
@@ -38,31 +33,52 @@ const RegisterPage = ({navigation}) => {
   });
 
   const onClickSubmit = (values, resetForm) => {
-    console.log('Register value', values);
-    const update = {
-      displayName: values?.username,
+    const data = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
     };
-    auth()
-      .createUserWithEmailAndPassword(values.email.trim(), values.password)
-      .then(() => {
-        console.log('User account created & signed in!');
-        const currentUser = firebase.auth().currentUser.updateProfile(update);
-        navigation.navigate(LOGIN);
-        resetForm({values: ''});
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          SnackbarComponent(
-            'The email address is already in use by another account.',
-          );
+    const regFunc = async () => {
+      try {
+        const userdata = await Register(data);
+        console.log('Register success', userdata);
+        if (userdata?.value?.success == true) {
+          navigation.navigate(LOGIN);
+          resetForm({values: ''});
+        } else {
+          Alert.alert(`Message : ${userdata?.value?.message}`);
+          navigation.navigate(REGISTER);
+          resetForm({values: ''});
         }
-        if (error.code === 'auth/invalid-email') {
-          SnackbarComponent('That email address is invalid!');
-        }
-        if (error.code === 'auth/weak-password') {
-          SnackbarComponent('The given password is invalid.');
-        }
-      });
+      } catch (e) {
+        console.log('ERROR WHILE REGISTER', e);
+      }
+    };
+    regFunc();
+    // const update = {
+    //   displayName: values?.username,
+    // };
+    // auth()
+    //   .createUserWithEmailAndPassword(values.email.trim(), values.password)
+    //   .then(() => {
+    //     console.log('User account created & signed in!');
+    //     const currentUser = firebase.auth().currentUser.updateProfile(update);
+    //     navigation.navigate(LOGIN);
+    //     resetForm({values: ''});
+    //   })
+    //   .catch(error => {
+    //     if (error.code === 'auth/email-already-in-use') {
+    //       SnackbarComponent(
+    //         'The email address is already in use by another account.',
+    //       );
+    //     }
+    //     if (error.code === 'auth/invalid-email') {
+    //       SnackbarComponent('That email address is invalid!');
+    //     }
+    //     if (error.code === 'auth/weak-password') {
+    //       SnackbarComponent('The given password is invalid.');
+    //     }
+    //   });
   };
 
   const LoginNaviagte = () => {
@@ -189,4 +205,9 @@ const styles = StyleSheet.create({
     fontSize: fontSizes[3],
   },
 });
-export default RegisterPage;
+const mapStateToProps = ({app: {RegisterUser}}) => ({
+  RegisterUser,
+});
+export default connect(mapStateToProps, {
+  Register,
+})(RegisterPage);

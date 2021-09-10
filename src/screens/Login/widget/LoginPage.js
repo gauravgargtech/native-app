@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Alert, StyleSheet} from 'react-native';
 import {
   Box,
   SubHeadingText,
@@ -19,6 +19,8 @@ import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {HOME} from '../../../navigator/routes';
+import {Login, Register} from '../../../store/actions';
+import {connect} from 'react-redux';
 
 const SnackbarComponent = props => {
   Snackbar.show({
@@ -28,7 +30,7 @@ const SnackbarComponent = props => {
   });
 };
 
-const LoginPage = ({navigation}) => {
+const LoginPage = ({navigation, Login, RegisterUser}) => {
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
@@ -37,29 +39,46 @@ const LoginPage = ({navigation}) => {
   });
 
   const onClickLogin = (values, resetForm) => {
-    auth()
-      .signInWithEmailAndPassword(values.email.trim(), values.password)
-      .then(() => {
-        console.log('User account signed in!');
-        const currentUser = firebase.auth().currentUser;
-        navigation.navigate(HOME, {currentUser: currentUser});
-        resetForm({values: ''});
-      })
-      .catch(error => {
-        if (error.code === 'auth/invalid-email') {
-          SnackbarComponent('That email address is invalid!');
+    const data = {
+      email: values.email,
+      password: values.password,
+    };
+    const loginFunc = async () => {
+      try {
+        const logindata = await Login(data);
+        console.log('Login success', logindata);
+        if (logindata?.value?.success == true) {
+          navigation.navigate(HOME, {currentUser: data});
+          resetForm({values: ''});
         }
-        if (error.code === 'auth/user-not-found') {
-          SnackbarComponent(
-            'There is no user record corresponding to this identifier. The user may have been deleted.',
-          );
-        }
-        if (error.code === 'auth/wrong-password') {
-          SnackbarComponent(
-            'The password is invalid or the user does not have a password.',
-          );
-        }
-      });
+      } catch (e) {
+        console.log('ERROR WHILE LOGIN', e);
+      }
+    };
+    loginFunc();
+    // auth()
+    //   .signInWithEmailAndPassword(values.email.trim(), values.password)
+    //   .then(() => {
+    //     console.log('User account signed in!');
+    //     const currentUser = firebase.auth().currentUser;
+    //     navigation.navigate(HOME, {currentUser: currentUser});
+    //     resetForm({values: ''});
+    //   })
+    //   .catch(error => {
+    //     if (error.code === 'auth/invalid-email') {
+    //       SnackbarComponent('That email address is invalid!');
+    //     }
+    //     if (error.code === 'auth/user-not-found') {
+    //       SnackbarComponent(
+    //         'There is no user record corresponding to this identifier. The user may have been deleted.',
+    //       );
+    //     }
+    //     if (error.code === 'auth/wrong-password') {
+    //       SnackbarComponent(
+    //         'The password is invalid or the user does not have a password.',
+    //       );
+    //     }
+    //   });
   };
 
   return (
@@ -150,4 +169,9 @@ const styles = StyleSheet.create({
     fontSize: fontSizes[3],
   },
 });
-export default LoginPage;
+const mapStateToProps = ({app: {RegisterUser}}) => ({
+  RegisterUser,
+});
+export default connect(mapStateToProps, {
+  Login,
+})(LoginPage);

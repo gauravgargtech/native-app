@@ -162,6 +162,34 @@ export const getLoginUser_Action =
 export const Logout_Action = () => dispatch => {
   return dispatch({
     type: types.LOGOUT,
-    payload: {},
+    payload: '',
   });
 };
+
+export const Register =
+  param =>
+  (dispatch, getState, {api}) => {
+    console.log('Register user', param);
+    const getPromise = async () => {
+      const {data} = await api.getRegister(param);
+      return data;
+    };
+    return dispatch({
+      type: types.REGISTER,
+      payload: getPromise(),
+    });
+  };
+
+export const Login =
+  param =>
+  (dispatch, getState, {api}) => {
+    console.log('Login user', param);
+    const getPromise = async () => {
+      const {data} = await api.getLogin(param);
+      return data;
+    };
+    return dispatch({
+      type: types.LOGIN,
+      payload: getPromise(),
+    });
+  };

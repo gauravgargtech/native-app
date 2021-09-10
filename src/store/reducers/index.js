@@ -13,6 +13,7 @@ const initialState = {
   getTagsDataList: [],
   getCategoryDataList: [],
   getCurrentUserData: [],
+  RegisterUser: [],
 };
 
 const reducers = (state = initialState, action) => {
@@ -60,6 +61,12 @@ const reducers = (state = initialState, action) => {
       return {...state, getCurrentVideo: action.payload};
     case types.GET_CURRENT_USER:
       return {...state, getCurrentUserData: action.payload};
+    case types.LOGOUT:
+      return {...state, getCurrentUserData: action.payload};
+    case types.REGISTER_SUCCESS:
+      return {...state, RegisterUser: action.payload};
+    case types.LOGIN_SUCCESS:
+      return {...state, RegisterUser: action.payload};
     default:
       return {...state};
   }

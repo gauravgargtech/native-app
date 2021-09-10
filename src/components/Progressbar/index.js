@@ -1,12 +1,6 @@
 import React from 'react';
 import Slider from '@react-native-community/slider';
-// import Slider from 'react-native-slider';
 import {View, Text, StyleSheet} from 'react-native';
-import {Box} from '../../components';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import {Colors} from '../../theme';
 
 interface Props {
@@ -25,10 +19,9 @@ const ProgressBar: React.FC<Props> = ({
   onSlideStart,
   onSlideComplete,
 }) => {
-  const position = getMinutesFromSeconds(currentTime);
-  const fullDuration = getMinutesFromSeconds(duration);
-  console.log('Progress bar Current time', currentTime);
-  console.log('Progress bar Duration time', duration);
+  // const position = getMinutesFromSeconds(currentTime);
+  // const fullDuration = getMinutesFromSeconds(duration);
+
   const getTimeCurrentTime = () => {
     let unix_timestamp = currentTime;
     let formattedTime;
@@ -69,8 +62,6 @@ const ProgressBar: React.FC<Props> = ({
         minimumValue={0}
         maximumValue={duration}
         style={{height: '40%'}}
-        // trackStyle={{height: 5}}
-        // thumbStyle={{width: 15, height: 15}}
         tapToSeek={true}
         thumbTintColor={Colors.btnclr}
         minimumTrackTintColor={'#F44336'}
@@ -86,20 +77,6 @@ const ProgressBar: React.FC<Props> = ({
       </View>
     </View>
   );
-
-  function getMinutesFromSeconds(time: number) {
-    const minutes = time >= 60 ? Math.floor(time / 60) : 0;
-    const seconds = Math.floor(time - minutes * 60);
-
-    return `${minutes >= 10 ? minutes : '0' + minutes}:${
-      seconds >= 10 ? seconds : '0' + seconds
-    }`;
-  }
-
-  function handleOnSlide(time: number) {
-    onSeek({seekTime: time});
-    console.log('on slide cureent time ::', currentTime);
-  }
 };
 
 const styles = StyleSheet.create({

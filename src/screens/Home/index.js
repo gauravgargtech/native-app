@@ -32,7 +32,7 @@ const Home = ({
   getLoginUser_Action,
 }) => {
   const {currentUser} = route.params ?? {};
-  console.log('current user', currentUser);
+
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
