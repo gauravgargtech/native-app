@@ -25,7 +25,6 @@ const SnackbarComponent = props => {
 
 const RegisterPage = ({navigation, Register, RegisterUser}) => {
   const RegisterSchema = Yup.object().shape({
-    username: Yup.string().required('Username Required'),
     email: Yup.string()
       .email('Invalid email address')
       .required('Email Address Required'),
@@ -34,7 +33,6 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
 
   const onClickSubmit = (values, resetForm) => {
     const data = {
-      username: values.username,
       email: values.email,
       password: values.password,
     };
@@ -46,7 +44,7 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
           navigation.navigate(LOGIN);
           resetForm({values: ''});
         } else {
-          Alert.alert(`Message : ${userdata?.value?.message}`);
+          SnackbarComponent(userdata?.value?.message);
           navigation.navigate(REGISTER);
           resetForm({values: ''});
         }
@@ -55,30 +53,6 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
       }
     };
     regFunc();
-    // const update = {
-    //   displayName: values?.username,
-    // };
-    // auth()
-    //   .createUserWithEmailAndPassword(values.email.trim(), values.password)
-    //   .then(() => {
-    //     console.log('User account created & signed in!');
-    //     const currentUser = firebase.auth().currentUser.updateProfile(update);
-    //     navigation.navigate(LOGIN);
-    //     resetForm({values: ''});
-    //   })
-    //   .catch(error => {
-    //     if (error.code === 'auth/email-already-in-use') {
-    //       SnackbarComponent(
-    //         'The email address is already in use by another account.',
-    //       );
-    //     }
-    //     if (error.code === 'auth/invalid-email') {
-    //       SnackbarComponent('That email address is invalid!');
-    //     }
-    //     if (error.code === 'auth/weak-password') {
-    //       SnackbarComponent('The given password is invalid.');
-    //     }
-    //   });
   };
 
   const LoginNaviagte = () => {
@@ -89,7 +63,6 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
     <Box flex={1}>
       <Formik
         initialValues={{
-          username: '',
           email: '',
           password: '',
         }}
@@ -108,19 +81,6 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
                 </SubHeadingText>
               </Box>
               <Box style={styles.registerFormView}>
-                <Input
-                  value={values.username}
-                  onChangeText={handleChange('username')}
-                  onBlur={handleBlur('username')}
-                  placeholder={'Enter User Name'}
-                  style={{
-                    fontSize: fontSizes[1.2],
-                    fontFamily: fonts.RobotoRegular,
-                  }}
-                  placeholderTextColor={Colors.black}
-                  errorMessage={errors.username}
-                  errorStyle={{fontSize: fontSizes[1.2], right: 5}}
-                />
                 <Input
                   value={values.email}
                   onChangeText={handleChange('email')}

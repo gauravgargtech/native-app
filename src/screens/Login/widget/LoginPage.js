@@ -50,6 +50,8 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
         if (logindata?.value?.success == true) {
           navigation.navigate(HOME, {currentUser: data});
           resetForm({values: ''});
+        } else {
+          SnackbarComponent(logindata?.value?.message);
         }
       } catch (e) {
         console.log('ERROR WHILE LOGIN', e);

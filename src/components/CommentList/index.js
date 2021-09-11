@@ -19,7 +19,7 @@ const CommentList = ({commentList}) => {
       <Box>
         <Image
           source={{uri: UserIconUrl(commentList?.user_profile_icon)}}
-          style={styles.channelIcon}
+          style={styles.DetailsChannelIcon}
         />
       </Box>
       <Box ml={ms(10)} width={wp('70%')}>
@@ -40,10 +40,10 @@ const CommentList = ({commentList}) => {
   );
 };
 const styles = StyleSheet.create({
-  channelIcon: {
-    width: wp('15%'),
-    height: hp('8%'),
-    borderRadius: 100 / 2,
+  DetailsChannelIcon: {
+    width: wp('16%'),
+    height: hp('7%'),
+    borderRadius: 90 / 2,
   },
 });
 export default CommentList;

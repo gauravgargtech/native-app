@@ -126,7 +126,7 @@ const VideoDeatilsPage = ({
               source={{
                 uri: ChannelIconUrl(getCurrentVideo?.videoData?.channel_icon),
               }}
-              style={styles.channelIcon}
+              style={styles.DetailsChannelIcon}
             />
             <Box style={styles.videoDescriptionView}>
               <VideoDescription videoItem={getCurrentVideo?.videoData} />
@@ -242,6 +242,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.RobotoBold,
     fontSize: fontSizes[4],
   },
+  DetailsChannelIcon: {
+    width: wp('16%'),
+    height: hp('7%'),
+    borderRadius: 90 / 2,
+  },
   channelIcon: {
     width: wp('15%'),
     height: hp('8%'),
@@ -252,7 +257,8 @@ const styles = StyleSheet.create({
   videoDescriptionPlaylistView: {
     marginLeft: 10,
     padding: ms(10),
-    width: Platform.OS === 'ios' ? '65%' : '72%',
+    // width: Platform.OS === 'ios' ? '65%' : '72%',
+    width: Platform.OS === 'ios' ? '70%' : '77%',
     justifyContent: 'space-evenly',
   },
   text: {

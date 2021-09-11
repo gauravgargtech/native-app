@@ -38,21 +38,24 @@ const VideoList = ({
       console.log('ERRORS AT GET_VIDEO_DATA', e);
     }
   };
+
   return (
     <Box
       flex={0.9}
       justifyContent={'flex-start'}
       style={{paddingHorizontal: ms(10)}}>
       <Box p={ms(5)}>
-        {getVideoList.map((videoItem, index) => {
-          return (
-            <Box>
-              <TouchableOpacity onPress={() => onClickVideo({videoItem})}>
-                <Thumbnail videoItem={videoItem} />
-              </TouchableOpacity>
-            </Box>
-          );
-        })}
+        {getVideoList
+          .sort((a, b) => (a.date_posted > b.date_posted ? 1 : -1))
+          .map((videoItem, index) => {
+            return (
+              <Box>
+                <TouchableOpacity onPress={() => onClickVideo({videoItem})}>
+                  <Thumbnail videoItem={videoItem} />
+                </TouchableOpacity>
+              </Box>
+            );
+          })}
       </Box>
     </Box>
   );

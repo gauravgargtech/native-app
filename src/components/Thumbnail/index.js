@@ -12,43 +12,76 @@ const ChannelIconUrl = imageURL => `https://kid.greatequip.com${imageURL}`;
 const Thumbnail = ({videoItem, descriptionStyle, channelStyle}) => {
   return (
     <>
-      <ImageBackground
-        source={{
-          uri: videoItem?.thumbnail,
-        }}
-        style={styles.thumbnailImageStyle}
-        resizeMode={'contain'}>
-        <Box style={styles.total_timingView}>
-          <PlainText color={Colors.white}>{videoItem?.total_time}</PlainText>
+      <Box alignItems={'center'}>
+        <Box width={'80%'}>
+          {/*<ImageBackground*/}
+          {/*  source={{*/}
+          {/*    uri: videoItem?.thumbnail,*/}
+          {/*  }}*/}
+          {/*  style={styles.thumbnailImageStyle}*/}
+          {/*  resizeMode={'contain'}>*/}
+          {/*  <Box style={styles.total_timingView}>*/}
+          {/*    <PlainText color={Colors.white}>*/}
+          {/*      {videoItem?.total_time}*/}
+          {/*    </PlainText>*/}
+          {/*  </Box>*/}
+          {/*</ImageBackground>*/}
+          <Image
+            source={{
+              uri: videoItem?.thumbnail,
+            }}
+            style={styles.thumbnailImageStyle}
+            resizeMode={'cover'}
+          />
+          <Box style={styles.total_timingView}>
+            <PlainText color={Colors.white}>{videoItem?.total_time}</PlainText>
+          </Box>
         </Box>
-      </ImageBackground>
-      <Box style={styles.videoDescriptionMainContainer}>
-        <Image
-          source={{uri: ChannelIconUrl(videoItem?.channel_icon)}}
-          style={[styles.channelIcon, channelStyle]}
-          resizeMode={'contain'}
-        />
-        <Box style={[styles.videoDescriptionView, descriptionStyle]}>
-          <VideoDescription videoItem={videoItem} />
+        <Box style={styles.videoDescriptionMainContainer}>
+          <Image
+            source={{uri: ChannelIconUrl(videoItem?.channel_icon)}}
+            style={[styles.channelIcon, channelStyle]}
+            resizeMode={'contain'}
+          />
+          <Box style={[styles.videoDescriptionView, descriptionStyle]}>
+            <VideoDescription videoItem={videoItem} />
+          </Box>
         </Box>
       </Box>
     </>
   );
 };
 const styles = StyleSheet.create({
+  // thumbnailImageStyle: {
+  //   justifyContent: 'flex-end',
+  //   alignItems: 'flex-end',
+  //   // width:wp('90%'),
+  //   width: '100%',
+  //   height: Platform.OS === 'ios' ? hp('18%') : hp('22%'),
+  //   borderRadius: 3,
+  // },
+  // total_timingView: {
+  //   backgroundColor: Colors.black,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   right: Platform.OS === 'ios' ? '13%' : ms(10),
+  //   bottom: vs(10),
+  //   width: s(30),
+  //   height: hp('2%'),
+  // },
   thumbnailImageStyle: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    width: wp('90%'),
+    // width:wp('90%'),
+    width: '100%',
     height: Platform.OS === 'ios' ? hp('18%') : hp('22%'),
     borderRadius: 3,
   },
   total_timingView: {
+    position: 'absolute',
     backgroundColor: Colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    right: Platform.OS === 'ios' ? '13%' : ms(40),
-    bottom: vs(5),
+    top: '85%',
+    left: '85%',
     width: s(30),
     height: hp('2%'),
   },
@@ -61,7 +94,8 @@ const styles = StyleSheet.create({
   videoDescriptionView: {
     marginLeft: 10,
     padding: ms(10),
-    width: Platform.OS === 'ios' ? '65%' : '70%',
+    // width: Platform.OS === 'ios' ? '65%' : '70%',
+    width: Platform.OS === 'ios' ? '70%' : '75%',
     justifyContent: 'space-evenly',
   },
   channelIcon: {

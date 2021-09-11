@@ -98,7 +98,7 @@ const CustomHeader = ({
           <TouchableOpacity onPress={() => navigation.navigate(SETUP_KIDS)}>
             <Image
               source={SignIN}
-              style={{width: wp('20%')}}
+              style={{width: wp('18%')}}
               resizeMode={'contain'}
             />
           </TouchableOpacity>
@@ -107,7 +107,10 @@ const CustomHeader = ({
             onPress={() => {
               showDialog();
             }}>
-            <HeadingText fontSize={fontSizes[2]}>
+            <HeadingText
+              fontSize={fontSizes[3]}
+              numberOfLines={1}
+              ellipsizeMode={'tail'}>
               {getCurrentUserData[0]?.email}
             </HeadingText>
             <Modal
