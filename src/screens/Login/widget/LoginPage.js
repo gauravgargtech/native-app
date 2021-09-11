@@ -94,7 +94,7 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
         onClickLogin(values, resetForm);
       }}>
       {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-        <Box flex={1}>
+        <>
           <Box flex={1} justifyContent={'center'} alignItems={'center'}>
             <Box>
               <SubHeadingText color={Colors.blackColor} fontSize={fontSizes[4]}>
@@ -143,7 +143,7 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
               />
             </Box>
           </Box>
-        </Box>
+        </>
       )}
     </Formik>
   );

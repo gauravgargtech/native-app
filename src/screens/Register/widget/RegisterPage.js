@@ -14,6 +14,8 @@ import * as Yup from 'yup';
 import {LOGIN, REGISTER} from '../../../navigator/routes';
 import {Register} from '../../../store/actions';
 import {connect} from 'react-redux';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SnackbarComponent = props => {
   Snackbar.show({
@@ -21,6 +23,22 @@ const SnackbarComponent = props => {
     duration: Snackbar.LENGTH_LONG,
     backgroundColor: Colors.red,
   });
+};
+
+const date = new Date();
+console.log('current date', moment(date).format('ll'));
+console.log('After 7 days', moment(date).add(7, 'days').format('ll'));
+
+console.log('current time', moment().format('LTS'));
+console.log('After 2 min', moment().add(2, 'minutes').format('LTS'));
+
+const storeData = async value => {
+  try {
+    console.log('values', value);
+    await AsyncStorage.setItem('beta_versionKey', value);
+  } catch (e) {
+    console.log('Saving Error', e);
+  }
 };
 
 const RegisterPage = ({navigation, Register, RegisterUser}) => {
@@ -32,6 +50,7 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
   });
 
   const onClickSubmit = (values, resetForm) => {
+    storeData(moment().format('LTS'));
     const data = {
       email: values.email,
       password: values.password,
