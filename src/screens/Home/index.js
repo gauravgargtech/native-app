@@ -7,6 +7,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   Alert,
+  BackHandler,
 } from 'react-native';
 import {Box, Header, CustomHeader, Loader} from '../../components/index';
 import {useIsFocused} from '@react-navigation/native';
@@ -25,6 +26,12 @@ import {SignUP, SignIn, SearchIcon, MenuIcon} from '../../assets/images';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const today = new Date();
+var date =
+  today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+var time =
+  (today.getHours() % 12) + ':' + today.getMinutes() + ':' + today.getSeconds();
+
 const Home = ({
   route,
   navigation,
@@ -33,15 +40,17 @@ const Home = ({
   getVideoListAction,
   getVideoList,
   getLoginUser_Action,
+  getCurrentUserData,
 }) => {
   const {currentUser} = route.params ?? {};
-  const [currentTime, setCurrentTime] = useState();
-  const afterTwomin = moment().add(6, 'minutes').format('LTS');
+  const [currentDate, setCurrentDate] = useState(date);
+  const [currentTime, setCurrentTime] = useState(time);
+  const [showAlert, setShowAlert] = useState(false);
   const isFocused = useIsFocused();
   useEffect(() => {
-    setInterval(() => {
-      setCurrentTime(moment().format('LTS'));
-    }, 1000);
+    setCurrentTime(time);
+    setCurrentDate(date);
+    getData();
     if (isFocused) {
       const func = async () => {
         try {
@@ -58,44 +67,63 @@ const Home = ({
     }
   }, [isFocused]);
 
-  console.log('current time first', currentTime);
-  function addMinutes(time, minsToAdd) {
-    function D(J) {
-      return (J < 10 ? '0' : '') + J;
-    }
-    var piece = time.split(':');
-    var mins = piece[0] * 60 + +piece[1] + +minsToAdd;
+  console.log('getCurrentUserData', getCurrentUserData);
 
-    return D(((mins % (24 * 60)) / 60) | 0) + ':' + D(mins % 60);
+  console.log('current date first', currentDate);
+  console.log('current time first', currentTime);
+
+  function addDays(value, days) {
+    if (value != null) {
+      let unix_timestamp = value;
+      let formattedDate;
+      let formattedTime;
+      const date = new Date(unix_timestamp);
+      const Days = moment(date).add(days, 'days').format('DD-M-YYYY');
+      //
+      // const hours = date.getHours() % 12;
+      // const minutes = '0' + (date.getMinutes() + days);
+      // const seconds = '0' + date.getSeconds();
+      formattedDate = Days;
+      console.log('formattedDate', formattedDate);
+      // formattedTime =
+      //   hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+      // console.log('formattedTime', formattedTime);
+      return formattedDate;
+    }
   }
 
-  const match = currentTime.split(':');
-  const finalCurrentTime = match[0] + ':' + match[1];
-  console.log('finalCurrentTime', finalCurrentTime);
   const getData = async () => {
     try {
-      console.log('get data');
-      const value = await AsyncStorage.getItem('beta_versionKey');
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
       console.log('storage value ', value);
-      const addMin = 53;
-      const afterTenmin = addMinutes(value, addMin);
-      console.log('Afetr 10 min ', afterTenmin);
-      if (value !== null) {
-        console.log('storage value ', value);
-        console.log('current time', currentTime);
-        if (afterTenmin == finalCurrentTime) {
-          Alert.alert('Please Take a subscription');
+      const addTrailDays = addDays(value, 7);
+      console.log('Completed beta version ', addTrailDays);
+      console.log('current Timestamp', currentDate);
+      if (getCurrentUserData?.length != 0) {
+        if (value !== null) {
+          if (new Date(addTrailDays) >= new Date(currentDate)) {
+            setShowAlert(true);
+            if (showAlert == true) {
+              Alert.alert('Please Take a subscription');
+              setShowAlert(false);
+            }
+          } else {
+            Alert.alert('You must have a subscription');
+            setInterval(() => {
+              BackHandler.exitApp();
+            }, 3000);
+          }
         }
       }
     } catch (e) {
-      // error reading value
+      console.log('Reading Error', e);
     }
   };
 
   useMemo(async () => {
     getData();
-    console.log('use memo');
-  }, [currentTime]);
+  }, [currentDate]);
 
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>

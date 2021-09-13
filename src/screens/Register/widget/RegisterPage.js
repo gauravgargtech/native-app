@@ -25,23 +25,44 @@ const SnackbarComponent = props => {
   });
 };
 
-const date = new Date();
-console.log('current date', moment(date).format('ll'));
-console.log('After 7 days', moment(date).add(7, 'days').format('ll'));
-
-console.log('current time', moment().format('LTS'));
-console.log('After 2 min', moment().add(2, 'minutes').format('LTS'));
-
-const storeData = async value => {
-  try {
-    console.log('values', value);
-    await AsyncStorage.setItem('beta_versionKey', value);
-  } catch (e) {
-    console.log('Saving Error', e);
-  }
-};
+// const date = new Date();
+// console.log('current date', moment(date).format('ll'));
+// console.log('After 7 days', moment(date).add(7, 'days').format('ll'));
+//
+// console.log('current time', moment().format('LTS'));
+// console.log('After 2 min', moment().add(2, 'minutes').format('LTS'));
 
 const RegisterPage = ({navigation, Register, RegisterUser}) => {
+  const unixTimestamp = new Date().valueOf();
+  console.log('current timestamp', unixTimestamp);
+
+  var date = new Date(unixTimestamp);
+  console.log('Date', date);
+  console.log(
+    'Date: ' +
+      date.getDate() +
+      '/' +
+      (date.getMonth() + 1) +
+      '/' +
+      date.getFullYear() +
+      ' ' +
+      date.getHours() +
+      ':' +
+      date.getMinutes() +
+      ':' +
+      date.getSeconds(),
+  );
+
+  const storeData = async value => {
+    try {
+      console.log('values', value);
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storage_Key', jsonValue);
+    } catch (e) {
+      console.log('Saving Error', e);
+    }
+  };
+
   const RegisterSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
@@ -50,7 +71,7 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
   });
 
   const onClickSubmit = (values, resetForm) => {
-    storeData(moment().format('LTS'));
+    storeData(unixTimestamp);
     const data = {
       email: values.email,
       password: values.password,

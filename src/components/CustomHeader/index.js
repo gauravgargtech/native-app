@@ -108,7 +108,7 @@ const CustomHeader = ({
               showDialog();
             }}>
             <HeadingText
-              fontSize={fontSizes[3]}
+              fontSize={fontSizes[2.8]}
               numberOfLines={1}
               ellipsizeMode={'tail'}>
               {getCurrentUserData[0]?.email}
