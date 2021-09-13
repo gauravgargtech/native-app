@@ -4,13 +4,19 @@ import {Box, Button, SubHeadingText, ProfileOption} from '../../components';
 import {ms} from 'react-native-size-matters';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {CloseIcon_large} from '../../assets/images';
-import {Logout_Action} from '../../store/actions';
+import {Logout_Action, BetaVersion} from '../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../assets/images';
 
-const ProfileModal = ({handleCancel, Logout_Action}) => {
+const ProfileModal = ({
+  handleCancel,
+  Logout_Action,
+  BetaVersion,
+  betaVersion,
+}) => {
   const onClickLogout = async () => {
     await Logout_Action();
+    await BetaVersion(true);
     Alert.alert('logout');
   };
   return (
@@ -56,5 +62,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
   },
 });
-const mapStateToProps = ({app: {}}) => ({});
-export default connect(mapStateToProps, {Logout_Action})(ProfileModal);
+const mapStateToProps = ({app: {betaVersion}}) => ({betaVersion});
+export default connect(mapStateToProps, {Logout_Action, BetaVersion})(
+  ProfileModal,
+);

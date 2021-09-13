@@ -193,3 +193,12 @@ export const Login =
       payload: getPromise(),
     });
   };
+
+export const BetaVersion =
+  value =>
+  (dispatch, getState, {api}) => {
+    return dispatch({
+      type: types.BETA_VERISON,
+      payload: value,
+    });
+  };

@@ -14,6 +14,7 @@ const initialState = {
   getCategoryDataList: [],
   getCurrentUserData: [],
   RegisterUser: [],
+  betaVersion: true,
 };
 
 const reducers = (state = initialState, action) => {
@@ -67,6 +68,8 @@ const reducers = (state = initialState, action) => {
       return {...state, RegisterUser: action.payload};
     case types.LOGIN_SUCCESS:
       return {...state, RegisterUser: action.payload};
+    case types.BETA_VERISON:
+      return {...state, betaVersion: action.payload};
     default:
       return {...state};
   }

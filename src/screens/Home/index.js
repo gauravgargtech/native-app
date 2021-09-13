@@ -7,7 +7,6 @@ import {
   Platform,
   KeyboardAvoidingView,
   Alert,
-  BackHandler,
 } from 'react-native';
 import {Box, Header, CustomHeader, Loader} from '../../components/index';
 import {useIsFocused} from '@react-navigation/native';
@@ -19,6 +18,7 @@ import {
   getTagsAction,
   getVideoListAction,
   getLoginUser_Action,
+  BetaVersion,
 } from '../../store/actions';
 import {connect} from 'react-redux';
 import {ms} from 'react-native-size-matters';
@@ -41,6 +41,8 @@ const Home = ({
   getVideoList,
   getLoginUser_Action,
   getCurrentUserData,
+  BetaVersion,
+  betaVersion,
 }) => {
   const {currentUser} = route.params ?? {};
   const [currentDate, setCurrentDate] = useState(date);
@@ -67,11 +69,6 @@ const Home = ({
     }
   }, [isFocused]);
 
-  console.log('getCurrentUserData', getCurrentUserData);
-
-  console.log('current date first', currentDate);
-  console.log('current time first', currentTime);
-
   function addDays(value, days) {
     if (value != null) {
       let unix_timestamp = value;
@@ -84,7 +81,6 @@ const Home = ({
       // const minutes = '0' + (date.getMinutes() + days);
       // const seconds = '0' + date.getSeconds();
       formattedDate = Days;
-      console.log('formattedDate', formattedDate);
       // formattedTime =
       //   hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
       // console.log('formattedTime', formattedTime);
@@ -98,21 +94,17 @@ const Home = ({
       const value = jsonValue != null ? JSON.parse(jsonValue) : null;
       console.log('storage value ', value);
       const addTrailDays = addDays(value, 7);
-      console.log('Completed beta version ', addTrailDays);
-      console.log('current Timestamp', currentDate);
+      console.log('Completed beta version Date ', addTrailDays);
+      console.log('current Date', currentDate);
       if (getCurrentUserData?.length != 0) {
         if (value !== null) {
           if (new Date(addTrailDays) >= new Date(currentDate)) {
-            setShowAlert(true);
-            if (showAlert == true) {
+            if (betaVersion == true) {
               Alert.alert('Please Take a subscription');
-              setShowAlert(false);
+              BetaVersion(false);
             }
           } else {
             Alert.alert('You must have a subscription');
-            setInterval(() => {
-              BackHandler.exitApp();
-            }, 3000);
           }
         }
       }
@@ -160,14 +152,16 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {getTagsData, getVideoList, getCurrentUserData},
+  app: {getTagsData, getVideoList, getCurrentUserData, betaVersion},
 }) => ({
   getTagsData,
   getVideoList,
   getCurrentUserData,
+  betaVersion,
 });
 export default connect(mapStateToProps, {
   getTagsAction,
   getVideoListAction,
   getLoginUser_Action,
+  BetaVersion,
 })(Home);

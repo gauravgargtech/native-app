@@ -36,23 +36,6 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
   const unixTimestamp = new Date().valueOf();
   console.log('current timestamp', unixTimestamp);
 
-  var date = new Date(unixTimestamp);
-  console.log('Date', date);
-  console.log(
-    'Date: ' +
-      date.getDate() +
-      '/' +
-      (date.getMonth() + 1) +
-      '/' +
-      date.getFullYear() +
-      ' ' +
-      date.getHours() +
-      ':' +
-      date.getMinutes() +
-      ':' +
-      date.getSeconds(),
-  );
-
   const storeData = async value => {
     try {
       console.log('values', value);

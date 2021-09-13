@@ -1,13 +1,6 @@
 import React from 'react';
-import {Alert, StyleSheet} from 'react-native';
-import {
-  Box,
-  SubHeadingText,
-  PlainText,
-  Input,
-  Textinput,
-  Button,
-} from '../../../components';
+import {Alert, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import {Box, SubHeadingText, Input, Button} from '../../../components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -52,35 +45,13 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
           resetForm({values: ''});
         } else {
           SnackbarComponent(logindata?.value?.message);
+          resetForm({values: ''});
         }
       } catch (e) {
         console.log('ERROR WHILE LOGIN', e);
       }
     };
     loginFunc();
-    // auth()
-    //   .signInWithEmailAndPassword(values.email.trim(), values.password)
-    //   .then(() => {
-    //     console.log('User account signed in!');
-    //     const currentUser = firebase.auth().currentUser;
-    //     navigation.navigate(HOME, {currentUser: currentUser});
-    //     resetForm({values: ''});
-    //   })
-    //   .catch(error => {
-    //     if (error.code === 'auth/invalid-email') {
-    //       SnackbarComponent('That email address is invalid!');
-    //     }
-    //     if (error.code === 'auth/user-not-found') {
-    //       SnackbarComponent(
-    //         'There is no user record corresponding to this identifier. The user may have been deleted.',
-    //       );
-    //     }
-    //     if (error.code === 'auth/wrong-password') {
-    //       SnackbarComponent(
-    //         'The password is invalid or the user does not have a password.',
-    //       );
-    //     }
-    //   });
   };
 
   return (
