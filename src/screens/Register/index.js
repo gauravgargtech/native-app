@@ -12,12 +12,13 @@ import {Colors} from '../../theme';
 import RegisterPage from './widget/RegisterPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
+import {SETUP_KIDS} from '../../navigator/routes';
 
 const Register = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      <CustomHeader back={SETUP_KIDS} navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}

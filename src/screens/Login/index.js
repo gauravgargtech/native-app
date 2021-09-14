@@ -12,12 +12,13 @@ import {Colors} from '../../theme';
 import LoginPage from './widget/LoginPage';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
+import {REGISTER} from '../../navigator/routes';
 
 const Login = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
+      <CustomHeader back={REGISTER} navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}

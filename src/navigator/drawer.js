@@ -62,9 +62,9 @@ const DrawerNavigator = ({
           <MaterialCommunityIcons name="home" color={color} size={26} />
         ),
       }}>
+      <Drawer.Screen name={SETUP_KIDS} component={SetupKids} />
       <Drawer.Screen name={HOME} component={Home} />
       <Drawer.Screen name={SEARCH} component={Search} />
-      <Drawer.Screen name={SETUP_KIDS} component={SetupKids} />
       <Drawer.Screen name={LOGIN} component={Login} />
       <Drawer.Screen name={REGISTER} component={Register} />
       <Drawer.Screen name={TAGS_WISE} component={TagsWise} />

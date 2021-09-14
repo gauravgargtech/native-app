@@ -49,6 +49,9 @@ const Home = ({
   const [currentTime, setCurrentTime] = useState(time);
   const [showAlert, setShowAlert] = useState(false);
   const isFocused = useIsFocused();
+
+
+
   useEffect(() => {
     setCurrentTime(time);
     setCurrentDate(date);

@@ -17,7 +17,6 @@ const SetupKids = ({navigation}) => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
-      <CustomHeader navigation={navigation} headerName={'LearnReadApp'} />
       <Box style={styles.mainContainer}>
         <KeyboardAvoidingView
           style={{flex: 1}}

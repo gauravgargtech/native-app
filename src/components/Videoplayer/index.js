@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {BackHandler} from 'react-native';
+import {BackHandler, AppState} from 'react-native';
 import {Box, CustomHeader, PlayerControls, ProgressBar} from '../../components';
 import {
   ActivityIndicator,
@@ -47,6 +47,17 @@ const Videoplayer = ({
 
   const videoUrl = getCurrentVideo?.videoData?.url;
 
+  const homeAction = nextAppState => {
+    if (
+      AppState.currentState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      handlePlayPause();
+    } else {
+      handlePlayPause();
+    }
+  };
+
   const backAction = () => {
     Orientation.lockToPortrait();
     return true;
@@ -74,21 +85,27 @@ const Videoplayer = ({
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     BackHandler.addEventListener('hardwareBackPress', backAction);
+    AppState.addEventListener('change', homeAction);
     return () => {
       Orientation.removeOrientationListener(handleOrientation);
       BackHandler.removeEventListener('hardwareBackPress', backAction);
+      AppState.removeEventListener('change', homeAction);
     };
   }, []);
 
   const clearData = () => {
     setDuration(0);
     setCurrentTime(0);
-    videoRef?.current.seek(0);
+    videoRef?.current?.seek(0);
     setPlay(true);
     setShowControls(true);
     setFullscreen(false);
     setIsLoading(true);
   };
+
+  useMemo(() => {
+    clearData();
+  }, [getCurrentVideo]);
 
   function handleOrientation(orientation: string) {
     orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
@@ -141,10 +158,12 @@ const Videoplayer = ({
 
   const skipBackward = () => {
     videoRef?.current.seek(currentTime - 10);
+    setCurrentTime(currentTime - 10);
   };
 
   const skipForward = () => {
     videoRef?.current.seek(currentTime + 10);
+    setCurrentTime(currentTime + 10);
   };
 
   const onSeek = seek => {

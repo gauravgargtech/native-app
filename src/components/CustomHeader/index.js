@@ -20,6 +20,7 @@ import {connect} from 'react-redux';
 import Modal from 'react-native-modal';
 
 const CustomHeader = ({
+  back,
   navigation,
   menu,
   headerName,
@@ -35,10 +36,17 @@ const CustomHeader = ({
   const handleCancel = () => {
     setVisible(false);
   };
-  const goBack = () => {
-    navigation.navigate(HOME);
-    if (clearData) {
-      clearData();
+  const goBack = back => {
+    if (back) {
+      navigation.navigate(back);
+      if (clearData) {
+        clearData();
+      }
+    } else {
+      navigation.navigate(HOME);
+      if (clearData) {
+        clearData();
+      }
     }
   };
 
@@ -60,7 +68,7 @@ const CustomHeader = ({
           <TouchableOpacity
             style={styles.menuIconView}
             onPress={() => {
-              goBack();
+              goBack(back);
             }}>
             <Ionicons
               name={'arrow-back-outline'}
