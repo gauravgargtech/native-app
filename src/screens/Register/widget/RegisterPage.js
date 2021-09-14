@@ -11,7 +11,7 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {LOGIN, REGISTER} from '../../../navigator/routes';
+import {LOGIN, REGISTER, HOME} from '../../../navigator/routes';
 import {Register} from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -34,7 +34,6 @@ const SnackbarComponent = props => {
 
 const RegisterPage = ({navigation, Register, RegisterUser}) => {
   const unixTimestamp = new Date().valueOf();
-  console.log('current timestamp', unixTimestamp);
 
   const storeData = async value => {
     try {
@@ -64,7 +63,7 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
         const userdata = await Register(data);
         console.log('Register success', userdata);
         if (userdata?.value?.success == true) {
-          navigation.navigate(LOGIN);
+          navigation.navigate(HOME, {currentUser: data});
           resetForm({values: ''});
         } else {
           SnackbarComponent(userdata?.value?.message);

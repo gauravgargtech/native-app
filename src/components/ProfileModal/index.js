@@ -1,5 +1,11 @@
 import React from 'react';
-import {Alert, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  Alert,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 import {Box, Button, SubHeadingText, ProfileOption} from '../../components';
 import {ms} from 'react-native-size-matters';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
@@ -20,40 +26,43 @@ const ProfileModal = ({
     Alert.alert('logout');
   };
   return (
-    <Box flex={1}>
-      <Box p={ms(15)}>
+    <>
+      <SafeAreaView />
+      <Box flex={1}>
+        <Box p={ms(15)}>
+          <TouchableOpacity
+            style={{
+              width: wp('8%'),
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              handleCancel();
+            }}>
+            <Image
+              source={CloseIcon_large}
+              width={'100%'}
+              height={'100%'}
+              resizeMode={'contain'}
+            />
+          </TouchableOpacity>
+        </Box>
+        <Box style={styles.horizontalLine} />
+        <ProfileOption
+          ProfileAvtar={ProfileAvtar}
+          icon={'log-out'}
+          OptionName={'Profile'}
+        />
+        <ProfileOption icon={'user'} OptionName={'Account'} />
+        <ProfileOption icon={'settings'} OptionName={'Settings'} />
+        <Box style={styles.horizontalLine} />
         <TouchableOpacity
-          style={{
-            width: wp('8%'),
-            alignItems: 'center',
-          }}
           onPress={() => {
-            handleCancel();
+            onClickLogout();
           }}>
-          <Image
-            source={CloseIcon_large}
-            width={'100%'}
-            height={'100%'}
-            resizeMode={'contain'}
-          />
+          <ProfileOption icon={'log-out'} OptionName={'Logout'} />
         </TouchableOpacity>
       </Box>
-      <Box style={styles.horizontalLine} />
-      <ProfileOption
-        ProfileAvtar={ProfileAvtar}
-        icon={'log-out'}
-        OptionName={'Profile'}
-      />
-      <ProfileOption icon={'user'} OptionName={'Account'} />
-      <ProfileOption icon={'settings'} OptionName={'Settings'} />
-      <Box style={styles.horizontalLine} />
-      <TouchableOpacity
-        onPress={() => {
-          onClickLogout();
-        }}>
-        <ProfileOption icon={'log-out'} OptionName={'Logout'} />
-      </TouchableOpacity>
-    </Box>
+    </>
   );
 };
 const styles = StyleSheet.create({

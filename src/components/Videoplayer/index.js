@@ -28,6 +28,8 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import VideoPlayerUrl from '../../assets/video/orginal_lonely.mp4';
 import {Colors} from '../../theme';
 
+const OsVer = Platform.constants.Release;
+
 const Videoplayer = ({
   navigation,
   getVideoPlaylistAction,
@@ -43,7 +45,7 @@ const Videoplayer = ({
   const [fullscreen, setFullscreen] = useState(false);
   const [play, setPlay] = useState(true);
   const [showControls, setShowControls] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const videoUrl = getCurrentVideo?.videoData?.url;
 
@@ -100,7 +102,7 @@ const Videoplayer = ({
     setPlay(true);
     setShowControls(true);
     setFullscreen(false);
-    setIsLoading(true);
+    setIsLoading(false);
   };
 
   useMemo(() => {
@@ -114,21 +116,22 @@ const Videoplayer = ({
   }
 
   const onLoad = data => {
-    clearData();
-    const hms = getCurrentVideo?.videoData?.total_time;
-    const a = hms.split('.');
-
-    if (a.length == 2) {
-      const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
-      setDuration(Math.round(total_duration));
-      setIsLoading(false);
-    } else {
-      const total_duration = moment
-        .duration(`${a[0]}:${a[1]}:${a[2]}`)
-        .asSeconds();
-      setDuration(Math.round(total_duration));
-      setIsLoading(false);
-    }
+    // const hms = getCurrentVideo?.videoData?.total_time;
+    // const a = hms.split('.');
+    //
+    // if (a.length == 2) {
+    //   const total_duration = moment.duration(`00:${a[0]}:${a[1]}`).asSeconds();
+    //   setDuration(Math.round(total_duration));
+    //   setIsLoading(false);
+    // } else {
+    //   const total_duration = moment
+    //     .duration(`${a[0]}:${a[1]}:${a[2]}`)
+    //     .asSeconds();
+    //   setDuration(Math.round(total_duration));
+    //   setIsLoading(false);
+    // }
+    setDuration(Math.round(data.duration));
+    setIsLoading(false);
   };
 
   const onLoadStart = () => setIsLoading(true);
@@ -138,13 +141,16 @@ const Videoplayer = ({
   };
 
   const handleFullscreen = () => {
-    if (Platform.OS == 'ios') {
-      videoRef?.current?.presentFullscreenPlayer();
-    } else {
-      fullscreen
-        ? Orientation.lockToPortrait()
-        : Orientation.lockToLandscapeLeft();
-    }
+    // if (Platform.OS == 'ios') {
+    //   videoRef?.current?.presentFullscreenPlayer();
+    // } else {
+    //   fullscreen
+    //     ? Orientation.lockToPortrait()
+    //     : Orientation.lockToLandscapeLeft();
+    // }
+    fullscreen
+      ? Orientation.lockToPortrait()
+      : Orientation.lockToLandscapeLeft();
   };
   const handlePlayPause = () => {
     if (play) {
@@ -183,7 +189,7 @@ const Videoplayer = ({
         />
       ) : null}
       <TouchableWithoutFeedback onPress={visibleControls}>
-        <Box height={fullscreen ? hp('51%') : hp('30%')}>
+        <Box>
           <Video
             ref={ref => (videoRef.current = ref)}
             source={{uri: videoUrl}}
@@ -200,11 +206,7 @@ const Videoplayer = ({
             paused={!play}
           />
           {showControls && (
-            <View
-              style={[
-                styles.controlOverlay,
-                {height: fullscreen ? Dimensions.get('window').height : null},
-              ]}>
+            <View style={styles.controlOverlay}>
               <TouchableOpacity
                 onPress={handleFullscreen}
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
@@ -260,13 +262,13 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
   },
   video: {
-    height: '100%',
+    height: Dimensions.get('window').width * (9 / 16),
     width: Dimensions.get('window').width,
     backgroundColor: Colors.black,
   },
   fullscreenVideo: {
     height: Dimensions.get('window').width,
-    width: Dimensions.get('window').height,
+    width: OsVer != '5.1.1' ? Dimensions.get('window').height : '100%',
     backgroundColor: 'black',
   },
   text: {

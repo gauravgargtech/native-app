@@ -25,6 +25,7 @@ import {ms} from 'react-native-size-matters';
 import {SignUP, SignIn, SearchIcon, MenuIcon} from '../../assets/images';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {HOME} from '../../navigator/routes';
 
 const today = new Date();
 var date =
@@ -108,6 +109,7 @@ const Home = ({
             }
           } else {
             Alert.alert('You must have a subscription');
+            navigation.navigate(HOME);
           }
         }
       }

@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     color: Colors.grey,
     fontFamily: fonts.RobotoRegular,
     fontSize: fontSizes[4],
-    marginTop: ms(6),
+    marginTop: ms(13),
   },
   searchInputContainerStyle: {
     right: ms(8),

@@ -55,68 +55,72 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
   };
 
   return (
-    <Formik
-      initialValues={{
-        email: '',
-        password: '',
-      }}
-      validationSchema={LoginSchema}
-      onSubmit={(values, {resetForm}) => {
-        onClickLogin(values, resetForm);
-      }}>
-      {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-        <>
-          <Box flex={1} justifyContent={'center'} alignItems={'center'}>
-            <Box>
-              <SubHeadingText color={Colors.blackColor} fontSize={fontSizes[4]}>
-                Login Page
-              </SubHeadingText>
+    <Box flex={1}>
+      <Formik
+        initialValues={{
+          email: '',
+          password: '',
+        }}
+        validationSchema={LoginSchema}
+        onSubmit={(values, {resetForm}) => {
+          onClickLogin(values, resetForm);
+        }}>
+        {({handleChange, handleBlur, handleSubmit, values, errors}) => (
+          <>
+            <Box flex={1} justifyContent={'center'} alignItems={'center'}>
+              <Box>
+                <SubHeadingText
+                  color={Colors.blackColor}
+                  fontSize={fontSizes[4]}>
+                  Login Page
+                </SubHeadingText>
+              </Box>
+              <Box style={styles.loginFormView}>
+                <Input
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  placeholder={'Enter Email'}
+                  style={{
+                    fontSize: fontSizes[1.2],
+                    fontFamily: fonts.RobotoRegular,
+                  }}
+                  placeholderTextColor={Colors.black}
+                  errorMessage={errors.email}
+                  errorStyle={{fontSize: fontSizes[1.2], right: 5}}
+                />
+                <Input
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  secureTextEntry={true}
+                  placeholder={'Enter Password'}
+                  style={{
+                    fontSize: fontSizes[1.2],
+                    fontFamily: fonts.RobotoRegular,
+                  }}
+                  placeholderTextColor={Colors.black}
+                  errorMessage={errors.password}
+                  errorStyle={{fontSize: fontSizes[1.2], right: 5}}
+                />
+              </Box>
             </Box>
-            <Box style={styles.loginFormView}>
-              <Input
-                value={values.email}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                placeholder={'Enter Email'}
-                style={{
-                  fontSize: fontSizes[1.2],
-                  fontFamily: fonts.RobotoRegular,
-                }}
-                placeholderTextColor={Colors.black}
-                errorMessage={errors.email}
-                errorStyle={{fontSize: fontSizes[1.2], right: 5}}
-              />
-              <Input
-                value={values.password}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                secureTextEntry={true}
-                placeholder={'Enter Password'}
-                style={{
-                  fontSize: fontSizes[1.2],
-                  fontFamily: fonts.RobotoRegular,
-                }}
-                placeholderTextColor={Colors.black}
-                errorMessage={errors.password}
-                errorStyle={{fontSize: fontSizes[1.2], right: 5}}
-              />
+            <Box mt={10} justifyContent={'flex-end'}>
+              <Box alignItems={'center'}>
+                <Button
+                  title={'Login'}
+                  buttonStyle={styles.btnStyleLogin}
+                  titleStyle={styles.btnTitleLogin}
+                  onPress={() => {
+                    handleSubmit();
+                  }}
+                />
+              </Box>
             </Box>
-          </Box>
-          <Box mt={10} justifyContent={'flex-end'}>
-            <Box alignItems={'center'}>
-              <Button
-                title={'Login'}
-                buttonStyle={styles.btnStyleLogin}
-                titleStyle={styles.btnTitleLogin}
-                onPress={() => {
-                  handleSubmit();
-                }}
-              />
-            </Box>
-          </Box>
-        </>
-      )}
-    </Formik>
+          </>
+        )}
+      </Formik>
+    </Box>
   );
 };
 const styles = StyleSheet.create({

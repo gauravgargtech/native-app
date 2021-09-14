@@ -66,14 +66,13 @@ const CustomHeader = ({
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            style={styles.menuIconView}
             onPress={() => {
               goBack(back);
             }}>
             <Ionicons
               name={'arrow-back-outline'}
               color={Colors.IconColor}
-              size={25}
+              size={23}
             />
           </TouchableOpacity>
         )}
