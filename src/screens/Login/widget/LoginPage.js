@@ -7,7 +7,6 @@ import {
 } from 'react-native-responsive-screen';
 import {ms} from 'react-native-size-matters';
 import {Colors, fontSizes, fonts} from '../../../theme';
-import auth, {firebase} from '@react-native-firebase/auth';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';

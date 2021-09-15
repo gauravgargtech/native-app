@@ -58,6 +58,7 @@ const DrawerNavigator = ({
       )}
       screenOptions={{
         headerShown: false,
+        swipeEnabled: false,
         drawerIcon: ({color}) => (
           <MaterialCommunityIcons name="home" color={color} size={26} />
         ),

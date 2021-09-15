@@ -1,5 +1,7 @@
 const LEARNAPP = '@main';
 
+export const INTERNET_ERROR = `${LEARNAPP}_INTERNET_ERROR`;
+
 export const HOME = `${LEARNAPP}_HOME`;
 export const SEARCH = `${LEARNAPP}_SEARCH`;
 export const SETUP_KIDS = `${LEARNAPP}_SETUP_KIDS`;
@@ -9,6 +11,8 @@ export const VIDEO_DETAILS = `${LEARNAPP}_VIDEO_DETAILS`;
 export const TAGS_WISE = `${LEARNAPP}_TAGS_WISE`;
 export const CATEGORY_WISE = `${LEARNAPP}_CATEGORY_WISE`;
 export const LEARN_APP_NAVIGATOR = `${LEARNAPP}_LEARN_APP_NAVIGATOR`;
+export const DRAWER_NAVIGATOR = 'DRAWER_NAVIGATOR';
+export const ERROR_NAVIGATOR = 'ERROR_NAVIGATOR';
 
 export const CATEGORY = `${LEARNAPP}_CATEGORY`;
 export const READ_ALOUD = `${LEARNAPP}_READ_ALOUD`;

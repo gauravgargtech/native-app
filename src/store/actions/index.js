@@ -1,5 +1,15 @@
 import * as types from '../types';
 
+export const getNetInfoStatus = status => dispatch => {
+  const getPromise = async () => {
+    return status;
+  };
+  return dispatch({
+    type: types.CONNECTION,
+    payload: getPromise(),
+  });
+};
+
 export const getCategoryAction =
   () =>
   (dispatch, getState, {api}) => {

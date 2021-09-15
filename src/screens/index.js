@@ -6,6 +6,7 @@ import Register from './Register';
 import VideoDetails from './VideoDetails';
 import TagsWise from './TagsWise';
 import CategoryWise from './CategoryWise';
+import NetworkError from './NetworkError';
 export {
   Home,
   Search,
@@ -15,4 +16,5 @@ export {
   VideoDetails,
   TagsWise,
   CategoryWise,
+  NetworkError,
 };

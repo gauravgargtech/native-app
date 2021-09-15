@@ -15,6 +15,7 @@ const initialState = {
   getCurrentUserData: [],
   RegisterUser: [],
   betaVersion: true,
+  isConnected: true,
 };
 
 const reducers = (state = initialState, action) => {
@@ -70,6 +71,8 @@ const reducers = (state = initialState, action) => {
       return {...state, RegisterUser: action.payload};
     case types.BETA_VERISON:
       return {...state, betaVersion: action.payload};
+    case types.CONNECTION_SUCCESS:
+      return {...state, isConnected: action.payload};
     default:
       return {...state};
   }
