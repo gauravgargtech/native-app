@@ -17,7 +17,6 @@ target 'learnReadApp' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-
   pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
   target 'learnReadAppTests' do

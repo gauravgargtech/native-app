@@ -10,7 +10,7 @@ import {DRAWER_NAVIGATOR, ERROR_NAVIGATOR} from './routes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Drawer = createDrawerNavigator();
-const Stack=createStackNavigator();
+const Stack = createStackNavigator();
 
 const Navigator = ({navigation, isConnected}) => {
   return (
