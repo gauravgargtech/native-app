@@ -10,7 +10,7 @@ import {Colors, fontSizes, fonts} from '../../../theme';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {HOME} from '../../../navigator/routes';
+import {HOME,DRAWER_NAVIGATOR} from '../../../navigator/routes';
 import {Login, Register} from '../../../store/actions';
 import {connect} from 'react-redux';
 
@@ -40,7 +40,7 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
         const logindata = await Login(data);
         console.log('Login success', logindata);
         if (logindata?.value?.success == true) {
-          navigation.navigate(HOME, {currentUser: data});
+          navigation.navigate(DRAWER_NAVIGATOR, {currentUser: data});
           resetForm({values: ''});
         } else {
           SnackbarComponent(logindata?.value?.message);

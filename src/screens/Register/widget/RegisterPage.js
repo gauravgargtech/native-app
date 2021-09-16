@@ -10,7 +10,7 @@ import {Colors, fontSizes, fonts} from '../../../theme';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {LOGIN, REGISTER, HOME} from '../../../navigator/routes';
+import {LOGIN, REGISTER, HOME,DRAWER_NAVIGATOR} from '../../../navigator/routes';
 import {Register} from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -62,7 +62,7 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
         const userdata = await Register(data);
         console.log('Register success', userdata);
         if (userdata?.value?.success == true) {
-          navigation.navigate(HOME, {currentUser: data});
+          navigation.navigate(DRAWER_NAVIGATOR, {currentUser: data});
           resetForm({values: ''});
         } else {
           SnackbarComponent(userdata?.value?.message);

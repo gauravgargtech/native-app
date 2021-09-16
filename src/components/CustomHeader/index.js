@@ -14,7 +14,13 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {ms, s, vs} from 'react-native-size-matters';
-import {HOME, SEARCH, SETUP_KIDS, LOGIN} from '../../navigator/routes';
+import {
+  HOME,
+  SEARCH,
+  SETUP_KIDS,
+  LOGIN,
+  AUTH_NAVIGATOR,
+} from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import Modal from 'react-native-modal';
@@ -102,7 +108,10 @@ const CustomHeader = ({
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
         {getCurrentUserData?.length == 0 ? (
-          <TouchableOpacity onPress={() => navigation.navigate(SETUP_KIDS)}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(AUTH_NAVIGATOR);
+            }}>
             <Image
               source={SignIN}
               style={{width: wp('18%')}}
@@ -111,6 +120,7 @@ const CustomHeader = ({
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
+            style={{width: wp('20%')}}
             onPress={() => {
               showDialog();
             }}>
@@ -123,7 +133,10 @@ const CustomHeader = ({
             <Modal
               style={{margin: 0, backgroundColor: Colors.white}}
               isVisible={visible}>
-              <ProfileModal handleCancel={handleCancel} />
+              <ProfileModal
+                navigation={navigation}
+                handleCancel={handleCancel}
+              />
             </Modal>
           </TouchableOpacity>
         )}

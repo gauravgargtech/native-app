@@ -13,8 +13,10 @@ import {CloseIcon_large} from '../../assets/images';
 import {Logout_Action, BetaVersion} from '../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../assets/images';
+import {AUTH_NAVIGATOR} from '../../navigator/routes';
 
 const ProfileModal = ({
+  navigation,
   handleCancel,
   Logout_Action,
   BetaVersion,
@@ -23,7 +25,7 @@ const ProfileModal = ({
   const onClickLogout = async () => {
     await Logout_Action();
     await BetaVersion(true);
-    Alert.alert('logout');
+    navigation.navigate(AUTH_NAVIGATOR);
   };
   return (
     <>

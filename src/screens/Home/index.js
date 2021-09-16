@@ -17,7 +17,6 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {
   getTagsAction,
   getVideoListAction,
-  getLoginUser_Action,
   BetaVersion,
 } from '../../store/actions';
 import {connect} from 'react-redux';
@@ -40,18 +39,14 @@ const Home = ({
   getTagsData,
   getVideoListAction,
   getVideoList,
-  getLoginUser_Action,
   getCurrentUserData,
   BetaVersion,
   betaVersion,
 }) => {
-  const {currentUser} = route.params ?? {};
   const [currentDate, setCurrentDate] = useState(date);
   const [currentTime, setCurrentTime] = useState(time);
   const [showAlert, setShowAlert] = useState(false);
   const isFocused = useIsFocused();
-
-
 
   useEffect(() => {
     setCurrentTime(time);
@@ -62,9 +57,6 @@ const Home = ({
         try {
           await getTagsAction();
           await getVideoListAction();
-          if (currentUser != undefined) {
-            await getLoginUser_Action(currentUser);
-          }
         } catch (e) {
           alert('error while get Tags Data');
         }
@@ -167,6 +159,5 @@ const mapStateToProps = ({
 export default connect(mapStateToProps, {
   getTagsAction,
   getVideoListAction,
-  getLoginUser_Action,
   BetaVersion,
 })(Home);
