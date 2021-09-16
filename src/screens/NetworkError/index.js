@@ -11,22 +11,7 @@ import {Box, HeadingText, PlainText} from '../../components/index';
 import {Colors} from '../../theme';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {InternetError} from '../../assets/images';
-import {Logout_Action, BetaVersion} from '../../store/actions';
-import {connect} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
-const NetworkError = ({Logout_Action, BetaVersion, betaVersion}) => {
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (isFocused) {
-      try {
-        Logout_Action();
-        BetaVersion(true);
-      } catch (e) {
-        console.log('error while OFF INTERNET', e);
-      }
-    }
-  }, [isFocused]);
-
+const NetworkError = () => {
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
       <StatusBar backgroundColor={Colors.white} barStyle={'dark-content'} />
@@ -67,7 +52,4 @@ const styles = StyleSheet.create({
     height: hp('100%'),
   },
 });
-const mapStateToProps = ({app: {betaVersion}}) => ({betaVersion});
-export default connect(mapStateToProps, {Logout_Action, BetaVersion})(
-  NetworkError,
-);
+export default NetworkError;

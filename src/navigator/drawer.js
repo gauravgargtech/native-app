@@ -22,8 +22,10 @@ import {
   CATEGORY_WISE,
   VIDEO_DETAILS,
   AUTH_NAVIGATOR,
+    APP_NAVIGATOR,
 } from './routes';
 import Authentication from './Authentication';
+import AppNavigator from './AppNavigator';
 import CustomDrawerContent from './CustomDrawerContent';
 import {
   getCategoryAction,
@@ -82,7 +84,7 @@ const DrawerNavigator = ({
       <Drawer.Screen name={TAGS_WISE} component={TagsWise} />
       <Drawer.Screen name={VIDEO_DETAILS} component={VideoDetails} />
       <Drawer.Screen name={CATEGORY_WISE} component={CategoryWise} />
-      <Drawer.Screen name={AUTH_NAVIGATOR} component={Authentication} />
+      <Drawer.Screen name={APP_NAVIGATOR} component={AppNavigator} />
     </Drawer.Navigator>
   );
 };

@@ -64,7 +64,7 @@ const reducers = (state = initialState, action) => {
     case types.GET_CURRENT_USER:
       return {...state, getCurrentUserData: action.payload};
     case types.LOGOUT:
-      return {...state, getCurrentUserData: action.payload};
+      return {...state, RegisterUser: action.payload};
     case types.REGISTER_SUCCESS:
       return {...state, RegisterUser: action.payload};
     case types.LOGIN_SUCCESS:

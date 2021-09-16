@@ -20,6 +20,7 @@ import {
   SETUP_KIDS,
   LOGIN,
   AUTH_NAVIGATOR,
+  APP_NAVIGATOR,
 } from '../../navigator/routes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
@@ -33,6 +34,7 @@ const CustomHeader = ({
   search,
   SignIN,
   getCurrentUserData,
+  RegisterUser,
   clearData,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -107,10 +109,10 @@ const CustomHeader = ({
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        {getCurrentUserData?.length == 0 ? (
+        {RegisterUser?.length == 0 ? (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(AUTH_NAVIGATOR);
+              navigation.navigate(APP_NAVIGATOR);
             }}>
             <Image
               source={SignIN}
@@ -128,7 +130,8 @@ const CustomHeader = ({
               fontSize={fontSizes[2.8]}
               numberOfLines={1}
               ellipsizeMode={'tail'}>
-              {getCurrentUserData[0]?.email}
+              {/*{getCurrentUserData[0]?.email}*/}
+              Email ID
             </HeadingText>
             <Modal
               style={{margin: 0, backgroundColor: Colors.white}}
@@ -162,7 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
 });
-const mapStateToProps = ({app: {getCurrentUserData}}) => ({
+const mapStateToProps = ({app: {getCurrentUserData, RegisterUser}}) => ({
   getCurrentUserData,
+  RegisterUser,
 });
 export default connect(mapStateToProps, {})(CustomHeader);
