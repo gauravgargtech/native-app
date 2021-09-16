@@ -11,7 +11,6 @@ import {Box, HeadingText, PlainText} from '../../components/index';
 import {Colors} from '../../theme';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {InternetError} from '../../assets/images';
-import {ms} from 'react-native-size-matters';
 
 const NetworkError = () => {
   return (

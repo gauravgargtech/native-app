@@ -11,14 +11,16 @@ import Navigator from './src/navigator';
 import {getNetInfoStatus} from './src/store/actions';
 import {connect} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
-const App = ({getNetInfoStatus}) => {
+import {NetworkError} from './src/screens';
+
+const App = ({getNetInfoStatus, isConnected}) => {
   useEffect(() => {
     NetInfo.addEventListener(state => {
-      updateNetinfo(state);
+      updateNetInfo(state);
     });
   }, []);
 
-  const updateNetinfo = state => {
+  const updateNetInfo = state => {
     const func = async () => {
       try {
         await getNetInfoStatus(state.isConnected);
@@ -28,7 +30,12 @@ const App = ({getNetInfoStatus}) => {
     };
     func();
   };
-  return <Navigator />;
+  return (
+    <>
+      {isConnected ? <Navigator /> : <NetworkError />}
+    </>
+  );
+  // return isConnected == true ? <Navigator /> : <NetworkError />;
 };
 
 const mapStateToProps = ({app: {isConnected}}) => ({
