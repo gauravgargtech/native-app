@@ -30,11 +30,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
-      drawerContent={props => (
-        <CustomDrawerContent
-          {...props}
-        />
-      )}
+      drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         swipeEnabled: false,
@@ -43,11 +39,11 @@ const DrawerNavigator = () => {
         ),
       }}>
       <Drawer.Screen name={HOME} component={Home} />
-      <Drawer.Screen name={SEARCH} component={Search} />
-      <Drawer.Screen name={TAGS_WISE} component={TagsWise} />
-      <Drawer.Screen name={VIDEO_DETAILS} component={VideoDetails} />
-      <Drawer.Screen name={CATEGORY_WISE} component={CategoryWise} />
-      <Drawer.Screen name={AUTH_NAVIGATOR} component={Authentication} />
+      {/*<Drawer.Screen name={SEARCH} component={Search} />*/}
+      {/*<Drawer.Screen name={TAGS_WISE} component={TagsWise} />*/}
+      {/*<Drawer.Screen name={VIDEO_DETAILS} component={VideoDetails} />*/}
+      {/*<Drawer.Screen name={CATEGORY_WISE} component={CategoryWise} />*/}
+      {/*<Drawer.Screen name={AUTH_NAVIGATOR} component={Authentication} />*/}
       {/*<Drawer.Screen name={SETUP_KIDS} component={SetupKids} />*/}
       {/*<Drawer.Screen name={LOGIN} component={Login} />*/}
       {/*<Drawer.Screen name={REGISTER} component={Register} />*/}
