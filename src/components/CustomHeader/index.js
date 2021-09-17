@@ -33,7 +33,6 @@ const CustomHeader = ({
   headerName,
   search,
   SignIN,
-  getCurrentUserData,
   RegisterUser,
   clearData,
 }) => {
@@ -109,10 +108,10 @@ const CustomHeader = ({
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        {RegisterUser?.length == 0 ? (
+        {RegisterUser[0]?.success == false && RegisterUser?.length == 0 ? (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(APP_NAVIGATOR);
+              navigation.navigate(AUTH_NAVIGATOR);
             }}>
             <Image
               source={SignIN}
@@ -130,8 +129,7 @@ const CustomHeader = ({
               fontSize={fontSizes[2.8]}
               numberOfLines={1}
               ellipsizeMode={'tail'}>
-              {/*{getCurrentUserData[0]?.email}*/}
-              Email ID
+              {RegisterUser[0]?.user_id}
             </HeadingText>
             <Modal
               style={{margin: 0, backgroundColor: Colors.white}}
@@ -165,8 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
 });
-const mapStateToProps = ({app: {getCurrentUserData, RegisterUser}}) => ({
-  getCurrentUserData,
+const mapStateToProps = ({app: {RegisterUser}}) => ({
   RegisterUser,
 });
 export default connect(mapStateToProps, {})(CustomHeader);

@@ -10,7 +10,7 @@ import {Colors, fontSizes, fonts} from '../../../theme';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {HOME, DRAWER_NAVIGATOR, HOME_NAVIGATOR, LOGIN} from '../../../navigator/routes';
+import {HOME, DRAWER_NAVIGATOR, LOGIN} from '../../../navigator/routes';
 import {Login, Register} from '../../../store/actions';
 import {connect} from 'react-redux';
 
@@ -30,6 +30,8 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
     password: Yup.string().required('Password Required'),
   });
 
+  console.log('RegisterUser At Login Page ', RegisterUser);
+
   const onClickLogin = (values, resetForm) => {
     const data = {
       email: values.email,
@@ -37,13 +39,13 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
     };
     const loginFunc = async () => {
       try {
-        const logindata = await Login(data);
-        console.log('Login success', logindata);
-        if (logindata?.value?.success == true) {
+        const loginData = await Login(data);
+        console.log('Login success', loginData);
+        if (loginData?.value[0]?.success == true) {
           navigation.navigate(LOGIN);
           resetForm({values: ''});
         } else {
-          SnackbarComponent(logindata?.value?.message);
+          SnackbarComponent(loginData?.value[0]?.message);
           resetForm({values: ''});
         }
       } catch (e) {

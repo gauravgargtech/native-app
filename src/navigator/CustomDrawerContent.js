@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -7,8 +7,33 @@ import {
 import {Box} from '../components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CATEGORY_WISE} from './routes';
-const CustomDrawerContent = props => {
-  const {navigation, getCategoryData, getCategoryData_Action} = props;
+import {connect} from 'react-redux';
+import {getCategoryAction, getCategoryData_Action} from '../store/actions';
+const CustomDrawerContent = ({
+  props,
+  navigation,
+  getCategoryAction,
+  getCategoryData,
+  getCategoryData_Action,
+}) => {
+  // const {
+  //   navigation,
+  //   getCategoryAction,
+  //   getCategoryData,
+  //   getCategoryData_Action,
+  // } = props;
+
+  useEffect(() => {
+    const category = async () => {
+      try {
+        await getCategoryAction();
+      } catch (e) {
+        alert('error while get category');
+      }
+    };
+    category();
+  }, []);
+
   const onClickCategory = async ({item}) => {
     navigation.navigate(item?.onPress, {categoryItem: item});
     try {
@@ -47,4 +72,16 @@ const CustomDrawerContent = props => {
     </Box>
   );
 };
-export default CustomDrawerContent;
+
+const mapStateToProps = ({
+  app: {getCategoryData, getCategoryDataList, RegisterUser},
+}) => ({
+  getCategoryData,
+  getCategoryDataList,
+  RegisterUser,
+});
+export default connect(mapStateToProps, {
+  getCategoryAction,
+  getCategoryData_Action,
+})(CustomDrawerContent);
+// export default CustomDrawerContent;

@@ -1,9 +1,8 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {APP_NAVIGATOR,AUTH_NAVIGATOR, INTERNET_ERROR} from './routes';
+import {APP_NAVIGATOR, INTERNET_ERROR} from './routes';
 import AppNavigator from './AppNavigator';
-import Authentication from './Authentication';
 import {NetworkError} from '../screens';
 import {connect} from 'react-redux';
 import {getNetInfoStatus} from '../store/actions';

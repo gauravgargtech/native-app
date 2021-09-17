@@ -11,7 +11,6 @@ import Navigator from './src/navigator';
 import {getNetInfoStatus} from './src/store/actions';
 import {connect} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
-import {NetworkError} from './src/screens';
 
 const App = ({getNetInfoStatus}) => {
   useEffect(() => {

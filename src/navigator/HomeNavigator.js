@@ -1,27 +1,11 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DRAWER_NAVIGATOR} from './routes';
+import {DRAWER_NAVIGATOR, HOME} from './routes';
 import DrawerNavigator from './drawer';
-import {getLoginUser_Action} from '../store/actions';
-import {connect} from 'react-redux';
-
+import {Home} from '../screens';
 const Stack = createStackNavigator();
-const HomeNavigator = ({route, getLoginUser_Action, getCurrentUserData}) => {
-  const {currentUser} = route.params ?? {};
-  useEffect(() => {
-    const user = async () => {
-      try {
-        if (currentUser != undefined) {
-          await getLoginUser_Action(currentUser);
-        }
-      } catch (e) {
-        alert('error while get category');
-      }
-    };
-    user();
-  }, []);
-
+const HomeNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -35,9 +19,4 @@ const HomeNavigator = ({route, getLoginUser_Action, getCurrentUserData}) => {
   );
 };
 
-const mapStateToProps = ({app: {getCurrentUserData}}) => ({
-  getCurrentUserData,
-});
-export default connect(mapStateToProps, {
-  getLoginUser_Action,
-})(HomeNavigator);
+export default HomeNavigator;

@@ -39,10 +39,11 @@ const Home = ({
   getTagsData,
   getVideoListAction,
   getVideoList,
-  getCurrentUserData,
+  RegisterUser,
   BetaVersion,
   betaVersion,
 }) => {
+
   const [currentDate, setCurrentDate] = useState(date);
   const [currentTime, setCurrentTime] = useState(time);
   const [showAlert, setShowAlert] = useState(false);
@@ -92,9 +93,10 @@ const Home = ({
       const addTrailDays = addDays(value, 7);
       console.log('Completed beta version Date ', addTrailDays);
       console.log('current Date', currentDate);
-      if (getCurrentUserData?.length != 0) {
+      if (RegisterUser[0]?.success != false) {
         if (value !== null) {
           if (new Date(addTrailDays) >= new Date(currentDate)) {
+            console.log('beta version', betaVersion);
             if (betaVersion == true) {
               Alert.alert('Please Take a subscription');
               BetaVersion(false);
@@ -149,11 +151,11 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {getTagsData, getVideoList, getCurrentUserData, betaVersion},
+  app: {getTagsData, getVideoList, RegisterUser, betaVersion},
 }) => ({
   getTagsData,
   getVideoList,
-  getCurrentUserData,
+  RegisterUser,
   betaVersion,
 });
 export default connect(mapStateToProps, {

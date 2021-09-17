@@ -16,6 +16,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		687EFA4A00E044CA842E7967 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 15213A4BF52F49C2BDDB50FF /* Roboto-Medium.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		BD9AA84226F46F7D00032243 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD9AA84126F46F7D00032243 /* GoogleService-Info.plist */; };
 		BDFA9BCA26E8764A00A2E54B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDFA9BC926E8764A00A2E54B /* GoogleService-Info.plist */; };
 		E0FA90FA68DC2929C00CF86D /* libPods-learnReadApp-learnReadAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94890C485FFCF662F23E8077 /* libPods-learnReadApp-learnReadAppTests.a */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		9B789457EE9EBBA4157252EA /* Pods-learnReadApp-learnReadAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-learnReadApp-learnReadAppTests.release.xcconfig"; path = "Target Support Files/Pods-learnReadApp-learnReadAppTests/Pods-learnReadApp-learnReadAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		9C82700317AB495FBB9529AA /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		B82904C6AB494D6CB1F797E9 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		BD9AA84126F46F7D00032243 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BDFA9BC926E8764A00A2E54B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CCB17F81C43143C9A4C715F9 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D1EAD609C78FBAF6C0B75EA4 /* libPods-learnReadApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-learnReadApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +112,7 @@
 		13B07FAE1A68108700A75B9A /* learnReadApp */ = {
 			isa = PBXGroup;
 			children = (
+				BD9AA84126F46F7D00032243 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -300,6 +303,7 @@
 				0B6AFB0934BC45CA99AA1BC3 /* Roboto-Regular.ttf in Resources */,
 				0C15AE3DF24E4F3986AB8AE8 /* Roboto-Bold.ttf in Resources */,
 				BDFA9BCA26E8764A00A2E54B /* GoogleService-Info.plist in Resources */,
+				BD9AA84226F46F7D00032243 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
