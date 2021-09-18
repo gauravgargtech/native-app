@@ -42,8 +42,8 @@ const Home = ({
   RegisterUser,
   BetaVersion,
   betaVersion,
+  isConnected,
 }) => {
-
   const [currentDate, setCurrentDate] = useState(date);
   const [currentTime, setCurrentTime] = useState(time);
   const [showAlert, setShowAlert] = useState(false);
@@ -56,15 +56,19 @@ const Home = ({
     if (isFocused) {
       const func = async () => {
         try {
-          await getTagsAction();
-          await getVideoListAction();
+          if (isConnected) {
+            await getTagsAction();
+            await getVideoListAction();
+          } else {
+            return <Loader />;
+          }
         } catch (e) {
           alert('error while get Tags Data');
         }
       };
       func();
     }
-  }, [isFocused]);
+  }, [isFocused, isConnected]);
 
   function addDays(value, days) {
     if (value != null) {
@@ -151,12 +155,13 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({
-  app: {getTagsData, getVideoList, RegisterUser, betaVersion},
+  app: {getTagsData, getVideoList, RegisterUser, betaVersion, isConnected},
 }) => ({
   getTagsData,
   getVideoList,
   RegisterUser,
   betaVersion,
+  isConnected,
 });
 export default connect(mapStateToProps, {
   getTagsAction,

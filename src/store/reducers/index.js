@@ -8,7 +8,6 @@ const initialState = {
   addCommentData: {data: [], loading: false},
   getCommentData: [],
   getCurrentVideo: {},
-
   getSearchData: {list: [], loading: false},
   getTagsDataList: [],
   getCategoryDataList: [],
@@ -25,7 +24,6 @@ const reducers = (state = initialState, action) => {
       return {...state, getTagsData: {loading: true}};
     case types.GET_TAGS_SUCCESS:
       return {...state, getTagsData: {list: action.payload, loading: false}};
-
     case types.GET_CATEGORY_SUCCESS:
       return {...state, getCategoryData: action.payload};
     case types.GET_VIDEO_LIST_SUCCESS:
@@ -53,7 +51,6 @@ const reducers = (state = initialState, action) => {
       return {...state, getSearchData: {loading: true}};
     case types.GET_SEARCH_SUCCESS:
       return {...state, getSearchData: {list: action.payload, loading: false}};
-
     case types.GET_TAGS_DATA_SUCCESS:
       return {...state, getTagsDataList: action.payload};
     case types.GET_CATEGORY_DATA_SUCCESS:

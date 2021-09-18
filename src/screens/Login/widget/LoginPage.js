@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Box, SubHeadingText, Input, Button} from '../../../components';
 import {
   widthPercentageToDP as wp,
@@ -10,8 +10,8 @@ import {Colors, fontSizes, fonts} from '../../../theme';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {HOME, DRAWER_NAVIGATOR, LOGIN} from '../../../navigator/routes';
-import {Login, Register} from '../../../store/actions';
+import {HOME, LOGIN} from '../../../navigator/routes';
+import {Login} from '../../../store/actions';
 import {connect} from 'react-redux';
 
 const SnackbarComponent = props => {

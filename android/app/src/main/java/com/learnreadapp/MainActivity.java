@@ -1,4 +1,4 @@
-package com.learnreadapp.android;
+package com.learnreadapp;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

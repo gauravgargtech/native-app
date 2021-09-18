@@ -33,13 +33,6 @@ const HomeNavigator = () => {
         }}
         component={DrawerNavigator}
       />
-      {/*<Stack.Screen*/}
-      {/*  name={HOME}*/}
-      {/*  options={{*/}
-      {/*    headerShown: false,*/}
-      {/*  }}*/}
-      {/*  component={Home}*/}
-      {/*/>*/}
       <Stack.Screen
         name={SEARCH}
         options={{

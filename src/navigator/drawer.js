@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -24,7 +24,6 @@ import {
   REGISTER,
 } from './routes';
 import CustomDrawerContent from './CustomDrawerContent';
-import Authentication from './Authentication';
 
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {

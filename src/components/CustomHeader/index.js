@@ -108,7 +108,7 @@ const CustomHeader = ({
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        {RegisterUser[0]?.success == false && RegisterUser?.length == 0 ? (
+        {!RegisterUser[0]?.user_id ? (
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(AUTH_NAVIGATOR);

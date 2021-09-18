@@ -11,25 +11,40 @@ import Navigator from './src/navigator';
 import {getNetInfoStatus} from './src/store/actions';
 import {connect} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
+import NetworkChecker from 'react-native-network-checker';
 
 const App = ({getNetInfoStatus}) => {
   useEffect(() => {
-    NetInfo.addEventListener(state => {
-      updateNetInfo(state);
+    const connection = NetInfo.addEventListener(state => {
+      const online = (state.isConnected && state.isInternetReachable);
+      updateNetInfo(online);
     });
+    return () => connection();
   }, []);
 
-  const updateNetInfo = state => {
+  const updateNetInfo = online => {
     const func = async () => {
       try {
-        await getNetInfoStatus(state.isConnected);
+        await getNetInfoStatus(online);
       } catch (e) {
         console.log('ERROR WHILE UPDATING INFO', e);
       }
     };
     func();
   };
-  return <Navigator />;
+  return (
+    <NetworkChecker
+      position="top"
+      duration={2000} // In milliseconds
+      notConnectedMessage="Not connected to Internet!"
+      notConnectedTextColor="white"
+      notConnectedBackgroundColor="grey"
+      connectedMessage="Connected to Internet!"
+      connectedTextColor="white"
+      connectedBackgroundColor="green">
+      <Navigator />
+    </NetworkChecker>
+  );
 };
 
 export default connect(null, {getNetInfoStatus})(App);

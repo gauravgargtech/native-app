@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {Box, Thumbnail} from '../../../components';
+import {Box, Loader, Thumbnail} from '../../../components';
 import {ms, s, vs} from 'react-native-size-matters';
 import {Colors, fontSizes} from '../../../theme';
 import {
@@ -20,6 +20,7 @@ const VideoList = ({
   getCommentData,
   getVideoPlaylistAction,
   getVideo_PlaylistData,
+  isConnected,
 }) => {
   const onClickVideo = async ({videoItem}) => {
     navigation.navigate(VIDEO_DETAILS, {
@@ -27,13 +28,17 @@ const VideoList = ({
     });
 
     try {
-      const getPlayerVideo = {
-        videoData: videoItem,
-      };
-      await getCurrentVideo_Action(getPlayerVideo);
+      if (isConnected) {
+        const getPlayerVideo = {
+          videoData: videoItem,
+        };
+        await getCurrentVideo_Action(getPlayerVideo);
 
-      await getCommentAction(videoItem?.id);
-      await getVideoPlaylistAction(videoItem.id);
+        await getCommentAction(videoItem?.id);
+        await getVideoPlaylistAction(videoItem.id);
+      } else {
+        return <Loader />;
+      }
     } catch (e) {
       console.log('ERRORS AT GET_VIDEO_DATA', e);
     }
@@ -62,12 +67,19 @@ const VideoList = ({
 };
 
 const mapStateToProps = ({
-  app: {getVideoList, getCurrentVideo, getCommentData, getVideo_PlaylistData},
+  app: {
+    getVideoList,
+    getCurrentVideo,
+    getCommentData,
+    getVideo_PlaylistData,
+    isConnected,
+  },
 }) => ({
   getVideoList,
   getCurrentVideo,
   getCommentData,
   getVideo_PlaylistData,
+  isConnected,
 });
 export default connect(mapStateToProps, {
   getCurrentVideo_Action,
