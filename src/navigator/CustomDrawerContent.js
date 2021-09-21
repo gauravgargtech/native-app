@@ -16,13 +16,6 @@ const CustomDrawerContent = ({
   getCategoryData,
   getCategoryData_Action,
 }) => {
-  // const {
-  //   navigation,
-  //   getCategoryAction,
-  //   getCategoryData,
-  //   getCategoryData_Action,
-  // } = props;
-
   useEffect(() => {
     const category = async () => {
       try {

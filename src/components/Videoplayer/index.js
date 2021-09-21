@@ -1,6 +1,12 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {BackHandler, AppState} from 'react-native';
-import {Box, CustomHeader, PlayerControls, ProgressBar} from '../../components';
+import {
+  Box,
+  CustomHeader,
+  HeadingText,
+  PlayerControls,
+  ProgressBar,
+} from '../../components';
 import {
   ActivityIndicator,
   Alert,
@@ -26,10 +32,10 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import VideoPlayerUrl from '../../assets/video/orginal_lonely.mp4';
-import {Colors} from '../../theme';
+import {Colors, fontSizes} from '../../theme';
 
 const OsVer = Platform.constants.Release;
-
+const NEXT_VIDEO_LOADING_COUNT = 5;
 const Videoplayer = ({
   navigation,
   getVideoPlaylistAction,
@@ -46,9 +52,13 @@ const Videoplayer = ({
   const [play, setPlay] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [onEndingStart, setOnEndingStart] = useState(false);
   const videoUrl = getCurrentVideo?.videoData?.url;
+  let autoPlayTimerInterval: any;
 
+  const [nextVideoDisableTime, setNextVideoDisableTime] = useState(
+    NEXT_VIDEO_LOADING_COUNT,
+  );
   const homeAction = nextAppState => {
     if (
       AppState.currentState.match(/inactive|background/) &&
@@ -67,6 +77,12 @@ const Videoplayer = ({
 
   const onEnd = () => {
     setCurrentTime(duration);
+    if (isLoading == false) {
+      setOnEndingStart(true);
+      setNextVideoDisableTime(NEXT_VIDEO_LOADING_COUNT);
+      startResendOtpTimer();
+    }
+    console.log('Is Loading', isLoading);
     try {
       if (getVideo_PlaylistData?.playList[0] != undefined) {
         const getPlayerVideo = {
@@ -84,7 +100,21 @@ const Videoplayer = ({
     }
   };
 
+  const startResendOtpTimer = () => {
+    if (autoPlayTimerInterval) {
+      clearInterval(autoPlayTimerInterval);
+    }
+    autoPlayTimerInterval = setInterval(() => {
+      if (nextVideoDisableTime <= 0) {
+        clearInterval(autoPlayTimerInterval);
+      } else {
+        setNextVideoDisableTime(nextVideoDisableTime - 1);
+      }
+    }, 1000);
+  };
+
   useEffect(() => {
+    startResendOtpTimer();
     Orientation.addOrientationListener(handleOrientation);
     BackHandler.addEventListener('hardwareBackPress', backAction);
     AppState.addEventListener('change', homeAction);
@@ -92,8 +122,11 @@ const Videoplayer = ({
       Orientation.removeOrientationListener(handleOrientation);
       BackHandler.removeEventListener('hardwareBackPress', backAction);
       AppState.removeEventListener('change', homeAction);
+      if (autoPlayTimerInterval) {
+        clearInterval(autoPlayTimerInterval);
+      }
     };
-  }, []);
+  }, [nextVideoDisableTime]);
 
   const clearData = () => {
     setDuration(0);
@@ -224,9 +257,26 @@ const Videoplayer = ({
                 )}
               </TouchableOpacity>
               {isLoading ? (
-                <Box justifyContent={'center'} flex={1} alignItems={'center'}>
-                  <ActivityIndicator size="large" color={Colors.white} />
-                </Box>
+                <>
+                  {onEndingStart && nextVideoDisableTime > 0 ? (
+                    <Box flex={1} alignItems={'center'}>
+                      <Box flex={1} style={styles.AutoPlayTimerContainer}>
+                        <HeadingText
+                          color={Colors.black}
+                          fontSize={fontSizes[15]}>
+                          {nextVideoDisableTime}
+                        </HeadingText>
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box
+                      flex={1}
+                      justifyContent={'center'}
+                      alignItems={'center'}>
+                      <ActivityIndicator size={'large'} color={Colors.white} />
+                    </Box>
+                  )}
+                </>
               ) : (
                 <PlayerControls
                   onPlay={handlePlayPause}
@@ -292,6 +342,16 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: '#000000c4',
     justifyContent: 'space-between',
+  },
+  AutoPlayTimerContainer: {
+    backgroundColor: Colors.white,
+    borderColor: 'rgba(65,82,106,0.5)',
+    borderWidth: 10,
+    borderRadius: 80 / 2,
+    width: 80,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 const mapStateToProps = ({

@@ -11,7 +11,7 @@ import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {HOME, LOGIN} from '../../../navigator/routes';
-import {Login} from '../../../store/actions';
+import {Login_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
 
 const SnackbarComponent = props => {
@@ -22,15 +22,13 @@ const SnackbarComponent = props => {
   });
 };
 
-const LoginPage = ({navigation, Login, RegisterUser}) => {
+const LoginPage = ({navigation, Login_Action, RegisterUser}) => {
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
       .required('Email Address Required'),
     password: Yup.string().required('Password Required'),
   });
-
-  console.log('RegisterUser At Login Page ', RegisterUser);
 
   const onClickLogin = (values, resetForm) => {
     const data = {
@@ -39,13 +37,12 @@ const LoginPage = ({navigation, Login, RegisterUser}) => {
     };
     const loginFunc = async () => {
       try {
-        const loginData = await Login(data);
+        const loginData = await Login_Action(data);
         console.log('Login success', loginData);
-        if (loginData?.value[0]?.success == true) {
-          navigation.navigate(LOGIN);
+        if (loginData?.value?.success == true) {
           resetForm({values: ''});
         } else {
-          SnackbarComponent(loginData?.value[0]?.message);
+          SnackbarComponent(loginData?.value?.message);
           resetForm({values: ''});
         }
       } catch (e) {
@@ -151,5 +148,5 @@ const mapStateToProps = ({app: {RegisterUser}}) => ({
   RegisterUser,
 });
 export default connect(mapStateToProps, {
-  Login,
+  Login_Action,
 })(LoginPage);

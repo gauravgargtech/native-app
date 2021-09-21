@@ -15,11 +15,16 @@ import NetworkChecker from 'react-native-network-checker';
 
 const App = ({getNetInfoStatus}) => {
   useEffect(() => {
-    const connection = NetInfo.addEventListener(state => {
-      const online = (state.isConnected && state.isInternetReachable);
+    NetInfo.addEventListener(state => {
+      const online = state.isConnected && state.isInternetReachable;
       updateNetInfo(online);
     });
-    return () => connection();
+    return () => {
+      NetInfo.addEventListener(state => {
+        const online = state.isConnected && state.isInternetReachable;
+        updateNetInfo(online);
+      });
+    };
   }, []);
 
   const updateNetInfo = online => {
@@ -46,5 +51,4 @@ const App = ({getNetInfoStatus}) => {
     </NetworkChecker>
   );
 };
-
 export default connect(null, {getNetInfoStatus})(App);

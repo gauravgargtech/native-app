@@ -8,6 +8,9 @@ import {
   TAGS_WISE,
   CATEGORY_WISE,
   VIDEO_DETAILS,
+  SETUP_KIDS,
+  LOGIN,
+  REGISTER,
   AUTH_NAVIGATOR,
 } from './routes';
 import {
@@ -20,56 +23,20 @@ import {
   Login,
   Register,
 } from '../screens';
-import DrawerNavigator from './drawer';
-import Authentication from './Authentication';
+import DrawerNavigator from './DrawerNavigator';
 const Stack = createStackNavigator();
 const HomeNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name={HOME}
-        options={{
-          headerShown: false,
-        }}
-        component={DrawerNavigator}
-      />
-      <Stack.Screen
-        name={SEARCH}
-        options={{
-          headerShown: false,
-        }}
-        component={Search}
-      />
-      <Stack.Screen
-        name={TAGS_WISE}
-        options={{
-          headerShown: false,
-        }}
-        component={TagsWise}
-      />
-      <Stack.Screen
-        name={CATEGORY_WISE}
-        options={{
-          headerShown: false,
-        }}
-        component={CategoryWise}
-      />
-      <Stack.Screen
-        name={VIDEO_DETAILS}
-        options={{
-          headerShown: false,
-        }}
-        component={VideoDetails}
-      />
-      <Stack.Screen
-        name={AUTH_NAVIGATOR}
-        options={{
-          headerShown: false,
-        }}
-        component={Authentication}
-      />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name={HOME} component={DrawerNavigator} />
+      <Stack.Screen name={SEARCH} component={Search} />
+      <Stack.Screen name={TAGS_WISE} component={TagsWise} />
+      <Stack.Screen name={CATEGORY_WISE} component={CategoryWise} />
+      <Stack.Screen name={VIDEO_DETAILS} component={VideoDetails} />
+      <Stack.Screen name={SETUP_KIDS} component={SetupKids} />
+      <Stack.Screen name={LOGIN} component={Login} />
+      <Stack.Screen name={REGISTER} component={Register} />
     </Stack.Navigator>
   );
 };
-
 export default HomeNavigator;

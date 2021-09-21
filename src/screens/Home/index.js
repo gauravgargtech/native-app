@@ -17,7 +17,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {
   getTagsAction,
   getVideoListAction,
-  BetaVersion,
+  BetaVersion_action,
 } from '../../store/actions';
 import {connect} from 'react-redux';
 import {ms} from 'react-native-size-matters';
@@ -26,31 +26,25 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HOME} from '../../navigator/routes';
 
-const today = new Date();
-var date =
-  today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-var time =
-  (today.getHours() % 12) + ':' + today.getMinutes() + ':' + today.getSeconds();
-
 const Home = ({
-  route,
   navigation,
   getTagsAction,
   getTagsData,
   getVideoListAction,
   getVideoList,
   RegisterUser,
-  BetaVersion,
+  BetaVersion_action,
   betaVersion,
   isConnected,
 }) => {
+  const today = new Date();
+  const date =
+    today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+
   const [currentDate, setCurrentDate] = useState(date);
-  const [currentTime, setCurrentTime] = useState(time);
-  const [showAlert, setShowAlert] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    setCurrentTime(time);
     setCurrentDate(date);
     getData();
     if (isFocused) {
@@ -59,8 +53,6 @@ const Home = ({
           if (isConnected) {
             await getTagsAction();
             await getVideoListAction();
-          } else {
-            return <Loader />;
           }
         } catch (e) {
           alert('error while get Tags Data');
@@ -68,23 +60,15 @@ const Home = ({
       };
       func();
     }
-  }, [isFocused, isConnected]);
+  }, [isFocused]);
 
   function addDays(value, days) {
     if (value != null) {
       let unix_timestamp = value;
       let formattedDate;
-      let formattedTime;
       const date = new Date(unix_timestamp);
       const Days = moment(date).add(days, 'days').format('DD-M-YYYY');
-      //
-      // const hours = date.getHours() % 12;
-      // const minutes = '0' + (date.getMinutes() + days);
-      // const seconds = '0' + date.getSeconds();
       formattedDate = Days;
-      // formattedTime =
-      //   hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-      // console.log('formattedTime', formattedTime);
       return formattedDate;
     }
   }
@@ -97,13 +81,13 @@ const Home = ({
       const addTrailDays = addDays(value, 7);
       console.log('Completed beta version Date ', addTrailDays);
       console.log('current Date', currentDate);
-      if (RegisterUser[0]?.success != false) {
-        if (value !== null) {
+      if (RegisterUser?.success != false) {
+        if (value != null) {
           if (new Date(addTrailDays) >= new Date(currentDate)) {
             console.log('beta version', betaVersion);
             if (betaVersion == true) {
               Alert.alert('Please Take a subscription');
-              BetaVersion(false);
+              BetaVersion_action(false);
             }
           } else {
             Alert.alert('You must have a subscription');
@@ -115,10 +99,6 @@ const Home = ({
       console.log('Reading Error', e);
     }
   };
-
-  useMemo(async () => {
-    getData();
-  }, [currentDate]);
 
   return (
     <Box flex={1} backgroundColor={Colors.lightWhite} as={SafeAreaView}>
@@ -166,5 +146,5 @@ const mapStateToProps = ({
 export default connect(mapStateToProps, {
   getTagsAction,
   getVideoListAction,
-  BetaVersion,
+  BetaVersion_action,
 })(Home);

@@ -10,10 +10,9 @@ import {Colors, fontSizes, fonts} from '../../../theme';
 import Snackbar from 'react-native-snackbar';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {LOGIN, REGISTER, HOME,DRAWER_NAVIGATOR} from '../../../navigator/routes';
-import {Register} from '../../../store/actions';
+import {LOGIN, REGISTER} from '../../../navigator/routes';
+import {Register_Action} from '../../../store/actions';
 import {connect} from 'react-redux';
-import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SnackbarComponent = props => {
@@ -24,14 +23,7 @@ const SnackbarComponent = props => {
   });
 };
 
-// const date = new Date();
-// console.log('current date', moment(date).format('ll'));
-// console.log('After 7 days', moment(date).add(7, 'days').format('ll'));
-//
-// console.log('current time', moment().format('LTS'));
-// console.log('After 2 min', moment().add(2, 'minutes').format('LTS'));
-
-const RegisterPage = ({navigation, Register, RegisterUser}) => {
+const RegisterPage = ({navigation, Register_Action, RegisterUser}) => {
   const unixTimestamp = new Date().valueOf();
 
   const storeData = async value => {
@@ -52,20 +44,20 @@ const RegisterPage = ({navigation, Register, RegisterUser}) => {
   });
 
   const onClickSubmit = (values, resetForm) => {
-    storeData(unixTimestamp);
     const data = {
       email: values.email,
       password: values.password,
     };
     const regFunc = async () => {
       try {
-        const userdata = await Register(data);
+        const userdata = await Register_Action(data);
         console.log('Register success', userdata);
-        if (userdata?.value[0]?.success == true) {
+        if (userdata?.value?.success == true) {
+          storeData(unixTimestamp);
           navigation.navigate(REGISTER);
           resetForm({values: ''});
         } else {
-          SnackbarComponent(userdata?.value[0]?.message);
+          SnackbarComponent(userdata?.value?.message);
           navigation.navigate(REGISTER);
           resetForm({values: ''});
         }
@@ -190,5 +182,5 @@ const mapStateToProps = ({app: {RegisterUser}}) => ({
   RegisterUser,
 });
 export default connect(mapStateToProps, {
-  Register,
+  Register_Action,
 })(RegisterPage);

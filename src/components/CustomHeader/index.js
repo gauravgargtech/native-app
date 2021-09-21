@@ -108,10 +108,10 @@ const CustomHeader = ({
         </Box>
       </Box>
       <Box flex={1.5} alignItems={'center'} justifyContent={'center'}>
-        {!RegisterUser[0]?.user_id ? (
+        {RegisterUser?.user_id == undefined ? (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(AUTH_NAVIGATOR);
+              navigation.navigate(SETUP_KIDS);
             }}>
             <Image
               source={SignIN}
@@ -129,7 +129,7 @@ const CustomHeader = ({
               fontSize={fontSizes[2.8]}
               numberOfLines={1}
               ellipsizeMode={'tail'}>
-              {RegisterUser[0]?.user_id}
+              {RegisterUser?.user_id}
             </HeadingText>
             <Modal
               style={{margin: 0, backgroundColor: Colors.white}}

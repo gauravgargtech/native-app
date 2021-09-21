@@ -10,22 +10,25 @@ import {Box, Button, SubHeadingText, ProfileOption} from '../../components';
 import {ms} from 'react-native-size-matters';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {CloseIcon_large} from '../../assets/images';
-import {Logout_Action, BetaVersion} from '../../store/actions';
+import {Logout_Action, BetaVersion_action} from '../../store/actions';
 import {connect} from 'react-redux';
 import {ProfileAvtar} from '../../assets/images';
-import {AUTH_NAVIGATOR} from '../../navigator/routes';
 
 const ProfileModal = ({
   navigation,
   handleCancel,
   Logout_Action,
-  BetaVersion,
+  RegisterUser,
+  BetaVersion_action,
   betaVersion,
 }) => {
   const onClickLogout = async () => {
-    await Logout_Action();
-    await BetaVersion(true);
-    navigation.navigate(AUTH_NAVIGATOR);
+    try {
+      await Logout_Action();
+      await BetaVersion_action(true);
+    } catch (e) {
+      console.log('ERROR WHILE LOGOUT', e);
+    }
   };
   return (
     <>
@@ -73,7 +76,10 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
   },
 });
-const mapStateToProps = ({app: {betaVersion}}) => ({betaVersion});
-export default connect(mapStateToProps, {Logout_Action, BetaVersion})(
+const mapStateToProps = ({app: {betaVersion, RegisterUser}}) => ({
+  betaVersion,
+  RegisterUser,
+});
+export default connect(mapStateToProps, {Logout_Action, BetaVersion_action})(
   ProfileModal,
 );

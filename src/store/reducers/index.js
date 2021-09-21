@@ -12,7 +12,7 @@ const initialState = {
   getTagsDataList: [],
   getCategoryDataList: [],
   getCurrentUserData: [],
-  RegisterUser: [],
+  RegisterUser: {},
   betaVersion: true,
   isConnected: true,
 };
@@ -66,7 +66,7 @@ const reducers = (state = initialState, action) => {
       return {...state, RegisterUser: action.payload};
     case types.LOGOUT:
       return {...state, RegisterUser: action.payload};
-    case types.BETA_VERISON:
+    case types.BETA_VERSION:
       return {...state, betaVersion: action.payload};
     case types.CONNECTION_SUCCESS:
       return {...state, isConnected: action.payload};

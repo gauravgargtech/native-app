@@ -1,12 +1,5 @@
-import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  StatusBar,
-  SafeAreaView,
-  Platform,
-  KeyboardAvoidingView,
-  Image,
-} from 'react-native';
+import React from 'react';
+import {StyleSheet, StatusBar, SafeAreaView, Image} from 'react-native';
 import {Box, HeadingText, PlainText} from '../../components/index';
 import {Colors} from '../../theme';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';

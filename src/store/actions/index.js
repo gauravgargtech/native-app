@@ -172,19 +172,17 @@ export const getLoginUser_Action =
 export const Logout_Action = () => dispatch => {
   return dispatch({
     type: types.LOGOUT,
-    payload: [],
+    payload: {},
   });
 };
 
-export const Register =
+export const Register_Action =
   param =>
   (dispatch, getState, {api}) => {
     console.log('Register user', param);
     const getPromise = async () => {
       const {data} = await api.getRegister(param);
-      let array = [];
-      array?.push(data);
-      return array;
+      return data;
     };
     return dispatch({
       type: types.REGISTER,
@@ -192,15 +190,13 @@ export const Register =
     });
   };
 
-export const Login =
+export const Login_Action =
   param =>
   (dispatch, getState, {api}) => {
     console.log('Login user', param);
     const getPromise = async () => {
       const {data} = await api.getLogin(param);
-      let array = [];
-      array?.push(data);
-      return array;
+      return data;
     };
     return dispatch({
       type: types.LOGIN,
@@ -208,11 +204,11 @@ export const Login =
     });
   };
 
-export const BetaVersion =
+export const BetaVersion_action =
   value =>
   (dispatch, getState, {api}) => {
     return dispatch({
-      type: types.BETA_VERISON,
+      type: types.BETA_VERSION,
       payload: value,
     });
   };
