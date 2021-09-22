@@ -214,8 +214,8 @@ const VideoPlayer = ({
             source={{
               uri: videoUrl,
             }}
-            // poster={getCurrentVideo?.videoData?.thumbnail}
-            // posterResizeMode={'cover'}
+            poster={getCurrentVideo?.videoData?.thumbnail}
+            posterResizeMode={'cover'}
             style={fullscreen ? styles.fullscreenVideo : styles.video}
             controls={false}
             resizeMode={'contain'}
