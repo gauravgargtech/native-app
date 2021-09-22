@@ -51,7 +51,6 @@ const RegisterPage = ({navigation, Register_Action, RegisterUser}) => {
     const regFunc = async () => {
       try {
         const userdata = await Register_Action(data);
-        console.log('Register success', userdata);
         if (userdata?.value?.success == true) {
           storeData(unixTimestamp);
           navigation.navigate(REGISTER);

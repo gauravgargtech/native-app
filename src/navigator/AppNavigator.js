@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 const Stack = createStackNavigator();
 
 const AppNavigator = ({RegisterUser}) => {
-  console.log('Register user ID', RegisterUser?.user_id);
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {!RegisterUser?.user_id ? (

@@ -1,10 +1,9 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {APP_NAVIGATOR, ERROR_NAVIGATOR, HOME_NAVIGATOR} from './routes';
+import {APP_NAVIGATOR, ERROR_NAVIGATOR} from './routes';
 import AppNavigator from './AppNavigator';
 import ErrorNavigator from './ErrorNavigator';
-import HomeNavigator from './HomeNavigator';
 import {connect} from 'react-redux';
 import {getNetInfoStatus} from '../store/actions';
 const Stack = createStackNavigator();

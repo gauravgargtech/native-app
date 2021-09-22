@@ -18,7 +18,7 @@ import {
   Button,
   Thumbnail,
   VideoDescription,
-  Videoplayer,
+  VideoPlayer,
   CommentList,
   SubHeadingText,
   Loader,
@@ -34,17 +34,12 @@ import {
 import {ms, vs, s} from 'react-native-size-matters';
 import {Colors, fonts, fontSizes} from '../../../theme';
 import {ProfileAvtar} from '../../../assets/images';
-import Video, {
-  OnSeekData,
-  OnLoadData,
-  OnProgressData,
-} from 'react-native-video';
-import Orientation from 'react-native-orientation-locker';
 import {
   getVideoPlaylistAction,
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
+  Clear_CommentData,
 } from '../../../store/actions';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -62,20 +57,23 @@ const VideoDeatilsPage = ({
   getCurrentVideo,
   getCommentAction,
   getCommentData,
+  Clear_CommentData,
 }) => {
   const {videoItem} = route.params ?? {};
 
   const [commentText, setCommentText] = useState(null);
   const [isCommentfocus, setIsCommentFocus] = useState(false);
 
-  useEffect(() => {
+  const commentMsg = useMemo(() => {
     if (addCommentData?.data?.success == true) {
       Alert.alert(`Message : ${addCommentData?.data?.message}`);
+      let obj = {success: false};
+      Clear_CommentData(obj);
     }
   }, [addCommentData]);
 
   const Player = useMemo(() => {
-    return Videoplayer;
+    return VideoPlayer;
   }, [getCurrentVideo]);
 
   const onFocus = () => {
@@ -92,6 +90,7 @@ const VideoDeatilsPage = ({
     if (comment != null) {
       await addCommentAction(videoID, comment, userID);
       setCommentText(null);
+      commentMsg;
     }
   };
 
@@ -281,4 +280,5 @@ export default connect(mapStateToProps, {
   addCommentAction,
   getCommentAction,
   getCurrentVideo_Action,
+  Clear_CommentData,
 })(VideoDeatilsPage);

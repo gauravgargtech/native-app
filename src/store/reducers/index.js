@@ -43,7 +43,8 @@ const reducers = (state = initialState, action) => {
       return {...state, addCommentData: {loading: true}};
     case types.ADD_VIDEO_COMMENT_SUCCESS:
       return {...state, addCommentData: {data: action.payload, loading: false}};
-
+    case types.CLEAR_COMMENT_DATA:
+      return {...state, addCommentData: {data: action.payload, loading: false}};
     case types.GET_VIDEO_COMMENT_SUCCESS:
       return {...state, getCommentData: action.payload};
 

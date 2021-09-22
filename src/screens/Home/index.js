@@ -77,13 +77,14 @@ const Home = ({
     try {
       const jsonValue = await AsyncStorage.getItem('@storage_Key');
       const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log('storage value ', value);
       const addTrailDays = addDays(value, 7);
       console.log('Completed beta version Date ', addTrailDays);
       console.log('current Date', currentDate);
+      var CompleteTrailDate=new Date(addTrailDays);
+      var ContinueTrailDate=new Date(currentDate);
       if (RegisterUser?.success != false) {
         if (value != null) {
-          if (new Date(addTrailDays) >= new Date(currentDate)) {
+          if (CompleteTrailDate >= ContinueTrailDate) {
             console.log('beta version', betaVersion);
             if (betaVersion == true) {
               Alert.alert('Please Take a subscription');

@@ -77,7 +77,6 @@ export const getVideoPlaylistAction =
 export const addCommentAction =
   (videoID, comment, userID) =>
   (dispatch, getState, {api}) => {
-    console.log('comment of user', comment);
     const getPromise = async () => {
       const {data} = await api.addComment(videoID, comment, userID);
       return data;
@@ -179,7 +178,6 @@ export const Logout_Action = () => dispatch => {
 export const Register_Action =
   param =>
   (dispatch, getState, {api}) => {
-    console.log('Register user', param);
     const getPromise = async () => {
       const {data} = await api.getRegister(param);
       return data;
@@ -193,7 +191,6 @@ export const Register_Action =
 export const Login_Action =
   param =>
   (dispatch, getState, {api}) => {
-    console.log('Login user', param);
     const getPromise = async () => {
       const {data} = await api.getLogin(param);
       return data;
@@ -212,3 +209,10 @@ export const BetaVersion_action =
       payload: value,
     });
   };
+
+export const Clear_CommentData = param => dispatch => {
+  return dispatch({
+    type: types.CLEAR_COMMENT_DATA,
+    payload: param,
+  });
+};

@@ -38,7 +38,6 @@ const LoginPage = ({navigation, Login_Action, RegisterUser}) => {
     const loginFunc = async () => {
       try {
         const loginData = await Login_Action(data);
-        console.log('Login success', loginData);
         if (loginData?.value?.success == true) {
           resetForm({values: ''});
         } else {

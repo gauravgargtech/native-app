@@ -7,7 +7,7 @@ import Header from './Header';
 import CustomHeader from './CustomHeader';
 import Thumbnail from './Thumbnail';
 import VideoDescription from './VideoDescription';
-import Videoplayer from './Videoplayer';
+import VideoPlayer from './Videoplayer';
 import ProfileModal from './ProfileModal';
 import ProfileOption from './ProfileOption';
 import CommentList from './CommentList';
@@ -26,7 +26,7 @@ export {
   CustomHeader,
   Thumbnail,
   VideoDescription,
-  Videoplayer,
+  VideoPlayer,
   ProfileModal,
   ProfileOption,
   CommentList,

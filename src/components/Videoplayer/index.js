@@ -12,7 +12,6 @@ import {
   Alert,
   Dimensions,
   Image,
-  LayoutAnimation,
   Platform,
   StatusBar,
   StyleSheet,
@@ -29,14 +28,11 @@ import {
   getCurrentVideo_Action,
 } from '../../store/actions';
 import {connect} from 'react-redux';
-import moment from 'moment';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import VideoPlayerUrl from '../../assets/video/orginal_lonely.mp4';
 import {Colors, fontSizes} from '../../theme';
 
 const OsVer = Platform.constants.Release;
 const NEXT_VIDEO_LOADING_COUNT = 5;
-const Videoplayer = ({
+const VideoPlayer = ({
   navigation,
   getVideoPlaylistAction,
   getVideo_PlaylistData,
@@ -53,12 +49,15 @@ const Videoplayer = ({
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [onEndingStart, setOnEndingStart] = useState(false);
+
+  const [orientationType, setOrientationType] = useState();
   const videoUrl = getCurrentVideo?.videoData?.url;
   let autoPlayTimerInterval: any;
 
   const [nextVideoDisableTime, setNextVideoDisableTime] = useState(
     NEXT_VIDEO_LOADING_COUNT,
   );
+
   const homeAction = nextAppState => {
     if (
       AppState.currentState.match(/inactive|background/) &&
@@ -71,7 +70,7 @@ const Videoplayer = ({
   };
 
   const backAction = () => {
-    Orientation.lockToPortrait();
+    Orientation.unlockAllOrientations();
     return true;
   };
 
@@ -82,7 +81,6 @@ const Videoplayer = ({
       setNextVideoDisableTime(NEXT_VIDEO_LOADING_COUNT);
       startResendOtpTimer();
     }
-    console.log('Is Loading', isLoading);
     try {
       if (getVideo_PlaylistData?.playList[0] != undefined) {
         const getPlayerVideo = {
@@ -114,12 +112,18 @@ const Videoplayer = ({
   };
 
   useEffect(() => {
-    startResendOtpTimer();
     Orientation.addOrientationListener(handleOrientation);
+
+    return () => {
+      Orientation.removeOrientationListener(handleOrientation);
+    };
+  }, []);
+
+  useEffect(() => {
+    startResendOtpTimer();
     BackHandler.addEventListener('hardwareBackPress', backAction);
     AppState.addEventListener('change', homeAction);
     return () => {
-      Orientation.removeOrientationListener(handleOrientation);
       BackHandler.removeEventListener('hardwareBackPress', backAction);
       AppState.removeEventListener('change', homeAction);
       if (autoPlayTimerInterval) {
@@ -141,12 +145,6 @@ const Videoplayer = ({
   useMemo(() => {
     clearData();
   }, [getCurrentVideo]);
-
-  function handleOrientation(orientation: string) {
-    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
-      ? (setFullscreen(true), StatusBar.setHidden(true))
-      : (setFullscreen(false), StatusBar.setHidden(false));
-  }
 
   const onLoad = data => {
     // const hms = getCurrentVideo?.videoData?.total_time;
@@ -173,18 +171,6 @@ const Videoplayer = ({
     setCurrentTime(Math.round(data.currentTime));
   };
 
-  const handleFullscreen = () => {
-    // if (Platform.OS == 'ios') {
-    //   videoRef?.current?.presentFullscreenPlayer();
-    // } else {
-    //   fullscreen
-    //     ? Orientation.lockToPortrait()
-    //     : Orientation.lockToLandscapeLeft();
-    // }
-    fullscreen
-      ? Orientation.lockToPortrait()
-      : Orientation.lockToLandscapeLeft();
-  };
   const handlePlayPause = () => {
     if (play) {
       setPlay(false);
@@ -222,18 +208,19 @@ const Videoplayer = ({
         />
       ) : null}
       <TouchableWithoutFeedback onPress={visibleControls}>
-        <Box>
+        <View>
           <Video
             ref={ref => (videoRef.current = ref)}
-            source={{uri: videoUrl}}
-            poster={getCurrentVideo?.videoData?.thumbnail}
-            posterResizeMode={'cover'}
+            source={{
+              uri: videoUrl,
+            }}
+            // poster={getCurrentVideo?.videoData?.thumbnail}
+            // posterResizeMode={'cover'}
             style={fullscreen ? styles.fullscreenVideo : styles.video}
             controls={false}
             resizeMode={'contain'}
             onLoadStart={onLoadStart}
             onLoad={onLoad}
-            ignoreSilentSwitch={'ignore'}
             onProgress={onProgress}
             onEnd={onEnd}
             paused={!play}
@@ -297,20 +284,24 @@ const Videoplayer = ({
               />
             </View>
           )}
-        </Box>
+        </View>
       </TouchableWithoutFeedback>
     </>
   );
+
+  function handleOrientation(orientation: string) {
+    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+      ? (setFullscreen(true), StatusBar.setHidden(true))
+      : (setFullscreen(false), StatusBar.setHidden(false));
+  }
+
+  function handleFullscreen() {
+    fullscreen
+      ? Orientation.unlockAllOrientations()
+      : Orientation.lockToLandscapeLeft();
+  }
 };
 const styles = StyleSheet.create({
-  backgroundVideo: {
-    height: '100%',
-    width: '100%',
-  },
-  backgroundVideoFullScreen: {
-    height: Dimensions.get('screen').height,
-    width: Dimensions.get('screen').width,
-  },
   video: {
     height: Dimensions.get('window').width * (9 / 16),
     width: Dimensions.get('window').width,
@@ -320,6 +311,10 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width,
     width: OsVer != '5.1.1' ? Dimensions.get('window').height : '100%',
     backgroundColor: 'black',
+  },
+  backgroundVideoFullScreen: {
+    height: Dimensions.get('screen').height,
+    width: Dimensions.get('screen').width,
   },
   text: {
     marginTop: 30,
@@ -365,4 +360,4 @@ export default connect(mapStateToProps, {
   getVideoPlaylistAction,
   getCommentAction,
   getCurrentVideo_Action,
-})(Videoplayer);
+})(VideoPlayer);
